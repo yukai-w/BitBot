@@ -1,0 +1,42 @@
+<!DOCTYPE html> 
+<html>
+	<head>
+	    <script src="./lib/jaws.js"></script>
+	    <script src="./lib/howler.js"></script>
+	    <link type="text/css" rel="stylesheet" href="style.css" />
+	    <title>CoffeeBot (Working Title)</title>
+	</head>
+
+	<script src="main.js"></script>
+	<script src="./src/util/game_util.js"></script>
+	<script src="./src/gameobjects/Bullet.js"></script>
+	<script src="./src/gameobjects/Dude.js"></script>
+	<script src="./src/gameobjects/Person.js"></script>
+	<script src="./src/gameobjects/Plane.js"></script>
+	
+	<script src="./src/stages/HallwayStage.js"></script>
+	<script src="./src/states/MenuState.js"></script>
+	<script src="./src/states/PlayState.js"></script>
+
+	<body>
+		
+	    <canvas width=768 height=576 id="canvas"> </canvas>
+	    
+	    FPS: <span id="fps"> </span>. Move with arrows. Select with Return.
+	
+	    <div id="info">
+	      <h1>CoffeeBot (Working Title)</h1>
+	      <code>CoffeeBot</code> was developed by Rogelio E. Cardona-Rivera, Jos&eacute; D. V&eacute;lez, and Allison G. Mart&Iacute;nez-Arocho as part of the 2013 Github Game Jam.
+	    </div >
+	
+	    <h1>jaws log</h1>
+	    <div id="jaws-log"> </div>
+	
+		<script>
+		var fps = document.getElementById("fps")
+		init();
+		</script>
+	
+	</body>
+</html>
+
