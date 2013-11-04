@@ -15,7 +15,7 @@ function PlayState() {
 		player = new Person(true, start_x_position, "./assets/art/person1.png");
 		
 		/* Level setup */
-		currentStage = new HallwayStage()
+		currentStage = new WorldStage()
 		currentStage.setup(player);
 
 	}
