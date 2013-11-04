@@ -27,7 +27,7 @@ function WorldStage() {
 		var img_scale_factor = 32/42;
 		
 		//level_data, max_rows, max_cols, tile_width, tile_height, tile_img_scale_factor
-		level_tiles = setup_level_tiles(level_data, number_of_vertical_cells, number_of_horizontal_cells, cell_width, cell_height, img_scale_factor);
+		level_tiles = setup_level_tiles(level_data, number_of_vertical_cells, number_of_horizontal_cells, cell_width, cell_height);
 		tile_map.push(level_tiles);
 
 		// Player setup.
@@ -81,7 +81,7 @@ function WorldStage() {
 		return sample_level;
 	}
 	
-	function setup_level_tiles(level_data, max_rows, max_cols, tile_width, tile_height, tile_img_scale_factor) {
+	function setup_level_tiles(level_data, max_rows, max_cols, tile_width, tile_height) {
 		var lvl_tiles = new jaws.SpriteList();
 		for(var row_idx = 0; row_idx < max_rows; row_idx++) {
 			for(var col_idx = 0; col_idx < max_cols; col_idx++) {
@@ -133,8 +133,7 @@ function WorldStage() {
 					var tile = new jaws.Sprite({
 						image : imgString,
 						x : col_idx * tile_width,
-						y : row_idx * tile_height,
-						scale_image : tile_img_scale_factor
+						y : row_idx * tile_height
 					});
 					
 					console.log(tile); 				
