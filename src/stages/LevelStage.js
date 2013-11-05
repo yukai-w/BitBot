@@ -1,7 +1,7 @@
 /*
- * The WorldStage.
+ * The LevelStage.
  */
-function WorldStage() {
+function LevelStage() {
 
 	var player;
 	var background;

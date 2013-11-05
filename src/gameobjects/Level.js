@@ -16,7 +16,6 @@ function Level(level_data) {
 	/* Class initialization */
 	setup(level_data);
 	
-	
 	this.update = function() {
 		
 	}
@@ -123,8 +122,6 @@ function Level(level_data) {
 						y : row_idx * tile_height
 					});
 					
-					console.log(tile); 				
-	
 					lvl_tiles.push(tile);
 				}
 			}
