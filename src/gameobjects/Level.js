@@ -10,7 +10,7 @@ function Level(level_data) {
 	var level_blocks;
 	
 	/* Class attributes */
-	this.isDisplayingFlat = true; // Are we displaying flat?
+	this.isDisplayingFlat = false; // Are we displaying flat?
 	this.level_data = level_data;
 	
 	/* Class initialization */
@@ -28,7 +28,7 @@ function Level(level_data) {
 		
 		else {
 			// draw block (isometric)
-			level_blocks_draw();
+			level_blocks.draw();
 		}
 	}
 	
@@ -65,9 +65,8 @@ function Level(level_data) {
 		});
 		
 		
-		setup_level_blocks(level_data, num_of_vert_cells, num_of_horiz_cells, cell_width, cell_height);
-		// level_blocks = setup_level_blocks(level_blocks, num_of_vert_cells, num_of_horiz_cells, cell_width, cell_height);
-		// block_map.push(level_blocks);
+		level_blocks = setup_level_blocks(level_data, num_of_vert_cells, num_of_horiz_cells, cell_width, cell_height);
+		block_map.push(level_blocks);
 		
 		console.log("Level.js: setup complete");
 	}
@@ -140,7 +139,10 @@ function Level(level_data) {
 	}
 	
 	function setup_level_blocks(level_data, max_rows, max_cols, tile_width, tile_height) {
-				
+		
+		var lvl_blocks = new jaws.SpriteList();
+
+		
 		/**
 		 * For setting up the level blocks, I must iterate across the level_data antidiagonally
 		 * e.g. if the two dimensional array looks like:
@@ -153,7 +155,8 @@ function Level(level_data) {
 		 * Numbers belonging to one bracket, all belong to the same antidiagonal
 		 * Source: http://stackoverflow.com/questions/2112832/traverse-rectangular-matrix-in-diagonal-strips
 		 */
-
+		var grid_row_index = 0;
+		var grid_col_index = 0;
 		for(var antidiagonal = 0; antidiagonal < max_rows + max_cols - 1; antidiagonal++) {
 			
 			var offset_from_left = antidiagonal < max_rows ? 0 : antidiagonal - max_rows + 1;
@@ -193,23 +196,73 @@ function Level(level_data) {
 			// can be found on the antidiagonal
 			// this number is zero for the first (max_cols) antidiagonals, and increased by 1 thereafter
 			
-			for(var iter_index = antidiagonal - offset_from_left; iter_index >= limit_from_top; iter_index--) {
-				
-				
+			for(var iter_index = antidiagonal - offset_from_left; iter_index >= limit_from_top; iter_index--) 
+			{	
 				var row_idx = iter_index;
 				var col_idx = antidiagonal-iter_index;
 				
-				console.log("At position: ("+row_idx+","+col_idx+")");
-				
+				// console.log("At position: ("+row_idx+","+col_idx+")");
 				var data = level_data[row_idx][col_idx];
-				
-				 
-				
-				console.log(data);				
+				var imgString = null;
+				var levelOffset = 0;
+				var doSkip = false;
+				if(data != -1) 
+				{
+					if(data >= 50) {//a battery tile
+						//TODO: IMPLEMENT
+					}
+					
+					else if(data >= 40) {//an end block
+						imgString = "./assets/art/GoalBlock.png";
+						data = data-40;						
+					}
+					
+					else if(data >= 30) {//a start tile
+						imgString = "./assets/art/StartBlock.png";
+						data = data-30;
+					}
+					
+					else if(data >= 20) {//a down-pointing staircase tile
+						//TODO: IMPLEMENT
+						data = data-20;
+					}
+					
+					else if(data >= 10) {//a right-pointing staircase tile
+						//TODO: IMPLEMENT
+						data = data-10;
+					}
+					
+					else {//a regular block
+						imgString = "./assets/art/Block.png";
+					}
+
+					
+					if(data == 4) {//a gap
+						doSkip = true;
+					}
+					
+					else {
+						//offset by negative pixels, because levels go down
+						levelOffset = -31*data;
+					}
+										
+					if(!doSkip) 
+					{
+						var block = new jaws.Sprite({
+							image : imgString,
+							x : grid_col_index * 18,
+							y : (grid_row_index * 18) + levelOffset
+						});
+						
+						lvl_blocks.push(block)
+					}
+				}
+				grid_col_index++;
 			}
-			
+			grid_row_index++;
 		}
  		
+ 		return lvl_blocks;
 	}
 
 }
