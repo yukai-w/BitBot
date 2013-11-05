@@ -5,7 +5,7 @@ function Level(level_data) {
 	var tile_map;
 	var level_tiles;
 	
-	/* These correspond to the block (orthographic) representation of the level.*/
+	/* These correspond to the block (isometric) representation of the level.*/
 	var block_map;
 	var level_blocks;
 	
@@ -27,7 +27,7 @@ function Level(level_data) {
 		}
 		
 		else {
-			// draw block (orthographic)
+			// draw block (isometric)
 			level_blocks_draw();
 		}
 	}
