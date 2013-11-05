@@ -9,7 +9,7 @@ function Level(level_data) {
 	var level_blocks;
 
 	/* Class attributes */
-	this.isDisplayingFlat = true;
+	this.isDisplayingFlat = false;
 	// Are we displaying flat?
 	this.level_data = level_data;
 
@@ -35,20 +35,14 @@ function Level(level_data) {
 	}
 	
 	function setup(level_data) {
-		var cell_width = jaws.TileMap.prototype.default_options.cell_size[0];
-		// 32
-		var cell_height = jaws.TileMap.prototype.default_options.cell_size[1];
-		// 32
+		var cell_width = jaws.TileMap.prototype.default_options.cell_size[0]; // 32
+		var cell_height = jaws.TileMap.prototype.default_options.cell_size[1]; // 32
 
-		var canvas_width = jaws.width;
-		// 768
-		var canvas_height = jaws.height;
-		// 576
+		var canvas_width = jaws.width; // 768
+		var canvas_height = jaws.height; // 576
 
-		var num_of_horiz_cells = canvas_width / cell_width;
-		// 24
-		var num_of_vert_cells = canvas_height / cell_height;
-		// 18
+		var num_of_horiz_cells = canvas_width / cell_width; // 24
+		var num_of_vert_cells = canvas_height / cell_height; // 18
 
 		/* Flat world setup */
 		tile_map = new jaws.TileMap({
@@ -67,8 +61,8 @@ function Level(level_data) {
 			cell_size : [cell_width, cell_height]
 		});
 
-		//level_blocks = setup_level_blocks(level_data, num_of_vert_cells, num_of_horiz_cells, cell_width, cell_height);
-		//block_map.push(level_blocks);
+		level_blocks = setup_level_blocks(level_data, num_of_vert_cells, num_of_horiz_cells, cell_width, cell_height);
+		block_map.push(level_blocks);
 
 		console.log("Level.js: setup complete");
 	}
@@ -78,7 +72,7 @@ function Level(level_data) {
 		for (var row_idx = 0; row_idx < max_rows; row_idx++) {
 			for (var col_idx = 0; col_idx < max_cols; col_idx++) {
 				var data = level_data[row_idx][col_idx];
-				var img_string = img_string_lookup(data,true); //its true, we're looking for tiles (as opposed to blocks)
+				var img_string = img_string_lookup(data,true); //it's true, we're looking for tiles (as opposed to blocks)
 				if (img_string != null) {
 					var tile = new jaws.Sprite({
 						image : img_string,
@@ -101,18 +95,25 @@ function Level(level_data) {
 		for (var row_idx = 0; row_idx < max_rows; row_idx++) {
 			for (var col_idx = 0; col_idx < max_cols; col_idx++) {
 				var data = transformed_level_data[row_idx][col_idx];
-				var img_string;
-				if (data != -1) {
-
+				var img_string = img_string_lookup(data,false); //it's false, we're not looking for tiles (we're looking for blocks)
+				if (img_string != null) {
+					var block = new jaws.Sprite({
+						image: img_string,
+						x : col_idx * 18,
+						y : (row_idx * tile_height) 
+					});
+					
+					lvl_blocks.push(block);	
 				}
 			}
 		}
+		return lvl_blocks;
 	}
 	
 
 	/**
 	 * Looks up the tile image that corresponds to the parameter level data
-	 * @param {Object} data the level tile
+	 * @param {Object} data the level tile data
 	 * @param {Boolean} whether or not we're looking up a tile (alternative is a block)
 	 * @return {String} the directory path of the tile image
 	 */
@@ -137,7 +138,7 @@ function Level(level_data) {
 				
 			}
 
-			if (data == 4) {//a gap tile
+			if (data == 4 && is_tile) {//a gap tile
 				img_string = "./assets/art/TileGap.png";
 			} else if (data == 3) {//a level 3 block
 				if (is_D_stair) {
@@ -171,6 +172,16 @@ function Level(level_data) {
 			}
 		}
 		return img_string;
+	}
+	
+	function calculate_level_height_offset(data, cell_height) {
+
+		if(data > 10) {
+			data = Math.floor( ( (data/10) % 1) * 10 );
+			//this returns the second digit of 'data'.	
+		}
+		
+		return (cell_height*data);
 	}
 }
 
