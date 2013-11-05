@@ -250,8 +250,8 @@ function Level(level_data) {
 					{
 						var block = new jaws.Sprite({
 							image : imgString,
-							x : grid_col_index * 18,
-							y : (grid_row_index * 18) + levelOffset
+							x : col_idx * 18,
+							y : (row_idx * 18) + levelOffset
 						});
 						
 						lvl_blocks.push(block)
