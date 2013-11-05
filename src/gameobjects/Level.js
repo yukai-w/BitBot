@@ -33,6 +33,7 @@ function Level(level_data) {
 	this.toggleDisplayType = function() {
 		this.isDisplayingFlat = !(this.isDisplayingFlat);
 	}
+	
 	function setup(level_data) {
 		var cell_width = jaws.TileMap.prototype.default_options.cell_size[0];
 		// 32
@@ -77,7 +78,7 @@ function Level(level_data) {
 		for (var row_idx = 0; row_idx < max_rows; row_idx++) {
 			for (var col_idx = 0; col_idx < max_cols; col_idx++) {
 				var data = level_data[row_idx][col_idx];
-				var img_string = tile_img_string_lookup(data);
+				var img_string = img_string_lookup(data,true); //its true, we're looking for tiles (as opposed to blocks)
 				if (img_string != null) {
 					var tile = new jaws.Sprite({
 						image : img_string,
@@ -99,22 +100,23 @@ function Level(level_data) {
 
 		for (var row_idx = 0; row_idx < max_rows; row_idx++) {
 			for (var col_idx = 0; col_idx < max_cols; col_idx++) {
-				var data = level_data[row_idx][col_idx];
-				var imgString;
+				var data = transformed_level_data[row_idx][col_idx];
+				var img_string;
 				if (data != -1) {
 
 				}
 			}
 		}
 	}
+	
 
 	/**
-	 * Looks up the tile (flat) image that corresponds to the parameter level
-	 * data
+	 * Looks up the tile image that corresponds to the parameter level data
 	 * @param {Object} data the level tile
+	 * @param {Boolean} whether or not we're looking up a tile (alternative is a block)
 	 * @return {String} the directory path of the tile image
 	 */
-	function tile_img_string_lookup(data) {
+	function img_string_lookup(data, is_tile) {
 
 		var img_string = null;
 		var is_D_stair = false;
@@ -122,9 +124,9 @@ function Level(level_data) {
 
 		if (data != -1) {
 			if (data >= 40) {//an end tile
-				img_string = "./assets/art/GoalTile.png";
+				img_string = is_tile ? "./assets/art/GoalTile.png" : "./assets/art/GoalBlock.png";
 			} else if (data >= 30) {//a start tile
-				img_string = "./assets/art/StartTile.png";
+				img_string = is_tile ? "./assets/art/StartTile.png": "./assets/art/StartBlock.png";
 			} else if (data >= 20) {//a down-pointing staircase tile
 				is_D_stair = true;
 				data = data - 20;
@@ -139,41 +141,38 @@ function Level(level_data) {
 				img_string = "./assets/art/TileGap.png";
 			} else if (data == 3) {//a level 3 block
 				if (is_D_stair) {
-					img_string = "./assets/art/Level3TileLadderD.png";
+					img_string = is_tile ? "./assets/art/Level3TileLadderD.png" : "./assets/art/LadderLeftBlock.png";
 				} else if (is_R_stair) {
-					img_string = "./assets/art/Level3TileLadderR.png";
+					img_string = is_tile ? "./assets/art/Level3TileLadderR.png" : "./assets/art/LadderRightBlock.png";
 				} else {
-					img_string = "./assets/art/Level3Tile.png";
+					img_string = is_tile ? "./assets/art/Level3Tile.png" : "./assets/art/Block.png";
 				}
 			} else if (data == 2) {//a level 2 block
 				if (is_D_stair) {
-					img_string = "./assets/art/Level2TileLadderD.png";
+					img_string = is_tile ? "./assets/art/Level2TileLadderD.png" : "./assets/art/LadderLeftBlock.png";
 				} else if (is_R_stair) {
-					img_string = "./assets/art/Level2TileLadderR.png";
+					img_string = is_tile ? "./assets/art/Level2TileLadderR.png" : "./assets/art/LadderRightBlock.png";
 				} else {
-					img_string = "./assets/art/Level2Tile.png";
+					img_string = is_tile ? "./assets/art/Level2Tile.png" : "./assets/art/Block.png";
 				}
 			} else if (data == 1) {//a level 1 block
 				if (is_D_stair) {
-					img_string = "./assets/art/Level1TileLadderD.png";
+					img_string = is_tile ? "./assets/art/Level1TileLadderD.png" : "./assets/art/LadderLeftBlock.png";
 				} else if (is_R_stair) {
-					img_string = "./assets/art/Level1TileLadderR.png";
+					img_string = is_tile ? "./assets/art/Level1TileLadderR.png" : "./assets/art/LadderRightBlock.png";
 				} else {
-					img_string = "./assets/art/Level1Tile.png";
+					img_string = is_tile ? "./assets/art/Level1Tile.png" : "./assets/art/Block.png";
 				}
 
 			} else if (data == 0) {//a level 0 block
-				img_string = "./assets/art/Level0Tile.png";
+				img_string = is_tile ? "./assets/art/Level0Tile.png" : "./assets/art/Block.png";
 			} else {
 								
 			}
 		}
 		return img_string;
 	}
-
-	function block_img_string_lookup(data) {
-
-	}
-
 }
+
+	
 
