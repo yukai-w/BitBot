@@ -53,9 +53,10 @@ function Level(level_data) {
 		});
 	
 		level_tiles = setup_level_tiles(level_data, num_of_vert_cells, num_of_horiz_cells, cell_width-1, cell_height-1);
+		tile_map.push(level_tiles);
 		// cell_width and cell_height are modified by -1 so that when drawn, the border lines overlap, as opposed to
 		// lying side by side (if they are side by side, they create a "bolded line" effect)
-		tile_map.push(level_tiles);
+		
 		
 		/* Block (orthographic) world setup */
 		block_map = new jaws.TileMap({
@@ -63,6 +64,8 @@ function Level(level_data) {
 			cell_size : [cell_width, cell_height]
 		});
 		
+		
+		setup_level_blocks(level_data, num_of_vert_cells, num_of_horiz_cells, cell_width, cell_height);
 		// level_blocks = setup_level_blocks(level_blocks, num_of_vert_cells, num_of_horiz_cells, cell_width, cell_height);
 		// block_map.push(level_blocks);
 		
@@ -77,11 +80,7 @@ function Level(level_data) {
 				var imgString;
 				if(data != -1) 
 				{
-					if(data >= 60) {//a staircase tile
-						//TODO: IMPLEMENT
-					}
-					
-					else if(data >= 50) {//a battery tile
+					if(data >= 50) {//a battery tile
 						//TODO: IMPLEMENT
 					}
 					
@@ -91,6 +90,14 @@ function Level(level_data) {
 					
 					else if(data >= 30) {//a start tile
 						imgString = "./assets/art/StartTile.png";
+					}
+					
+					else if(data >= 20) {//a down-pointing staircase tile
+						//TODO: IMPLEMENT
+					}
+					
+					else if(data >= 10) {//a right-pointing staircase tile
+						//TODO: IMPLEMENT
 					}
 					
 					else if(data == 4) {//a gap tile
@@ -133,7 +140,76 @@ function Level(level_data) {
 	}
 	
 	function setup_level_blocks(level_data, max_rows, max_cols, tile_width, tile_height) {
-		
+				
+		/**
+		 * For setting up the level blocks, I must iterate across the level_data antidiagonally
+		 * e.g. if the two dimensional array looks like:
+		 * 
+		 * { 1,  2,  3,  4
+		 * 	 5,  6,  7,  8,
+		 *   9, 10, 11, 12 }
+		 * 
+		 * Iteration should yield:  [1], [5, 2], [9, 6, 3], [10, 7, 4], [11, 8], [12]
+		 * Numbers belonging to one bracket, all belong to the same antidiagonal
+		 * Source: http://stackoverflow.com/questions/2112832/traverse-rectangular-matrix-in-diagonal-strips
+		 */
+
+		for(var antidiagonal = 0; antidiagonal < max_rows + max_cols - 1; antidiagonal++) {
+			
+			var offset_from_left = antidiagonal < max_rows ? 0 : antidiagonal - max_rows + 1;
+			/*
+			 * indicates how many items must be skipped before the first number should be printed
+			 * this number is zero for the first (max_rows) antidiagonals, and increased by 1 thereafter
+			 * 
+			 * e.g.
+			 * when iterating on the 3rd antidiagonal [10, 7, 4],
+			 * we must skip over one number from the left (the 9)
+			 * 
+			 * offset_from_left = 3 < 3 ? 0 : 3 - 3 + 1
+			 * offset_from_left = 1
+			 * 
+			 */
+			
+			var limit_from_top = antidiagonal < max_cols ? 0 : antidiagonal - max_cols + 1;
+			/*
+			 * indicates how far we should go in iterating on the antidiagonal, because no
+			 * more can be found on it.  this number is zero for the first (max_cols) antidiagonals,
+			 * and increased by 1 thereafter
+			 * 
+			 * e.g.
+			 * when iterating on the 4th antidiagonal [11, 8],
+			 * we must stop at the 8, instead of going on to the non-existent position of (0,5),
+			 * which would be adjacent to the 4 in the matrix (if it existed).
+			 * 
+			 * limit_from_top = 4 < 4 ? 0 : 4 - 4 + 1
+			 * limit_from_top = 1, -> this 1 causes the iter_index to stay at 1 or above
+			 * 
+			 * causing us to go from [2][3], to [1][4]
+			 * and then stopping at  [1][4] (instead of advancing to [0][5])
+			 */
+			
+			
+			// indicates how many items must be skipped at the end of the diagonal, because no more
+			// can be found on the antidiagonal
+			// this number is zero for the first (max_cols) antidiagonals, and increased by 1 thereafter
+			
+			for(var iter_index = antidiagonal - offset_from_left; iter_index >= limit_from_top; iter_index--) {
+				
+				
+				var row_idx = iter_index;
+				var col_idx = antidiagonal-iter_index;
+				
+				console.log("At position: ("+row_idx+","+col_idx+")");
+				
+				var data = level_data[row_idx][col_idx];
+				
+				 
+				
+				console.log(data);				
+			}
+			
+		}
+ 		
 	}
 
 }
