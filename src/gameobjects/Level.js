@@ -52,7 +52,9 @@ function Level(level_data) {
 			cell_size : [cell_width, cell_height]
 		});
 	
-		level_tiles = setup_level_tiles(level_data, num_of_vert_cells, num_of_horiz_cells, cell_width, cell_height);
+		level_tiles = setup_level_tiles(level_data, num_of_vert_cells, num_of_horiz_cells, cell_width-1, cell_height-1);
+		// cell_width and cell_height are modified by -1 so that when drawn, the border lines overlap, as opposed to
+		// lying side by side (if they are side by side, they create a "bolded line" effect)
 		tile_map.push(level_tiles);
 		
 		/* Block (orthographic) world setup */
