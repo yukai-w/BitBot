@@ -6,7 +6,7 @@
 function PlayState() {
 
 	var player;
-	var currentStage;
+	var current_stage;
 	var current_background;
 	var current_background_idx;
 	var do_background_anim;
@@ -36,8 +36,8 @@ function PlayState() {
 								
 
 		/* Level setup */
-		currentStage = new LevelStage()
-		currentStage.setup(player);
+		current_stage = new LevelStage()
+		current_stage.setup(player);
 
 	}
 
@@ -53,7 +53,7 @@ function PlayState() {
 			}, 200); //ms
 		}
 		
-		currentStage.update();
+		current_stage.update();
 
 	}
 
@@ -61,7 +61,7 @@ function PlayState() {
 
 		jaws.context.clearRect(0, 0, jaws.width, jaws.height);
 		current_background.draw();
-		currentStage.draw();
+		current_stage.draw();
 		
 
 	}
