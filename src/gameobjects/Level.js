@@ -61,7 +61,7 @@ function Level(level_data) {
 			cell_size : [cell_width, cell_height]
 		});
 
-		level_blocks = setup_level_blocks(level_data, num_of_vert_cells, num_of_horiz_cells, cell_width, cell_height);
+		level_blocks = setup_level_blocks(level_data, num_of_vert_cells, num_of_horiz_cells, 18, 18);
 		block_map.push(level_blocks);
 
 		console.log("Level.js: setup complete");
@@ -99,8 +99,8 @@ function Level(level_data) {
 				if (img_string != null) {
 					var block = new jaws.Sprite({
 						image: img_string,
-						x : col_idx * 18,
-						y : (row_idx * 18) + calculate_level_height_offset(data, 32)
+						x : col_idx * tile_width,
+						y : (row_idx * tile_height) + calculate_level_height_offset(data, 32)
 					});
 					
 					lvl_blocks.push(block);	

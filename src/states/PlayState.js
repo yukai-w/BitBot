@@ -60,7 +60,7 @@ function PlayState() {
 	this.draw = function() {
 
 		jaws.context.clearRect(0, 0, jaws.width, jaws.height);
-		current_background.draw();
+		//current_background.draw();
 		current_stage.draw();
 		
 
