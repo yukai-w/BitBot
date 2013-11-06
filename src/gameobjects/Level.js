@@ -38,10 +38,10 @@ function Level(level_data) {
 		var cell_width = jaws.TileMap.prototype.default_options.cell_size[0]; // 32
 		var cell_height = jaws.TileMap.prototype.default_options.cell_size[1]; // 32
 
-		var canvas_width = jaws.width; // 768
+		var canvas_width = jaws.width; // 576
 		var canvas_height = jaws.height; // 576
 
-		var num_of_horiz_cells = canvas_width / cell_width; // 24
+		var num_of_horiz_cells = canvas_width / cell_width; // 18
 		var num_of_vert_cells = canvas_height / cell_height; // 18
 
 		/* Flat world setup */
@@ -180,7 +180,7 @@ function Level(level_data) {
 			data = Math.floor( ( (data/10) % 1) * 10 );
 			//this returns the second digit of 'data'.	
 		}
-		
+
 		return (cell_height*data);
 	}
 }
