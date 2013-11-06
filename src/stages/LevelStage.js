@@ -37,7 +37,7 @@ function LevelStage() {
 	}
 
 	this.draw = function() {
-		jaws.context.clearRect(0, 0, jaws.width, jaws.height);
+		
 		active_level.draw();
 		player.draw();
 		// will call draw() on all items in the list

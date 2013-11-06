@@ -1,7 +1,14 @@
 
 function init() {
-	//Art
+	////Art
 	jaws.assets.add("./assets/art/person1.png");
+
+	//Background
+	jaws.assets.add("./assets/art/LevelBackground01.png");
+	jaws.assets.add("./assets/art/LevelBackground02.png");
+	jaws.assets.add("./assets/art/LevelBackground03.png");
+	jaws.assets.add("./assets/art/LevelBackground04.png");
+	
 
 	//Tiles
 	jaws.assets.add("./assets/art/Level0Tile.png");
