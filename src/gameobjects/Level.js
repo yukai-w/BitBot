@@ -188,12 +188,9 @@ function Level(level_data) {
 
 		//this returns the second digit of 'cell_offset'.
 		if(cell_offset >= 10) {
-			if(cell_offset == 43) {
-				console.log(Math.ceil( ( (43/10) % 1) * 10 ));
-			}
-			cell_offset = Math.ceil( ( (cell_offset/10) % 1) * 10 );
+			cell_offset = Math.round( ( (cell_offset/10) % 1) * 10 );
 		}
-
+		
 		return (cell_height*cell_offset);
 	}
 }
