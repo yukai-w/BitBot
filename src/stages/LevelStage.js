@@ -25,12 +25,14 @@ function LevelStage() {
 		});
 
 		// Prevent the browser from catching the following keys:
-		jaws.preventDefaultKeys(["up", "down", "left", "right", "space"]);
+		jaws.preventDefaultKeys(["2", "3", "up", "down", "left", "right", "space"]);
 	}
 
 	this.update = function() {
 		
+		active_level.update();
 		player.update();
+		
 
 		// delete items for which isOutsideCanvas(item) is true
 		fps.innerHTML = jaws.game_loop.fps;
