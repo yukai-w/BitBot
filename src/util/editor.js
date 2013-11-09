@@ -11,7 +11,7 @@
 
 
 $(document).ready(function() {
-	Editor.init();
+	Editor.init(18, 18);
 }); 
 
 /**
