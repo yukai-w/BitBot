@@ -17,6 +17,14 @@ function Level(level_data) {
 	setup(level_data);
 
 	this.update = function() {
+		
+		if(jaws.pressed("2")) {
+			this.isDisplayingFlat = true;
+		}
+		
+		if(jaws.pressed("3")) {
+			this.isDisplayingFlat = false;
+		}
 
 	}
 
@@ -61,7 +69,7 @@ function Level(level_data) {
 			cell_size : [cell_width, cell_height]
 		});
 
-		level_blocks = setup_level_blocks(level_data, num_of_vert_cells, num_of_horiz_cells, 18, 18);
+		level_blocks = setup_level_blocks(level_data, num_of_vert_cells, num_of_horiz_cells, 16, 16);
 		block_map.push(level_blocks);
 
 		console.log("Level.js: setup complete");
@@ -90,22 +98,32 @@ function Level(level_data) {
 	function setup_level_blocks(level_data, max_rows, max_cols, tile_width, tile_height) {
 
 		var lvl_blocks = new jaws.SpriteList();
-		transformed_level_data = antidiagonal_transform(level_data);
+		var x_pos = jaws.width*4.5/10;
+		var y_pos = 0;
+		var x_offset = tile_width;
+		var y_offset = tile_height;
 
 		for (var row_idx = 0; row_idx < max_rows; row_idx++) {
 			for (var col_idx = 0; col_idx < max_cols; col_idx++) {
-				var data = transformed_level_data[row_idx][col_idx];
+				var data = level_data[row_idx][col_idx];
 				var img_string = img_string_lookup(data,false); //it's false, we're not looking for tiles (we're looking for blocks)
 				if (img_string != null) {
+					
 					var block = new jaws.Sprite({
 						image: img_string,
-						x : col_idx * tile_width,
-						y : (row_idx * tile_height) + calculate_level_height_offset(data, 32)
+						x : x_pos,
+						y : y_pos + calculate_level_height_offset(data, 16)
 					});
 					
 					lvl_blocks.push(block);	
 				}
+				
+				x_pos = x_pos + x_offset;
+				y_pos = y_pos + y_offset;				
 			}
+			
+			x_pos = x_pos - ((max_cols-1) * x_offset) - (2*x_offset);
+			y_pos = y_pos - ((max_cols-1) * y_offset);
 		}
 		return lvl_blocks;
 	}
@@ -174,14 +192,14 @@ function Level(level_data) {
 		return img_string;
 	}
 	
-	function calculate_level_height_offset(data, cell_height) {
+	function calculate_level_height_offset(cell_offset, cell_height) {
 
-		if(data > 10) {
-			data = Math.floor( ( (data/10) % 1) * 10 );
-			//this returns the second digit of 'data'.	
+		//this returns the second digit of 'cell_offset'.
+		if(cell_offset >= 10) {
+			cell_offset = Math.round( ( (cell_offset/10) % 1) * 10 );
 		}
-
-		return (cell_height*data);
+		
+		return (cell_height*cell_offset);
 	}
 }
 

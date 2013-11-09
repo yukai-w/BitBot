@@ -8,6 +8,8 @@ function init() {
 	jaws.assets.add("./assets/art/LevelBackground02.png");
 	jaws.assets.add("./assets/art/LevelBackground03.png");
 	jaws.assets.add("./assets/art/LevelBackground04.png");
+	jaws.assets.add("./assets/art/LevelBackground05.png");
+	jaws.assets.add("./assets/art/LevelBackground06.png");
 	
 
 	//Tiles

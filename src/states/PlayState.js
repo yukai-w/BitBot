@@ -17,7 +17,7 @@ function PlayState() {
 	this.setup = function() {
 
 		/* Player setup */
-		var start_x_position = jaws.width / 2;
+		var start_x_position = jaws.width / 4;
 		player = new Person(true, start_x_position, "./assets/art/person1.png");
 
 		/* Background setup */
@@ -28,8 +28,10 @@ function PlayState() {
 		var bg02 = new jaws.Sprite({x : bg_x_pos, y : bg_y_pos, anchor : "center", image : "./assets/art/LevelBackground02.png"});
 		var bg03 = new jaws.Sprite({x : bg_x_pos, y : bg_y_pos, anchor : "center", image : "./assets/art/LevelBackground03.png"});
 		var bg04 = new jaws.Sprite({x : bg_x_pos, y : bg_y_pos, anchor : "center", image : "./assets/art/LevelBackground04.png"});
+		var bg05 = new jaws.Sprite({x : bg_x_pos, y : bg_y_pos, anchor : "center", image : "./assets/art/LevelBackground05.png"});
+		var bg06 = new jaws.Sprite({x : bg_x_pos, y : bg_y_pos, anchor : "center", image : "./assets/art/LevelBackground06.png"});
 		
-		background_sprites = [bg01, bg02, bg03, bg04];
+		background_sprites = [bg01, bg02, bg03, bg04, bg05, bg06];
 		current_background_idx = 0;
 		current_background = background_sprites[current_background_idx];
 		do_background_anim = true;
@@ -50,7 +52,7 @@ function PlayState() {
 			current_background = background_sprites[current_background_idx];
 			setTimeout(function(){
 				do_background_anim = true;
-			}, 200); //ms
+			}, 50); //ms
 		}
 		
 		current_stage.update();
@@ -60,7 +62,7 @@ function PlayState() {
 	this.draw = function() {
 
 		jaws.context.clearRect(0, 0, jaws.width, jaws.height);
-		//current_background.draw();
+		current_background.draw();
 		current_stage.draw();
 		
 
