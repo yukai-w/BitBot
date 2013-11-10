@@ -17,6 +17,7 @@ $(document).ready(function() {
 /**
  * Using JSON-like class definition since
  * Editor is a singleton
+ * @author Ian Coleman
  */
 var Editor = {
 		
@@ -30,6 +31,7 @@ var Editor = {
 	
 	/**
 	 * Sets up the Editor
+	 * @author Ian Coleman
 	 * 
 	 */
 	init: function(widthTileCount, heightTileCount) {
@@ -42,6 +44,7 @@ var Editor = {
 	
 	/**
 	 * Sets all tiles to value -1 (empty tile)
+	 * @author Ian Coleman
 	 */
 	clearGrid: function() {
 		for(var i=0; i < this.height; i++) {
@@ -50,10 +53,12 @@ var Editor = {
 				this.grid[i][j] = -1;
 			}
 		}
+		console.log(this.grid);
 	},
 	
 	/**
 	 * Draws flat representation of grid
+	 * @author Ian Coleman
 	 */
 	draw: function() {
 		var width = this.tileWidthPx;
@@ -62,6 +67,8 @@ var Editor = {
 		$.each(this.grid, function(rowIndex, row) {						
 			$.each(row, function(index, value) {
 				var editorTile = $("<div class='editor-tile'></div>");
+				editorTile.attr('x', index);
+				editorTile.attr('y', rowIndex);				
 				var leftOffset = index * width;
 				var topOffset = rowIndex * height;
 				editorTile.css({left: leftOffset+"px", top: topOffset+"px"});
@@ -72,7 +79,8 @@ var Editor = {
 	},
 	
 	/**
-	 * Attaches events to elements
+	 * Attaches mouse events to elements
+	 * @author Ian Coleman
 	 */
 	attachBehaviors: function() {
 		var gridContainer = $("#editor-grid-container");
@@ -103,6 +111,6 @@ var Editor = {
 				$(this).addClass("editor-tile-level1");
 			}
 		});
-	}	
+	}
 };
 
