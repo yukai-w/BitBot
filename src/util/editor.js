@@ -36,6 +36,7 @@ var Editor = {
 		this.height = heightTileCount; 
 		this.clearGrid();
 		this.draw();
+		this.attachBehaviors();
 	},
 	
 	/**
@@ -50,10 +51,13 @@ var Editor = {
 		}
 	},
 	
+	/**
+	 * Draws flat representation of grid
+	 */
 	draw: function() {
 		var width = this.tileWidthPx;
 		var height = this.tileHeightPx;
-		var gridContainer = $("<div class='editor-grid-container'></div>");
+		var gridContainer = $("<div id='editor-grid-container'></div>");
 		$.each(this.grid, function(rowIndex, row) {						
 			$.each(row, function(index, value) {
 				var editorTile = $("<div class='editor-tile'></div>");
@@ -63,20 +67,23 @@ var Editor = {
 				gridContainer.append(editorTile);
 			});
 			$("body").append(gridContainer);
-		});
-		
-		// attach click behavior to tiles in grid
-//		gridContainer.on('click', '.editor-tile', function() {
-////			console.log($(this));
-//			$(this).css({border: "solid 1px #00ff00"});
-//		});
-		
-		gridContainer.find('.editor-tile').on('mouseover', function() {
-//			console.log("mouseover");
-			$(this).css({border: "solid 1px #00ff00"});
-		});
+		});		
 	},
 	
-	
+	/**
+	 * Attaches events to elements
+	 */
+	attachBehaviors: function() {
+		var gridContainer = $("#editor-grid-container");
+		
+		// attach click behavior to tiles in grid
+		gridContainer.on('click', '.editor-tile', function() {
+			$(this).css({border: "solid 1px #00ff00"});
+		});
+		
+//		gridContainer.find('.editor-tile').on('mouseover', function() {
+//			$(this).css({border: "solid 1px #00ff00"});
+//		});
+	}	
 };
 
