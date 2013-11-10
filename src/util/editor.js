@@ -27,6 +27,7 @@ var Editor = {
 	tileHeightPx: 40,
 	grid: [],
 	mouseDown: false,
+	printoutContainer: null,
 	
 	// tile type enum
 	tileTypes:  {
@@ -45,6 +46,8 @@ var Editor = {
 		this.clearGrid();
 		this.draw();
 		this.attachBehaviors();
+		this.printoutContainer = $("<div id='printout-container'></div>");
+		$("body").append(this.printoutContainer);
 	},
 	
 	/**
@@ -125,6 +128,7 @@ var Editor = {
 	
 	/**
 	 * Sets styles,attributes for @tile of corresponding to @type
+	 * @author Ian Coleman
 	 * @param object tile
 	 * @param int type
 	 */
@@ -144,6 +148,27 @@ var Editor = {
 	 */
 	updateGrid: function(x, y, value) {
 		this.grid[y][x] = value;
+	},
+	
+	/**
+	 * Handler for button that outputs grid definition
+	 * @author Ian Coleman
+	 */
+	submitOutputGrid: function(button) {
+		console.log("grid output");
+		this.outputGrid();
+	},
+	
+	/**
+	 * @author Ian Coleman
+	 */
+	outputGrid: function() {
+		var editor = this;
+		
+		
+		$.each(this.grid, function(index, row ) {
+			editor.printoutContainer.append("<p>" + row.toString() + "<p>");			
+		});
 	}
 };
 
