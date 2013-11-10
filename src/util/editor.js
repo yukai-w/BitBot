@@ -39,13 +39,13 @@ var Editor = {
 	},
 	
 	/**
-	 * Sets all tiles to value 0 (empty tile)
+	 * Sets all tiles to value -1 (empty tile)
 	 */
 	clearGrid: function() {
 		for(var i=0; i < this.height; i++) {
 			this.grid[i] = new Array(this.width);
 			for(var j=0; j < this.width; j++) {
-				this.grid[i][j] = 0;
+				this.grid[i][j] = -1;
 			}
 		}
 	},
@@ -53,20 +53,23 @@ var Editor = {
 	draw: function() {
 		var width = this.tileWidthPx;
 		var height = this.tileHeightPx;
-		$.each(this.grid, function(rowIndex, row) {
-			var gridContainer = $("<div class='editor-grid-container'></div>");			
+		var gridContainer = $("<div class='editor-grid-container'></div>");
+		$.each(this.grid, function(rowIndex, row) {						
 			$.each(row, function(index, value) {
 				var editorTile = $("<div class='editor-tile'></div>");
-//				console.log(index);
 				var leftOffset = index * width;
 				var topOffset = rowIndex * height;
-				console.log(leftOffset+"px");
 				editorTile.css({left: leftOffset+"px", top: topOffset+"px"});
-//				editorTile.css({left: "20px"});
 				gridContainer.append(editorTile);
 			});
 			$("body").append(gridContainer);
-		})
+		});
+		
+		// attach click behavior to tiles in grid
+		gridContainer.on('click', '.editor-tile', function() {
+//			console.log($(this));
+			$(this).css({border: "solid 1px #00ff00"});
+		});
 	},
 	
 	
