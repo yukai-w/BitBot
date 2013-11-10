@@ -91,8 +91,8 @@ var Editor = {
 //			$(this).css({border: "solid 1px #00ff00"});
 //		});
 		
-		gridContainer.find('.editor-tile').on('mouseover', function() {
-			if(editor.mouseDown) {
+		gridContainer.find('.editor-tile').on('mouseover', function(event) {
+			if(editor.mouseDown && event.which == 1) {
 //				$(this).css({border: "solid 1px #00ff00"});
 				$(this).addClass("editor-tile-level1");
 			}
