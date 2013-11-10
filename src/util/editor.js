@@ -25,6 +25,7 @@ var Editor = {
 	height: 0, // counted in number of tiles
 	tileHeightPx: 40,
 	grid: [],
+	mouseDown: false,
 
 	
 	/**
@@ -75,15 +76,26 @@ var Editor = {
 	 */
 	attachBehaviors: function() {
 		var gridContainer = $("#editor-grid-container");
+		var editor = this;
 		
-		// attach click behavior to tiles in grid
-		gridContainer.on('click', '.editor-tile', function() {
-			$(this).css({border: "solid 1px #00ff00"});
+		$("body").on("mousedown", null, null, function(event) {
+			editor.mouseDown = true;			
 		});
 		
-//		gridContainer.find('.editor-tile').on('mouseover', function() {
+		$("body").on("mouseup", null, null, function(event) {
+			editor.mouseDown = false;			
+		});
+		
+		// attach click behavior to tiles in grid
+//		gridContainer.on('click', '.editor-tile', function() {
 //			$(this).css({border: "solid 1px #00ff00"});
 //		});
+		
+		gridContainer.find('.editor-tile').on('mouseover', function() {
+			if(editor.mouseDown) {
+				$(this).css({border: "solid 1px #00ff00"});
+			}
+		});
 	}	
 };
 
