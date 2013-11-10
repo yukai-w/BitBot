@@ -1,5 +1,5 @@
 function Level(level_data) {
-
+	
 	/* These correspond to the tile (flat) representation of the level.*/
 	var tile_map;
 	var level_tiles;
@@ -146,59 +146,18 @@ function Level(level_data) {
 	 * @return {String} the directory path of the tile image
 	 */
 	function img_string_lookup(data, is_tile) {
-
+		
 		var img_string = null;
-		var is_D_stair = false;
-		var is_R_stair = false;
-
-		if (data != -1) {
-			if (data >= 40) {//an end tile
-				img_string = is_tile ? "./assets/art/GoalTile.png" : "./assets/art/GoalBlock.png";
-			} else if (data >= 30) {//a start tile
-				img_string = is_tile ? "./assets/art/StartTile.png": "./assets/art/StartBlock.png";
-			} else if (data >= 20) {//a down-pointing staircase tile
-				is_D_stair = true;
-				data = data - 20;
-			} else if (data >= 10) {//a right-pointing staircase tile
-				is_R_stair = true;
-				data = data - 10;
+		
+		if(data != -1) {
+			if(is_tile) {
+				img_string = Level.image_map[data].tile;
 			} else {
-				
-			}
-
-			if (data == 4 && is_tile) {//a gap tile
-				img_string = "./assets/art/TileGap.png";
-			} else if (data == 3) {//a level 3 block
-				if (is_D_stair) {
-					img_string = is_tile ? "./assets/art/Level3TileLadderD.png" : "./assets/art/LadderLeftBlock.png";
-				} else if (is_R_stair) {
-					img_string = is_tile ? "./assets/art/Level3TileLadderR.png" : "./assets/art/LadderRightBlock.png";
-				} else {
-					img_string = is_tile ? "./assets/art/Level3Tile.png" : "./assets/art/Block.png";
-				}
-			} else if (data == 2) {//a level 2 block
-				if (is_D_stair) {
-					img_string = is_tile ? "./assets/art/Level2TileLadderD.png" : "./assets/art/LadderLeftBlock.png";
-				} else if (is_R_stair) {
-					img_string = is_tile ? "./assets/art/Level2TileLadderR.png" : "./assets/art/LadderRightBlock.png";
-				} else {
-					img_string = is_tile ? "./assets/art/Level2Tile.png" : "./assets/art/Block.png";
-				}
-			} else if (data == 1) {//a level 1 block
-				if (is_D_stair) {
-					img_string = is_tile ? "./assets/art/Level1TileLadderD.png" : "./assets/art/LadderLeftBlock.png";
-				} else if (is_R_stair) {
-					img_string = is_tile ? "./assets/art/Level1TileLadderR.png" : "./assets/art/LadderRightBlock.png";
-				} else {
-					img_string = is_tile ? "./assets/art/Level1Tile.png" : "./assets/art/Block.png";
-				}
-
-			} else if (data == 0) {//a level 0 block
-				img_string = is_tile ? "./assets/art/Level0Tile.png" : "./assets/art/Block.png";
-			} else {
-								
-			}
+				img_string = Level.image_map[data].block;
+			}			
 		}
+		
+		
 		return img_string;
 	}	
 	
@@ -212,8 +171,44 @@ function Level(level_data) {
 		return (cell_entry*cell_height);
 	}
 	
-	
 }
+
+Level.image_map = {
+	0 : {
+		tile : "./assets/art/Level0Tile.png",
+		block : "./assets/art/Block.png"
+	},
+
+	1 : {
+		tile : "./assets/art/Level1Tile.png",
+		block : "./assets/art/Block.png"
+	},
+
+	2 : {
+		tile : "./assets/art/Level2Tile.png",
+		block : "./assets/art/Block.png"
+	},
+	
+	3 : {
+		tile : "./assets/art/Level3Tile.png",
+		block : "./assets/art/Block.png"
+	},
+	
+	4 : {
+		tile : "./assets/art/TileGap.png",
+	},
+	
+	30 : {
+		tile : "./assets/art/StartTile.png",
+		block : "./assets/art/StartBlock.png"
+	},
+	
+	40 : {
+		tile : "./assets/art/GoalTile.png",
+		block : "./assets/art/GoalBlock.png"
+	}
+};
+
 
 	
 
