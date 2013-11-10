@@ -38,7 +38,7 @@ function PlayState() {
 								
 
 		/* Level setup */
-		current_stage = new LevelStage()
+		current_stage = new LevelStage();
 		current_stage.setup(player);
 
 	}
