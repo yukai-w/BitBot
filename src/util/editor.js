@@ -89,9 +89,10 @@ var Editor = {
 		});
 		
 		// attach click behavior to tiles in grid
-//		gridContainer.on('click', '.editor-tile', function() {
-//			$(this).css({border: "solid 1px #00ff00"});
-//		});
+		gridContainer.on('mousedown', '.editor-tile', function(event) {
+			if(event.which == 1)
+				$(this).addClass("editor-tile-level1");
+		});
 		
 		gridContainer.find('.editor-tile').on('mouseover', function(event) {
 			if(editor.mouseDown && event.which == 1) {
