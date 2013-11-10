@@ -132,7 +132,7 @@ var Editor = {
 	},
 	
 	/**
-	 * 
+	 * Sets value of grid at index <x,y>
 	 */
 	updateGrid: function(x, y, value) {
 		this.grid[x][y] = value;
