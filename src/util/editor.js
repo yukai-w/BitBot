@@ -27,8 +27,12 @@ var Editor = {
 	tileHeightPx: 40,
 	grid: [],
 	mouseDown: false,
-
 	
+	// tile type enum
+	tileTypes:  {
+		LEVEL1: 1
+	},
+
 	/**
 	 * Sets up the Editor
 	 * @author Ian Coleman
@@ -100,17 +104,38 @@ var Editor = {
 		
 		// attach mousedown behavior to tiles in grid
 		gridContainer.on('mousedown', '.editor-tile', function(event) {
-			if(event.which == 1)
-				$(this).addClass("editor-tile-level1");
+			if(event.which == 1) {
+				editor.setTileType($(this), editor.tileTypes.LEVEL1);
+//				$(this).addClass("editor-tile-level1");
+			}				
 		});
 		
 		// attach mouseover behavior to tiles in grid
 		gridContainer.find('.editor-tile').on('mouseover', function(event) {
 			if(editor.mouseDown && event.which == 1) {
-				$(this).attr("level", "1");
-				$(this).addClass("editor-tile-level1");
+				editor.setTileType($(this), editor.tileTypes.LEVEL1);
+//				$(this).attr("level", "1");
+//				$(this).addClass("editor-tile-level1");
 			}
 		});
+	},
+	
+	setTileType: function(tile, type) {
+		switch(type) {
+		case this.tileTypes.LEVEL1:
+			tile.attr("level", "1");
+			tile.addClass("editor-tile-level1");
+			break;
+		default:
+			break;
+		}
+	},
+	
+	/**
+	 * 
+	 */
+	updateGrid: function(x, y, value) {
+		this.grid[x][y] = value;
 	}
 };
 
