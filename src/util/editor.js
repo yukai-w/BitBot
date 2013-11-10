@@ -106,7 +106,9 @@ var Editor = {
 		gridContainer.on('mousedown', '.editor-tile', function(event) {
 			if(event.which == 1) {
 				editor.setTileType($(this), editor.tileTypes.LEVEL1);
-//				$(this).addClass("editor-tile-level1");
+				var rowIndex = parseInt($(this).attr('y'));
+				var columnIndex = parseInt($(this).attr('x'));
+				editor.updateGrid(columnIndex, rowIndex, "01");
 			}				
 		});
 		
@@ -114,8 +116,9 @@ var Editor = {
 		gridContainer.find('.editor-tile').on('mouseover', function(event) {
 			if(editor.mouseDown && event.which == 1) {
 				editor.setTileType($(this), editor.tileTypes.LEVEL1);
-//				$(this).attr("level", "1");
-//				$(this).addClass("editor-tile-level1");
+				var rowIndex = parseInt($(this).attr('y'));
+				var columnIndex = parseInt($(this).attr('x'));
+				editor.updateGrid(columnIndex, rowIndex, "01");
 			}
 		});
 	},
@@ -140,7 +143,7 @@ var Editor = {
 	 * Sets value of grid at index <x,y>
 	 */
 	updateGrid: function(x, y, value) {
-		this.grid[x][y] = value;
+		this.grid[y][x] = value;
 	}
 };
 
