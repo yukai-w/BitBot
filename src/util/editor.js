@@ -79,11 +79,13 @@ var Editor = {
 		var editor = this;
 		
 		$("body").on("mousedown", null, null, function(event) {
-			editor.mouseDown = true;			
+			if(event.which == 1)
+				editor.mouseDown = true;			
 		});
 		
 		$("body").on("mouseup", null, null, function(event) {
-			editor.mouseDown = false;			
+			if(event.which == 1)
+				editor.mouseDown = false;			
 		});
 		
 		// attach click behavior to tiles in grid
