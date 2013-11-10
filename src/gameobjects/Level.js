@@ -7,11 +7,19 @@ function Level(level_data) {
 	/* These correspond to the block (isometric) representation of the level.*/
 	var block_map;
 	var level_blocks;
-
+	
 	/* Class attributes */
-	this.isDisplayingFlat = false;
-	// Are we displaying flat?
-	this.level_data = level_data;
+	this.isDisplayingFlat = false; // Are we displaying flat?
+	this.levelData = level_data;
+	this.cellHeight = 0;
+	this.cellWidth  = 0;
+	this.blockHeight = 0;
+	this.blockWidth  = 0;
+	this.startTileCoordinates  = {x : 0, y : 0};
+	this.goalTileCoordinates   = {x : 0, y : 0};
+	this.startBlockCoordinates = {x : 0, y : 0};
+	this.goalBlockCoordinates  = {x : 0, y : 0};
+		
 
 	/* Class initialization */
 	setup(level_data);
@@ -43,33 +51,36 @@ function Level(level_data) {
 	}
 	
 	function setup(level_data) {
-		var cell_width = jaws.TileMap.prototype.default_options.cell_size[0]; // 32
-		var cell_height = jaws.TileMap.prototype.default_options.cell_size[1]; // 32
+		this.cellWidth = jaws.TileMap.prototype.default_options.cell_size[0]; // 32
+		this.cellHeight = jaws.TileMap.prototype.default_options.cell_size[1]; // 32
 
 		var canvas_width = jaws.width; // 576
 		var canvas_height = jaws.height; // 576
 
-		var num_of_horiz_cells = canvas_width / cell_width; // 18
-		var num_of_vert_cells = canvas_height / cell_height; // 18
-
+		var num_of_horiz_cells = canvas_width / this.cellWidth; // 18
+		var num_of_vert_cells = canvas_height / this.cellHeight; // 18
+			
 		/* Flat world setup */
 		tile_map = new jaws.TileMap({
 			size : [num_of_horiz_cells, num_of_vert_cells],
-			cell_size : [cell_width, cell_height]
+			cell_size : [this.cellWidth, this.cellHeight]
 		});
 
-		level_tiles = setup_level_tiles(level_data, num_of_vert_cells, num_of_horiz_cells, cell_width - 1, cell_height - 1);
+		level_tiles = setup_level_tiles(level_data, num_of_vert_cells, num_of_horiz_cells, this.cellWidth - 1, this.cellHeight - 1);
 		tile_map.push(level_tiles);
-		// cell_width and cell_height are modified by -1 so that when drawn, the border lines overlap, as opposed to
+		// this.cellWidth and this.cellHeight are modified by -1 so that when drawn, the border lines overlap, as opposed to
 		// lying side by side (if they are side by side, they create a "bolded line" effect)
 
 		/* Block (orthographic) world setup */
 		block_map = new jaws.TileMap({
 			size : [num_of_horiz_cells, num_of_vert_cells],
-			cell_size : [cell_width, cell_height]
+			cell_size : [this.cellWidth, this.cellHeight]
 		});
+		
+		this.blockWidth  = this.cellWidth  / 2;
+		this.blockHeight = this.cellHeight / 2;
 
-		level_blocks = setup_level_blocks(level_data, num_of_vert_cells, num_of_horiz_cells, 16, 16);
+		level_blocks = setup_level_blocks(level_data, num_of_vert_cells, num_of_horiz_cells, this.blockWidth, this.blockHeight);
 		block_map.push(level_blocks);
 
 		console.log("Level.js: setup complete");
@@ -112,7 +123,7 @@ function Level(level_data) {
 					var block = new jaws.Sprite({
 						image: img_string,
 						x : x_pos,
-						y : y_pos + calculate_level_height_offset(data, 16)
+						y : y_pos + calculate_level_height_offset(data, tile_height)
 					});
 					
 					lvl_blocks.push(block);	
@@ -126,8 +137,7 @@ function Level(level_data) {
 			y_pos = y_pos - ((max_cols-1) * y_offset);
 		}
 		return lvl_blocks;
-	}
-	
+	}	
 
 	/**
 	 * Looks up the tile image that corresponds to the parameter level data
@@ -190,17 +200,19 @@ function Level(level_data) {
 			}
 		}
 		return img_string;
-	}
+	}	
 	
-	function calculate_level_height_offset(cell_offset, cell_height) {
+	function calculate_level_height_offset(cell_entry, cell_height) {
 
 		//this returns the second digit of 'cell_offset'.
-		if(cell_offset >= 10) {
-			cell_offset = Math.round( ( (cell_offset/10) % 1) * 10 );
+		if(cell_entry >= 10) {
+			cell_entry = Math.round( ( (cell_entry/10) % 1) * 10 );
 		}
 		
-		return (cell_height*cell_offset);
+		return (cell_entry*cell_height);
 	}
+	
+	
 }
 
 	
