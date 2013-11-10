@@ -14,12 +14,7 @@ function Level(level_data) {
 	this.cellHeight = 0;
 	this.cellWidth  = 0;
 	this.blockHeight = 0;
-	this.blockWidth  = 0;
-	this.startTileCoordinates  = {x : 0, y : 0};
-	this.goalTileCoordinates   = {x : 0, y : 0};
-	this.startBlockCoordinates = {x : 0, y : 0};
-	this.goalBlockCoordinates  = {x : 0, y : 0};
-		
+	this.blockWidth  = 0;	
 
 	/* Class initialization */
 	setup(level_data);
@@ -122,7 +117,7 @@ function Level(level_data) {
 					var block = new jaws.Sprite({
 						image: img_string,
 						x : x_pos,
-						y : y_pos + calculate_level_height_offset(data, tile_height)
+						y : y_pos - calculate_level_height_offset(data, tile_height)
 					});
 					
 					lvl_blocks.push(block);	
@@ -139,56 +134,43 @@ function Level(level_data) {
 	}	
 
 	function calculate_level_height_offset(cell_entry, cell_height) {
-
-		//this returns the second digit of 'cell_offset'.
-		if(cell_entry >= 10) {
-			cell_entry = Math.round( ( (cell_entry/10) % 1) * 10 );
-		}
-		
-		return (cell_entry*cell_height);
+		var offsetUnits = Level.image_map[cell_entry].offset;
+		return offsetUnits * cell_height;
 	}
-	
 }
 
 Level.image_map = {
-	'-1' : {
+	0 : {
 		tile : undefined,
-		block : undefined
+		block : undefined,
+		offset : undefined
 	},
 	
-	0 : {
-		tile : "./assets/art/Level0Tile.png",
-		block : "./assets/art/Block.png"
-	},
-
 	1 : {
-		tile : "./assets/art/Level1Tile.png",
-		block : "./assets/art/Block.png"
-	},
-
-	2 : {
-		tile : "./assets/art/Level2Tile.png",
-		block : "./assets/art/Block.png"
+		tile : "./assets/art/Tile.png",
+		block : "./assets/art/Block.png",
+		offset : 0
 	},
 	
 	3 : {
-		tile : "./assets/art/Level3Tile.png",
-		block : "./assets/art/Block.png"
+		tile : "./assets/art/StartTile.png",
+		block : "./assets/art/StartBlock.png",
+		offset : 0
 	},
 	
 	4 : {
-		tile : "./assets/art/TileGap.png",
-	},
-	
-	30 : {
-		tile : "./assets/art/StartTile.png",
-		block : "./assets/art/StartBlock.png"
-	},
-	
-	40 : {
 		tile : "./assets/art/GoalTile.png",
-		block : "./assets/art/GoalBlock.png"
+		block : "./assets/art/GoalBlock.png",
+		offset : 0
+	},
+	
+	8 : {
+		tile : "./assets/art/TileGap.png",
+		block : "./assets/art/Block.png",
+		offset : 1 
+		
 	}
+
 };
 
 
