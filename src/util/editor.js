@@ -78,25 +78,28 @@ var Editor = {
 		var gridContainer = $("#editor-grid-container");
 		var editor = this;
 		
+		// set mouseDown
 		$("body").on("mousedown", null, null, function(event) {
 			if(event.which == 1)
 				editor.mouseDown = true;			
 		});
 		
+		// clear mouseDown
 		$("body").on("mouseup", null, null, function(event) {
 			if(event.which == 1)
 				editor.mouseDown = false;			
 		});
 		
-		// attach click behavior to tiles in grid
+		// attach mousedown behavior to tiles in grid
 		gridContainer.on('mousedown', '.editor-tile', function(event) {
 			if(event.which == 1)
 				$(this).addClass("editor-tile-level1");
 		});
 		
+		// attach mouseover behavior to tiles in grid
 		gridContainer.find('.editor-tile').on('mouseover', function(event) {
 			if(editor.mouseDown && event.which == 1) {
-//				$(this).css({border: "solid 1px #00ff00"});
+				$(this).attr("level", "1");
 				$(this).addClass("editor-tile-level1");
 			}
 		});
