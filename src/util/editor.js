@@ -36,7 +36,8 @@ var Editor = {
 	/**
 	 * Sets up the Editor
 	 * @author Ian Coleman
-	 * 
+	 * @param int widthTileCount -- number of tiles across
+	 * @param int heightTileCount -- number of tiles down
 	 */
 	init: function(widthTileCount, heightTileCount) {
 		this.width = widthTileCount;
@@ -57,7 +58,6 @@ var Editor = {
 				this.grid[i][j] = -1;
 			}
 		}
-		console.log(this.grid);
 	},
 	
 	/**
@@ -120,6 +120,11 @@ var Editor = {
 		});
 	},
 	
+	/**
+	 * Sets styles,attributes for @tile of corresponding to @type
+	 * @param object tile
+	 * @param int type
+	 */
 	setTileType: function(tile, type) {
 		switch(type) {
 		case this.tileTypes.LEVEL1:
