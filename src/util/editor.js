@@ -66,8 +66,13 @@ var Editor = {
 		});
 		
 		// attach click behavior to tiles in grid
-		gridContainer.on('click', '.editor-tile', function() {
-//			console.log($(this));
+//		gridContainer.on('click', '.editor-tile', function() {
+////			console.log($(this));
+//			$(this).css({border: "solid 1px #00ff00"});
+//		});
+		
+		gridContainer.find('.editor-tile').on('mouseover', function() {
+//			console.log("mouseover");
 			$(this).css({border: "solid 1px #00ff00"});
 		});
 	},
