@@ -91,8 +91,8 @@ function Level(level_data) {
 		for (var row_idx = 0; row_idx < max_rows; row_idx++) {
 			for (var col_idx = 0; col_idx < max_cols; col_idx++) {
 				var data = level_data[row_idx][col_idx];
-				var img_string = img_string_lookup(data,true); //it's true, we're looking for tiles (as opposed to blocks)
-				if (img_string != null) {
+				var img_string = Level.image_map[data].tile;
+				if (img_string != undefined) {
 					var tile = new jaws.Sprite({
 						image : img_string,
 						x : col_idx * tile_width,
@@ -117,9 +117,8 @@ function Level(level_data) {
 		for (var row_idx = 0; row_idx < max_rows; row_idx++) {
 			for (var col_idx = 0; col_idx < max_cols; col_idx++) {
 				var data = level_data[row_idx][col_idx];
-				var img_string = img_string_lookup(data,false); //it's false, we're not looking for tiles (we're looking for blocks)
-				if (img_string != null) {
-					
+				var img_string = Level.image_map[data].block;
+				if (img_string != undefined) {
 					var block = new jaws.Sprite({
 						image: img_string,
 						x : x_pos,
@@ -139,28 +138,6 @@ function Level(level_data) {
 		return lvl_blocks;
 	}	
 
-	/**
-	 * Looks up the tile image that corresponds to the parameter level data
-	 * @param {Object} data the level tile data
-	 * @param {Boolean} whether or not we're looking up a tile (alternative is a block)
-	 * @return {String} the directory path of the tile image
-	 */
-	function img_string_lookup(data, is_tile) {
-		
-		var img_string = null;
-		
-		if(data != -1) {
-			if(is_tile) {
-				img_string = Level.image_map[data].tile;
-			} else {
-				img_string = Level.image_map[data].block;
-			}			
-		}
-		
-		
-		return img_string;
-	}	
-	
 	function calculate_level_height_offset(cell_entry, cell_height) {
 
 		//this returns the second digit of 'cell_offset'.
@@ -174,6 +151,11 @@ function Level(level_data) {
 }
 
 Level.image_map = {
+	'-1' : {
+		tile : undefined,
+		block : undefined
+	},
+	
 	0 : {
 		tile : "./assets/art/Level0Tile.png",
 		block : "./assets/art/Block.png"
