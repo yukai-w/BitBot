@@ -98,7 +98,7 @@ var Editor = {
 	draw: function() {
 		var width = this.tileWidthPx;
 		var height = this.tileHeightPx;
-		var gridContainer = $("<div id='editor-grid-container'></div>");
+		var gridContainer = $("#editor-grid-container");
 		$.each(this.grid, function(rowIndex, row) {						
 			$.each(row, function(index, value) {
 				var editorTile = $("<div class='editor-tile'></div>");
