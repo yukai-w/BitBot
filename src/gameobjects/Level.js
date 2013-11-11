@@ -1,5 +1,8 @@
 function Level(level_data) {
 	
+	/* Pathfinding information */
+	var pathfinding_information;
+	
 	/* These correspond to the tile (flat) representation of the level.*/
 	var tile_map;
 	var level_tiles;
@@ -45,6 +48,15 @@ function Level(level_data) {
 		this.isDisplayingFlat = !(this.isDisplayingFlat);
 	}
 	
+	this.getPathFindingInformation = function() {
+		if(pathfinding_information != undefined) {
+			var pathfinding_information_clone = pathfinding_information.clone();
+			return pathfinding_information_clone;
+		} else {
+			return undefined;
+		}
+	}
+	
 	function setup(level_data) {
 		this.cellWidth = jaws.TileMap.prototype.default_options.cell_size[0]; // 32
 		this.cellHeight = jaws.TileMap.prototype.default_options.cell_size[1]; // 32
@@ -77,7 +89,8 @@ function Level(level_data) {
 
 		level_blocks = setup_level_blocks(level_data, num_of_vert_cells, num_of_horiz_cells, this.blockWidth, this.blockHeight);
 		block_map.push(level_blocks);
-
+		
+		pathfinding_information = extract_pathfinding_information(level_data);
 		console.log("Level.js: setup complete");
 	}
 
@@ -137,6 +150,39 @@ function Level(level_data) {
 		var offsetUnits = Level.image_map[cell_entry].offset;
 		return offsetUnits * cell_height;
 	}
+	
+	/**
+	 * Returns a pathfinding object from the pathfinding.js library, which contains
+	 * information on the traversable paths within level_data 
+ 	 * @param {Object} level_data the raw data
+	 */
+	function extract_pathfinding_information(level_data) {
+		
+		var pf_info_grid = undefined;
+
+		if (level_data != null) {
+			if (level_data.length != null && level_data.length > 0) {
+				if (level_data[0].length != null && level_data[0].length > 0) {
+					var rows = level_data.length;
+					var cols = level_data[0].length;
+					
+					pf_info_grid = new PF.Grid(cols, rows);
+					
+					for (var row_idx = 0; row_idx < rows; row_idx++) {
+						for (var col_idx = 0; col_idx < cols; col_idx++) {
+							var data = level_data[row_idx][col_idx];
+							if(data == 0 || data == 8) {
+								pf_info_grid.setWalkableAt(col_idx,row_idx,false);
+							}
+						}
+					}
+				}
+			}
+		}
+		
+		return pf_info_grid;
+	}
+	
 }
 
 Level.image_map = {

@@ -18,6 +18,7 @@ function LevelStage() {
 		
 		// Level setup.
 		active_level = new Level(level_data);
+		var pf_info = active_level.getPathFindingInformation();
 		
 		// To quit, press 'esc'
 		jaws.on_keydown("esc", function() {
