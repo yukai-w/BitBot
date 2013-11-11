@@ -8,10 +8,23 @@
 .editor-tile {
 	width: 40px;
 	height: 40px;
-	border: solid 1px #000000;
+	background-color: #000000;
+	border: solid 1px #ffffff;
 	position: absolute;
 }
 
-.editor-tile-level1 {
+.editor-tile-flat {
 	background-color: #aaaaaa;
+}
+
+.editor-tile-start {
+	background-color: #ff0000;
+}
+
+.editor-tile-goal {
+	background-color: #00ff00;
+}
+
+.editor-tile-raised {
+	background-color: #555555;
 }
