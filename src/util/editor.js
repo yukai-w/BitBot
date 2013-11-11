@@ -51,7 +51,7 @@ var Editor = {
 		this.width = widthTileCount;
 		this.height = heightTileCount;
 		this.editorContainer = $("#editor-container");
-		this.printoutContainer = $("<div id='printout-container'></div>");
+		this.printoutContainer = $("#printout-container");
 		this.generateGridButton = $("#editor-gen-grid-btn");		
 		this.clearGrid();
 		this.draw();
@@ -238,11 +238,13 @@ var Editor = {
 	 */
 	outputGrid: function() {
 		var editor = this;
-				
+		editor.printoutContainer.empty();	
+		
+		editor.printoutContainer.append("[");
 		$.each(this.grid, function(index, row) {
-			editor.printoutContainer.empty();
-			editor.printoutContainer.append("<p>" + row.toString() + "<p>");			
+			editor.printoutContainer.append("[<span class='editor-output-row'>" + row.toString() + "<span><br />");			
 		});
+		editor.printoutContainer.append("]");
 	}
 };
 
