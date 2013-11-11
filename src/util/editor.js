@@ -29,6 +29,7 @@ var Editor = {
 	mouseDown: false,
 	editorContainer: null,
 	printoutContainer: null,
+	keyModifier: null,
 	
 	// tile type enum
 	tileTypes:  {
@@ -53,6 +54,31 @@ var Editor = {
 		this.clearGrid();
 		this.draw();
 		this.attachBehaviors();
+		var editor = this;
+		
+		$(document).keydown(function(event) {
+			if(event.which == 70) {
+				console.log('f');
+				editor.keyModifier = 'f';
+			}
+			else if(event.which == 82) {
+				console.log('r');
+				editor.keyModifier = 'r';
+			} 
+			else if(event.which == 83) {
+				console.log('s');
+				editor.keyModifier = 's';
+			}
+			else if(event.which == 71) {
+				console.log('g');
+				editor.keyModifier = 'g';
+			}
+			console.log(editor.keyModifier);
+		});
+		
+		$(document).keyup(function(event) {
+			editor.keyModified = undefined; 
+		});
 	},
 	
 	/**
@@ -116,7 +142,7 @@ var Editor = {
 				editor.setTileType($(this), editor.tileTypes.FLAT);
 				var rowIndex = parseInt($(this).attr('y'));
 				var columnIndex = parseInt($(this).attr('x'));
-				editor.updateGrid(columnIndex, rowIndex, "01");
+				editor.updateGrid(columnIndex, rowIndex, 1);
 			}				
 		});
 		
