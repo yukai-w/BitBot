@@ -31,7 +31,11 @@ var Editor = {
 	
 	// tile type enum
 	tileTypes:  {
-		LEVEL1: 1
+		UNDEFINED: 0,
+		FLAT: 1,
+		START: 3,
+		GOAL: 4,
+		RAISED: 8
 	},
 
 	/**
@@ -108,7 +112,7 @@ var Editor = {
 		// attach mousedown behavior to tiles in grid
 		gridContainer.on('mousedown', '.editor-tile', function(event) {
 			if(event.which == 1) {
-				editor.setTileType($(this), editor.tileTypes.LEVEL1);
+				editor.setTileType($(this), editor.tileTypes.FLAT);
 				var rowIndex = parseInt($(this).attr('y'));
 				var columnIndex = parseInt($(this).attr('x'));
 				editor.updateGrid(columnIndex, rowIndex, "01");
@@ -118,7 +122,7 @@ var Editor = {
 		// attach mouseover behavior to tiles in grid
 		gridContainer.find('.editor-tile').on('mouseover', function(event) {
 			if(editor.mouseDown && event.which == 1) {
-				editor.setTileType($(this), editor.tileTypes.LEVEL1);
+				editor.setTileType($(this), editor.tileTypes.FLAT);
 				var rowIndex = parseInt($(this).attr('y'));
 				var columnIndex = parseInt($(this).attr('x'));
 				editor.updateGrid(columnIndex, rowIndex, "01");
@@ -134,9 +138,17 @@ var Editor = {
 	 */
 	setTileType: function(tile, type) {
 		switch(type) {
-		case this.tileTypes.LEVEL1:
-			tile.attr("level", "1");
-			tile.addClass("editor-tile-level1");
+		case this.tileTypes.FLAT:
+			tile.addClass("editor-tile-flat");
+			break;
+		case this.tileTypes.START:
+			tile.addClass("editor-tile-start");
+			break;
+		case this.tileTypes.GOAL:
+			tile.addClass("editor-tile-goal");
+			break;
+		case this.tileTypes.RAISED:
+			tile.addClass("editor-tile-raied");
 			break;
 		default:
 			break;
