@@ -135,11 +135,8 @@ var Editor = {
 		
 		// attach mousedown behavior to tiles in grid
 		gridContainer.on('mousedown', '.editor-tile', function(event) {
-//			console.log("mousedown");
-//			if(editor.mouseDown) {
 			editor.mouseDown = true;
 			editor.updateTile($(this));
-//			}				
 		});
 		
 		// attach mouseover behavior to tiles in grid
@@ -159,9 +156,7 @@ var Editor = {
 	setTileType: function(tile, type) {
 		// remove file type style
 		tile.removeClass('[class*=" editor-tile-"]');
-		
-		
-		
+				
 		// remove previously set 'editor-tile-<type>' class
 //		$('[class*=" editor-tile-"]').removeClass(function(i, c) {
 //			return c.match(/editor-tile-[a-zA-Z]+/g).join(" ");
