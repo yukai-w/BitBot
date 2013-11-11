@@ -30,6 +30,7 @@ var Editor = {
 	editorContainer: null,
 	printoutContainer: null,
 	keyModifier: null,
+	generateGridButton: null,
 	
 	// tile type enum
 	tileTypes:  {
@@ -51,6 +52,7 @@ var Editor = {
 		this.height = heightTileCount;
 		this.editorContainer = $("#editor-container");
 		this.printoutContainer = $("<div id='printout-container'></div>");
+		this.generateGridButton = $("#editor-gen-grid-btn");		
 		this.clearGrid();
 		this.draw();
 		this.attachBehaviors();
@@ -145,6 +147,11 @@ var Editor = {
 				editor.updateTile($(this));
 			}
 		});
+		
+		// generate grid definition button click
+		this.generateGridButton.on('click', null, null, function(event) {
+			editor.submitOutputGrid();
+		});
 	},
 	
 	/**
@@ -223,7 +230,7 @@ var Editor = {
 	 */
 	submitOutputGrid: function(button) {
 		console.log("grid output");
-//		this.outputGrid();
+		this.outputGrid();
 	},
 	
 	/**
@@ -232,7 +239,8 @@ var Editor = {
 	outputGrid: function() {
 		var editor = this;
 				
-		$.each(this.grid, function(index, row ) {
+		$.each(this.grid, function(index, row) {
+			editor.printoutContainer.empty();
 			editor.printoutContainer.append("<p>" + row.toString() + "<p>");			
 		});
 	}
