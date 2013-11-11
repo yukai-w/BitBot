@@ -16,6 +16,10 @@
 	position: absolute;
 }
 
+.editor-output-row {
+	width: 100%;
+}
+
 .editor-tile-flat {
 	background-color: #aaaaaa;
 }

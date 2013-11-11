@@ -242,7 +242,7 @@ var Editor = {
 		
 		editor.printoutContainer.append("[");
 		$.each(this.grid, function(index, row) {
-			editor.printoutContainer.append("[<span class='editor-output-row'>" + row.toString() + "<span><br />");			
+			editor.printoutContainer.append("[<span class='editor-output-row'>" + row.toString() + "<span>]");			
 		});
 		editor.printoutContainer.append("]");
 	}
