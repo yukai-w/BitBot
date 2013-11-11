@@ -27,6 +27,7 @@ var Editor = {
 	tileHeightPx: 40,
 	grid: [],
 	mouseDown: false,
+	editorContainer: null,
 	printoutContainer: null,
 	
 	// tile type enum
@@ -46,12 +47,12 @@ var Editor = {
 	 */
 	init: function(widthTileCount, heightTileCount) {
 		this.width = widthTileCount;
-		this.height = heightTileCount; 
+		this.height = heightTileCount;
+		this.editorContainer = $("#editor-container");
+		this.printoutContainer = $("<div id='printout-container'></div>");
 		this.clearGrid();
 		this.draw();
 		this.attachBehaviors();
-		this.printoutContainer = $("<div id='printout-container'></div>");
-		$("body").append(this.printoutContainer);
 	},
 	
 	/**
@@ -84,9 +85,9 @@ var Editor = {
 				var topOffset = rowIndex * height;
 				editorTile.css({left: leftOffset+"px", top: topOffset+"px"});
 				gridContainer.append(editorTile);
-			});
-			$("body").append(gridContainer);
-		});		
+			});			
+		});	
+		this.editorContainer.append(gridContainer);
 	},
 	
 	/**
@@ -176,8 +177,7 @@ var Editor = {
 	 */
 	outputGrid: function() {
 		var editor = this;
-		
-		
+				
 		$.each(this.grid, function(index, row ) {
 			editor.printoutContainer.append("<p>" + row.toString() + "<p>");			
 		});
