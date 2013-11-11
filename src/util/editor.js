@@ -58,26 +58,21 @@ var Editor = {
 		
 		$(document).keydown(function(event) {
 			if(event.which == 70) {
-				console.log('f');
 				editor.keyModifier = 'f';
 			}
 			else if(event.which == 82) {
-				console.log('r');
 				editor.keyModifier = 'r';
 			} 
 			else if(event.which == 83) {
-				console.log('s');
 				editor.keyModifier = 's';
 			}
 			else if(event.which == 71) {
-				console.log('g');
 				editor.keyModifier = 'g';
 			}
-			console.log(editor.keyModifier);
 		});
 		
 		$(document).keyup(function(event) {
-			editor.keyModified = undefined; 
+			editor.keyModifier = undefined; 
 		});
 	},
 	
@@ -126,33 +121,31 @@ var Editor = {
 		
 		// set mouseDown
 		$("body").on("mousedown", null, null, function(event) {
-			if(event.which == 1)
-				editor.mouseDown = true;			
+			if(event.which == 1) {
+				editor.mouseDown = true;
+			}
 		});
 		
 		// clear mouseDown
 		$("body").on("mouseup", null, null, function(event) {
-			if(event.which == 1)
-				editor.mouseDown = false;			
+			if(event.which == 1) {
+				editor.mouseDown = false;
+			}
 		});
 		
 		// attach mousedown behavior to tiles in grid
 		gridContainer.on('mousedown', '.editor-tile', function(event) {
-			if(event.which == 1) {
-				editor.setTileType($(this), editor.tileTypes.FLAT);
-				var rowIndex = parseInt($(this).attr('y'));
-				var columnIndex = parseInt($(this).attr('x'));
-				editor.updateGrid(columnIndex, rowIndex, 1);
-			}				
+//			console.log("mousedown");
+//			if(editor.mouseDown) {
+			editor.mouseDown = true;
+			editor.updateTile($(this));
+//			}				
 		});
 		
 		// attach mouseover behavior to tiles in grid
 		gridContainer.find('.editor-tile').on('mouseover', function(event) {
-			if(editor.mouseDown && event.which == 1) {
-				editor.setTileType($(this), editor.tileTypes.FLAT);
-				var rowIndex = parseInt($(this).attr('y'));
-				var columnIndex = parseInt($(this).attr('x'));
-				editor.updateGrid(columnIndex, rowIndex, "01");
+			if(editor.mouseDown) {
+				editor.updateTile($(this));
 			}
 		});
 	},
@@ -164,6 +157,16 @@ var Editor = {
 	 * @param int type
 	 */
 	setTileType: function(tile, type) {
+		// remove file type style
+		tile.removeClass('[class*=" editor-tile-"]');
+		
+		
+		
+		// remove previously set 'editor-tile-<type>' class
+//		$('[class*=" editor-tile-"]').removeClass(function(i, c) {
+//			return c.match(/editor-tile-[a-zA-Z]+/g).join(" ");
+//		});
+		
 		switch(type) {
 		case this.tileTypes.FLAT:
 			tile.addClass("editor-tile-flat");
@@ -175,11 +178,41 @@ var Editor = {
 			tile.addClass("editor-tile-goal");
 			break;
 		case this.tileTypes.RAISED:
-			tile.addClass("editor-tile-raied");
+			tile.addClass("editor-tile-raised");
 			break;
 		default:
 			break;
 		}
+	},
+	
+	/**
+	 * Updates tile info based on input events
+	 */
+	updateTile: function(tile) {
+		console.log("updating...");
+		console.log(tile);
+		var editor = this;
+		
+//		if(editor.mouseDown && event.which == 1) {
+			var tileType = undefined;
+			var rowIndex = parseInt(tile.attr('y'));
+			var columnIndex = parseInt(tile.attr('x'));
+			
+			if(editor.keyModifier === 'r') {					
+				tileType = editor.tileTypes.RAISED;					
+			}
+			else if(editor.keyModifier === 's') {					
+				tileType = editor.tileTypes.START;					
+			}
+			else if(editor.keyModifier === 'g') {					
+				tileType = editor.tileTypes.GOAL;					
+			}
+			else {
+				tileType = editor.tileTypes.FLAT;
+			}
+			editor.setTileType(tile, tileType);
+			editor.updateGrid(columnIndex, rowIndex, tileType);
+//		}
 	},
 	
 	/**
@@ -195,7 +228,7 @@ var Editor = {
 	 */
 	submitOutputGrid: function(button) {
 		console.log("grid output");
-		this.outputGrid();
+//		this.outputGrid();
 	},
 	
 	/**
