@@ -18,6 +18,9 @@ function init() {
 	jaws.assets.add("./assets/art/StartTile.png");
 	jaws.assets.add("./assets/art/GoalTile.png");
 	
+	//Robots
+	jaws.assets.add("./assets/art/Robot.png");
+	jaws.assets.add("./assets/art/TileRobot.png");
 	
 	//Blocks
 	jaws.assets.add("./assets/art/StartBlock.png");

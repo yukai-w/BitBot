@@ -20,10 +20,13 @@ function Level(level_data) {
 	this.cellHeight = 0;
 	this.cellWidth  = 0;
 	this.blockHeight = 0;
-	this.blockWidth  = 0;	
+	this.blockWidth  = 0;
+	var startTileCoordinates = undefined;
+	var goalTileCoordinates = undefined;
 
 	/* Class initialization */
 	setup(level_data);
+	jaws.preventDefaultKeys(["2", "3"]);
 
 	this.update = function() {
 		
@@ -60,6 +63,10 @@ function Level(level_data) {
 		}
 	}
 	
+	this.getStartTileCoordinates = function() {
+		return startTileCoordinates;
+	}
+	
 	function setup(level_data) {
 		this.cellWidth = jaws.TileMap.prototype.default_options.cell_size[0]; // 32
 		this.cellHeight = jaws.TileMap.prototype.default_options.cell_size[1]; // 32
@@ -81,7 +88,7 @@ function Level(level_data) {
 		// this.cellWidth and this.cellHeight are modified by -1 so that when drawn, the border lines overlap, as opposed to
 		// lying side by side (if they are side by side, they create a "bolded line" effect)
 
-		/* Block (orthographic) world setup */
+		/* Block (isometric) world setup */
 		block_map = new jaws.TileMap({
 			size : [num_of_horiz_cells, num_of_vert_cells],
 			cell_size : [this.cellWidth, this.cellHeight]
@@ -93,8 +100,35 @@ function Level(level_data) {
 		level_blocks = setup_level_blocks(level_data, num_of_vert_cells, num_of_horiz_cells, this.blockWidth, this.blockHeight);
 		block_map.push(level_blocks);
 		
+		startTileCoordinates = find_tile_coordinates(level_data, num_of_vert_cells, num_of_horiz_cells, this.cellWidth - 1, this.cellHeight - 1, 'start');
+		goalTileCoordinates = find_tile_coordinates(level_data, num_of_vert_cells, num_of_horiz_cells, this.cellWidth - 1, this.cellHeight - 1, 'goal');
+		
 		pathfinding_information = extract_pathfinding_information(level_data);
 		console.log("Level.js: setup complete");
+	}
+	
+	function find_tile_coordinates(level_data, max_rows, max_cols, tile_width, tile_height, tile_type) {
+		var data_to_match = 0;
+		if(tile_type == 'start') {
+			data_to_match = 3;
+		} else if(tile_type == 'goal') {
+			data_to_match = 4;
+		} else {
+			data_to_match = -1; //error
+		}
+		
+		var tile_coordinates = undefined;
+		for (var row_idx = 0; row_idx < max_rows; row_idx++) {
+			for (var col_idx = 0; col_idx < max_cols; col_idx++) {
+				var data = level_data[row_idx][col_idx];
+				
+				if(data == data_to_match) {
+					tile_coordinates = {x:col_idx*tile_width, y:row_idx*tile_height};
+					break;
+				}
+			}
+		}
+		return tile_coordinates;		
 	}
 
 	function setup_level_tiles(level_data, max_rows, max_cols, tile_width, tile_height) {
@@ -221,6 +255,8 @@ Level.image_map = {
 	}
 
 };
+
+
 
 
 	

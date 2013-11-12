@@ -3,23 +3,23 @@
  */
 function LevelStage() {
 
+	/* Class initialization */
 	this.activeLevel = new Level(setup_sample_level());
+	this.player = new Robot(this.activeLevel.getStartTileCoordinates(), 'human_controlled');
 
 	// To quit, press 'esc'
 	jaws.on_keydown("esc", function() {
 		jaws.switchGameState(MenuState);
 	});
 
-	// Prevent the browser from catching the following keys:
-	jaws.preventDefaultKeys(["2", "3", "up", "down", "left", "right", "space"]); 
-
-
 	this.update = function() {
-		this.activeLevel.update();		
+		this.activeLevel.update();
+		this.player.update();		
 	}
 
 	this.draw = function() {
 		this.activeLevel.draw();
+		this.player.draw();
 	}
 	
 	function setup_sample_level() {
