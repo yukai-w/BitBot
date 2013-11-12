@@ -1,3 +1,6 @@
+/**
+ * The Level GameObject.
+ */
 function Level(level_data) {
 	
 	/* Pathfinding information */
@@ -12,7 +15,7 @@ function Level(level_data) {
 	var level_blocks;
 	
 	/* Class attributes */
-	this.isDisplayingFlat = false; // Are we displaying flat?
+	this.isDisplayingFlat = true; // Are we displaying flat?
 	this.levelData = level_data;
 	this.cellHeight = 0;
 	this.cellWidth  = 0;

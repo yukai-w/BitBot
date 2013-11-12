@@ -5,20 +5,13 @@
  */
 function PlayState() {
 
-	var player;
 	var current_stage;
 	var current_background;
 	var current_background_idx;
 	var do_background_anim;
 	var background_sprites;
-	
-	
 
 	this.setup = function() {
-
-		/* Player setup */
-		var start_x_position = jaws.width / 4;
-		player = new Person(true, start_x_position, "./assets/art/person1.png");
 
 		/* Background setup */
 		var bg_x_pos = jaws.width/2;
@@ -39,8 +32,6 @@ function PlayState() {
 
 		/* Level setup */
 		current_stage = new LevelStage();
-		current_stage.setup(player);
-
 	}
 
 	this.update = function() {
@@ -56,7 +47,7 @@ function PlayState() {
 		}
 		
 		current_stage.update();
-
+		fps.innerHTML = jaws.game_loop.fps
 	}
 
 	this.draw = function() {
@@ -64,8 +55,6 @@ function PlayState() {
 		jaws.context.clearRect(0, 0, jaws.width, jaws.height);
 		current_background.draw();
 		current_stage.draw();
-		
-
 	}
 }
 

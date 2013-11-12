@@ -3,47 +3,23 @@
  */
 function LevelStage() {
 
-	var player;
-	var background;
-	var level_tiles;
-	var tile_map;
-	var active_level;
-	
-	this.setup = function(playerReference) {
-		
-		var level_data = setup_sample_level();
-		
-		// Player setup.
-		player = playerReference;
-		
-		// Level setup.
-		active_level = new Level(level_data);
-		var pf_info = active_level.getPathFindingInformation();
-		
-		// To quit, press 'esc'
-		jaws.on_keydown("esc", function() {
-			jaws.switchGameState(MenuState);
-		});
+	this.activeLevel = new Level(setup_sample_level());
 
-		// Prevent the browser from catching the following keys:
-		jaws.preventDefaultKeys(["2", "3", "up", "down", "left", "right", "space"]);
-	}
+	// To quit, press 'esc'
+	jaws.on_keydown("esc", function() {
+		jaws.switchGameState(MenuState);
+	});
+
+	// Prevent the browser from catching the following keys:
+	jaws.preventDefaultKeys(["2", "3", "up", "down", "left", "right", "space"]); 
+
 
 	this.update = function() {
-		
-		active_level.update();
-		player.update();
-		
-
-		// delete items for which isOutsideCanvas(item) is true
-		fps.innerHTML = jaws.game_loop.fps;
+		this.activeLevel.update();		
 	}
 
 	this.draw = function() {
-		
-		active_level.draw();
-		player.draw();
-		// will call draw() on all items in the list
+		this.activeLevel.draw();
 	}
 	
 	function setup_sample_level() {
