@@ -58,13 +58,12 @@ function Robot(pos, type) {
 					}
 				}
 			} else { //must be in execution
-				while( ! this.actionQueue.isEmpty()) {
+				if( ! this.actionQueue.isEmpty()) {
 					var action = this.actionQueue.dequeue();
 					this.executeAction(action);
+				} else {
+					this.setMode('idle');	
 				}
-				
-				this.setMode('idle');
-				
 			}
 		}
 		
