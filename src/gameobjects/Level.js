@@ -43,10 +43,11 @@ function Level(level_data) {
 	this.draw = function() {
 		if (this.isDisplayingFlat) {
 			// draw flat
-			level_tiles.draw();
+			jaws.draw(level_tiles);
+			
 		} else {
 			// draw block (isometric)
-			level_blocks.draw();
+			jaws.draw(level_blocks);
 		}
 	}
 
@@ -68,6 +69,7 @@ function Level(level_data) {
 	}
 	
 	function setup(level_data) {
+				
 		this.cellWidth = jaws.TileMap.prototype.default_options.cell_size[0]; // 32
 		this.cellHeight = jaws.TileMap.prototype.default_options.cell_size[1]; // 32
 
@@ -132,7 +134,7 @@ function Level(level_data) {
 	}
 
 	function setup_level_tiles(level_data, max_rows, max_cols, tile_width, tile_height) {
-		var lvl_tiles = new jaws.SpriteList();
+		var lvl_tiles = [];
 		for (var row_idx = 0; row_idx < max_rows; row_idx++) {
 			for (var col_idx = 0; col_idx < max_cols; col_idx++) {
 				var data = level_data[row_idx][col_idx];
@@ -144,7 +146,7 @@ function Level(level_data) {
 						y : row_idx * tile_height
 					});
 
-					lvl_tiles.push(tile);
+					lvl_tiles[lvl_tiles.length]=tile;
 				}
 			}
 		}
@@ -153,7 +155,7 @@ function Level(level_data) {
 
 	function setup_level_blocks(level_data, max_rows, max_cols, tile_width, tile_height) {
 
-		var lvl_blocks = new jaws.SpriteList();
+		var lvl_blocks = [];
 		var x_pos = jaws.width*4.5/10;
 		var y_pos = 0;
 		var x_offset = tile_width;
@@ -170,7 +172,7 @@ function Level(level_data) {
 						y : y_pos - calculate_level_height_offset(data, tile_height)
 					});
 					
-					lvl_blocks.push(block);	
+					lvl_blocks[lvl_blocks.length] = block;	
 				}
 				
 				x_pos = x_pos + x_offset;
