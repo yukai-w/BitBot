@@ -23,6 +23,8 @@ function Robot(pos, type) {
 	
 	this.millisecondsSpentPlanning = 0.0;
 	var planning_millisecond_threshold = 2000.0; //2 seconds
+	this.millisecondsSpentExecuting = 0.0;
+	var executing_millisecond_delay = 500.0; //.5 seconds
 	
 	
 	/* Game input attributes */
@@ -58,12 +60,23 @@ function Robot(pos, type) {
 					}
 				}
 			} else { //must be in execution
-				if( ! this.actionQueue.isEmpty()) {
-					var action = this.actionQueue.dequeue();
-					this.executeAction(action);
+				
+				//this execution delay is so that the player takes actions slowly
+				//(for game aesthetic purposes)
+				if(this.millisecondsSpentExecuting > executing_millisecond_delay) {
+					if( ! this.actionQueue.isEmpty()) {
+						var action = this.actionQueue.dequeue();
+						this.executeAction(action);
+					} else {
+						this.setMode('idle');	
+					}
+					
+					this.millisecondsSpentExecuting = 0.0;
 				} else {
-					this.setMode('idle');	
+					this.millisecondsSpentExecuting += jaws.game_loop.tick_duration;
 				}
+				
+					
 			}
 		}
 		
