@@ -29,6 +29,8 @@ function CommandPrompt(player) {
 	var cmd_img_str = "./assets/art/CommandPrompt.png"
 	
 	this.cmdSprite = new jaws.Sprite({image: cmd_img_str, x:cmd_HUD_x, y:cmd_HUD_y});
+	this.planningOverlay = new jaws.Sprite({color:'black', x:0, y:0, alpha:0.45});
+	this.planningOverlay.resizeTo(canvas.width, cmd_HUD_y)
 	
 	var action_img_map = {
 		'left' : "./assets/art/ArrowLeft.png",
@@ -73,6 +75,11 @@ function CommandPrompt(player) {
 	this.draw = function() {
 		this.cmdSprite.draw();
 		jaws.draw(this.actionQueueSprites);
+		
+		if(player.isPlanning) {
+			this.planningOverlay.draw();
+		}
+		
 	}
 	 
 }
