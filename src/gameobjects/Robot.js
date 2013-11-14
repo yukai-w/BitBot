@@ -19,7 +19,7 @@ function Robot(pos, type) {
 	this.isExecuting = false;
 	this.isIdle = true;
 	this.actionQueue = new goog.structs.Queue();
-	var action_queue_size_max = 12; //max 12 actions queued
+	this.actionQueueSizeMax = 12; //max 12 actions queued
 	
 	this.millisecondsSpentPlanning = 0.0;
 	var planning_millisecond_threshold = 2000.0; //2 seconds
@@ -48,7 +48,7 @@ function Robot(pos, type) {
 				if(this.millisecondsSpentPlanning > planning_millisecond_threshold) {
 					this.setMode('executing'); //you have two seconds to keep inputting commands.
 					this.millisecondsSpentPlanning = 0.0;
-				} else if(this.actionQueue.getCount() == action_queue_size_max) {
+				} else if(this.actionQueue.getCount() == this.actionQueueSizeMax) {
 					this.setMode('executing'); //you can't exceed the max number of actions
 					this.millisecondsSpentPlanning = 0.0;
 				} else {

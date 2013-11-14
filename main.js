@@ -29,6 +29,10 @@ function init() {
 	
 	//HUD
 	jaws.assets.add("./assets/art/CommandPrompt.png");
+	jaws.assets.add("./assets/art/ArrowDown.png");
+	jaws.assets.add("./assets/art/ArrowLeft.png");
+	jaws.assets.add("./assets/art/ArrowRight.png");
+	jaws.assets.add("./assets/art/ArrowUp.png");
 	
 	
 	////Music
