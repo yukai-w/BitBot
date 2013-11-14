@@ -27,8 +27,11 @@ function init() {
 	jaws.assets.add("./assets/art/GoalBlock.png");
 	jaws.assets.add("./assets/art/Block.png");
 	
+	//HUD
+	jaws.assets.add("./assets/art/CommandPrompt.png");
 	
-	//Music
+	
+	////Music
 	// jaws.assets.add("./assets/sound/crowd.wav");
 	jaws.start(MenuState);
 	

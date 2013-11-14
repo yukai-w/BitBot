@@ -1,210 +1,80 @@
 /**
  * The Heads Up Display provides gameplay information.
  * @param {Object} player the player we're tracking
- * @param {Integer} gametype the variant of the game we're playing
  */
 function HUD(player) {
 
-	var medicineHUD = new FluidMeter(player, 'medicine');
-	var lightHUD = new FluidMeter(player, 'light');
-	var itemHUD = new ItemCounter(player);
-	var timeHUD = new TimeAliveCounter(player);
-
-	var feedbackHUD = new FeedbackIndicator(player, gametype);
-	var delayedFeedbackConditionCounter = 0;
-	var delayedFeedbackConditionDelay = 7 * 1000; //ms (7 s)
-
-	var hudElements = new jaws.SpriteList();
-	hudElements.push(medicineHUD);
-	hudElements.push(lightHUD);
-	hudElements.push(itemHUD);
-	hudElements.push(timeHUD);
-	hudElements.push(feedbackHUD);
+	// var batteryHUD = new BatteryMeter(player);
+	// var levelHUD   = new LevelCounter(player);
+	// var timeHUD    = new LevelTimeCounter(player);
+	
+	var hud_elements = [];
+	hud_elements[hud_elements.length] = new CommandPrompt(player);
+	// hudElements.push(batteryHUD);
+	// hudElements.push(levelHUD);
+	// hudElements.push(timeHUD);
 
 	this.update = function() {
-		medicineHUD.update();
-		lightHUD.update();
-		itemHUD.update();
-		timeHUD.update();
-
-		if (gametype == 3 || gametype == 4) {
-			// this gametype is for delayed feedback
-			if (delayedFeedbackConditionCounter >= delayedFeedbackConditionDelay) {
-				delayedFeedbackConditionCounter = 0;
-				feedbackHUD.update();
-			}
-		} else {
-			feedbackHUD.update();
-		}
-
-		delayedFeedbackConditionCounter += jaws.game_loop.tick_duration;
+		jaws.update(hud_elements);
 	}
 
 	this.draw = function() {
-		hudElements.draw();
+		jaws.draw(hud_elements);
 	}
 }
 
-/**
- * The FeedbackIndicator is the HUD Element which conveys Feedback
- * on the player's current health.  Instead of a direct meter, this
- * uses stages of player health, which slowly depict or describe
- * the player becoming a zombie.
- * @param {Object} player the player we're tracking
- */
-function FeedbackIndicator(player, gametype) {
-
-	var FACE_HUD_X = 675;
-	var FACE_HUD_Y = 90;
-
-	/* This will animate the image of the player in the top-right corner of the HUD. */
-	this.faceAnimation = new jaws.Animation({
-		sprite_sheet : "./assets/art/status_faces.png",
-		frame_size : [215, 215],
-		loop : false
-	});
-	this.faceAnimationIndex = 0;
-	// helps track which face is being displayed
-	this.playerFace = new jaws.Sprite({
-		x : FACE_HUD_X,
-		y : FACE_HUD_Y,
-		anchor : "center",
-		scale : 0.55
-	});
-	this.playerFace.setImage(this.faceAnimation.frames[player.zombieLevel]);
-
-	/* This will animate the golden glow around the player picture.*/
-	this.borderAnimation = new jaws.Animation({
-		sprite_sheet : "./assets/art/border_anim.png",
-		frame_size : [243, 243],
-		loop : true
-	});
-	this.hudBorder = new jaws.Sprite({
-		x : FACE_HUD_X,
-		y : FACE_HUD_Y,
-		anchor : "center",
-		scale : 0.75
-	});
-	this.hudBorder.setImage(this.borderAnimation.frames[0]);
-
+function CommandPrompt(player) {
+	var cmd_HUD_x = 0;
+	var cmd_HUD_y = (7/8)*canvas.height;
+	var cmd_img_str = "./assets/art/CommandPrompt.png"
+	
+	this.cmdSprite = new jaws.Sprite({image: cmd_img_str, x:cmd_HUD_x, y:cmd_HUD_y});
+	
 	this.update = function() {
-		// check the player's life, and change the player's HUD face accordingly
-		var old_anim_index = this.faceAnimationIndex;
-
-		if (this.faceAnimationIndex != player.zombieLevel) {
-			// the only case for which the zombie level does *not* match to the
-			// art asset that displays it, is zombie level = 8
-			// (to which index 7 corresponds)
-			var animationIndex = (player.zombieLevel == 8) ? 7 : player.zombieLevel;
-
-			this.playerFace.setImage(this.faceAnimation.frames[animationIndex]);
-			this.faceAnimationIndex = player.zombieLevel;
-		}
-
-		// if there is a face change, highlight the HUD box to
-		// make it obvious to the player
-		if (old_anim_index != this.faceAnimationIndex) {
-			this.hudBorder.setImage(this.borderAnimation.frames[1]);
-			var hudB = this.hudBorder;
-			//keep references for anon. function
-			var bAnim = this.borderAnimation;
-			setTimeout(function() {
-				hudB.setImage(bAnim.frames[0]);
-			}, 500);
-		}
 
 	}
-
+	
 	this.draw = function() {
-
-		if (gametype == 1 || gametype == 3) {
-			//both these game modes are embodied feedback modes
-			this.playerFace.draw();
-		} else {
-			//these game modes are text feedback modes
-			jaws.context.fillStyle = "#FFFFFF";
-			jaws.context.fillRect(FACE_HUD_X-62, FACE_HUD_Y-62, 124, 124);
-			
-			jaws.context.font = "25pt Geo";
-			jaws.context.lineWidth = 20;
-			jaws.context.fillStyle = "#1C1C1C";
-			jaws.context.strokeStyle = "rgba(200,200,200,0.0)";
-
-			switch(player.zombieLevel) {
-				case 0:
-					jaws.context.fillText("Very", FACE_HUD_X - 50, FACE_HUD_Y);
-					jaws.context.fillText("Healthy", FACE_HUD_X - 50, FACE_HUD_Y + 25);
-					break;
-
-				case 2:
-					jaws.context.fillText("Healthy", FACE_HUD_X - 50, FACE_HUD_Y + 5);
-					break;
-
-				case 3:
-					jaws.context.fillText("A Bit", FACE_HUD_X - 50, FACE_HUD_Y);
-					jaws.context.fillText("Healthy", FACE_HUD_X - 50, FACE_HUD_Y + 25);
-					break;
-
-				case 4:
-					jaws.context.fillText("Neither", FACE_HUD_X - 50, FACE_HUD_Y - 20);
-					jaws.context.fillText("Ill nor", FACE_HUD_X - 50, FACE_HUD_Y + 5);
-					jaws.context.fillText("Healthy", FACE_HUD_X - 50, FACE_HUD_Y + 30);
-					break;
-
-				case 5:
-					jaws.context.fillText("A Bit", FACE_HUD_X - 50, FACE_HUD_Y);
-					jaws.context.fillText("Ill", FACE_HUD_X - 50, FACE_HUD_Y + 25);
-					break;
-
-				case 6:
-					jaws.context.fillText("Ill", FACE_HUD_X - 50, FACE_HUD_Y + 5);
-					break;
-
-				case 8:
-					jaws.context.fillText("Very", FACE_HUD_X - 50, FACE_HUD_Y);
-					jaws.context.fillText("Ill", FACE_HUD_X - 50, FACE_HUD_Y + 25);
-					break;
-
-				default:
-					console.log("Error.");
-
-			}
-
-		}
-
-		this.hudBorder.draw();
+		this.cmdSprite.draw();
 	}
+	 
 }
 
+
+
+
+
+
+
+
+
+
+
+
 /**
- * The FluidMeter is the HUD Element which conveys information about fluid
- * player properties (e.g. health, light exposure).  Fluid properties
- * are lost over time and are gained by the corresponding game element.
+ * The BatteryMeter is the HUD Element which conveys information about battery life.  
+ * Battery life is lost over time and is gained by in-game batteries.
  * @param {Object} player the player we're tracking
  */
-function FluidMeter(player, type) {
+function BatteryMeter(player, canvas_position) {
 
-	var METER_HUD_X = 675;
-	var METER_HUD_Y;
+	// RECOMMENDED VALUES
+	// var METER_HUD_X = 450; //px
+	// var METER_HUD_Y = 185; //px
 
-	if (type == 'medicine') {
-		METER_HUD_Y = 185;
-	} else if (type == 'light') {
-		METER_HUD_Y = 237;
-	}
+	var x_pos = canvas_position.x;
+	var y_pos = canvas_position.y;
+	
+	var battery_img_str = "./assets/art/Battery.png";
+	var battery_img_scale = 1.0;
+	this.batterySprite = new jaws.Sprite({image : battery_img_str, anchor : "center", x : x_pos, y : y_pos, scale : battery_img_scale}); 
+	
+	
 
-	var indicator_image_string = "./assets/art/CHANGEME_indicator.png".replace("CHANGEME", type);
-
-	this.barSprite = new jaws.Sprite({
-		image : "./assets/art/meter_bar.png",
-		anchor : "center",
-		x : METER_HUD_X,
-		y : METER_HUD_Y,
-		scale : 0.75
-	});
+	this.barSprite = new jaws.Sprite({image : "./assets/art/MeterBar.png", anchor : "center", x : METER_HUD_X, y : METER_HUD_Y, scale : 0.75});
 
 	this.indicatorSprite = new jaws.Sprite({
-		image : indicator_image_string,
+		image : "./assets/art/MeterBar.png",
 		anchor : "center_left",
 		x : 615.1,
 		y : METER_HUD_Y,
