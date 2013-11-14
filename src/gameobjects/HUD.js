@@ -68,12 +68,19 @@ function CommandPrompt(player) {
 				});
 			}
 		}
+		
+		if(!player.isPlanning) {
+			this.cmdSprite.alpha = 0.45;
+		} else {
+			this.cmdSprite.alpha = 1.0;
+		}
 	}
 	
 	this.draw = function() {
+		
 		this.cmdSprite.draw();
 		jaws.draw(this.actionQueueSprites);
-		
+	
 		if(player.isPlanning) {
 			this.planningOverlay.draw();
 		}
