@@ -22,11 +22,6 @@ function init() {
 	jaws.assets.add("./assets/art/Robot.png");
 	jaws.assets.add("./assets/art/TileRobot.png");
 	
-	//Blocks
-	jaws.assets.add("./assets/art/StartBlock.png");
-	jaws.assets.add("./assets/art/GoalBlock.png");
-	jaws.assets.add("./assets/art/Block.png");
-	
 	//HUD
 	jaws.assets.add("./assets/art/CommandPrompt.png");
 	jaws.assets.add("./assets/art/ArrowDown.png");
