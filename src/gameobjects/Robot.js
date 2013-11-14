@@ -13,7 +13,9 @@ function Robot(pos, type) {
 	var robot_tile_step_offset = jaws.TileMap.prototype.default_options.cell_size[0]-1; //31px
 
 	/* Game logic attributes */
-	this.batteryLevel = 100;
+	this.batteryLevel = 100.0;
+	var battery_decay = 10.0;
+	
 	this.isPlayerControlled = (type == 'human_controlled' ? true : false);
 	this.isPlanning = false;
 	this.isExecuting = false;
@@ -67,6 +69,7 @@ function Robot(pos, type) {
 					if( ! this.actionQueue.isEmpty()) {
 						var action = this.actionQueue.dequeue();
 						this.executeAction(action);
+						this.batteryLevel -= battery_decay;
 					} else {
 						this.setMode('idle');	
 					}
@@ -85,6 +88,7 @@ function Robot(pos, type) {
 			handle_AI_input(this); //TODO: IMPLEMENT
 		}
 		
+		bound_player_attributes(this);
 	}
 
 	this.draw = function() {
@@ -164,6 +168,20 @@ function Robot(pos, type) {
 		
 		return key_was_pressed;
 	}
+	
+  	/**
+     * Forces the player to have reasonable life values.
+     * @param {Object} player the player to bound the attributes of
+     */
+    function bound_player_attributes(player) {
+        if (player.batteryLevel > 100) {
+                player.batteryLevel = 100;
+        }
+
+        if (player.batteryLevel < 0) {
+                player.batteryLevel = 0;
+        }
+    }
 }
 
 /**

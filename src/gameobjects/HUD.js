@@ -4,16 +4,10 @@
  */
 function HUD(player) {
 
-	// var batteryHUD = new BatteryMeter(player);
-	// var levelHUD   = new LevelCounter(player);
-	// var timeHUD    = new LevelTimeCounter(player);
-	
 	var hud_elements = [];
+	hud_elements[hud_elements.length] = new BatteryMeter(player);
 	hud_elements[hud_elements.length] = new CommandPrompt(player);
-	// hudElements.push(batteryHUD);
-	// hudElements.push(levelHUD);
-	// hudElements.push(timeHUD);
-
+	
 	this.update = function() {
 		jaws.update(hud_elements);
 	}
@@ -23,6 +17,10 @@ function HUD(player) {
 	}
 }
 
+/**
+ * The command prompt which displays the commands the player has made in the game.
+ * @param player the player we're tracking.
+ */
 function CommandPrompt(player) {
 	var cmd_HUD_x = 0;
 	var cmd_HUD_y = (7/8)*canvas.height;
@@ -84,64 +82,44 @@ function CommandPrompt(player) {
 	 
 }
 
-
-
-
-
-
-
-
-
-
-
-
 /**
  * The BatteryMeter is the HUD Element which conveys information about battery life.  
  * Battery life is lost over time and is gained by in-game batteries.
  * @param {Object} player the player we're tracking
  */
-function BatteryMeter(player, canvas_position) {
+function BatteryMeter(player) {
 
-	// RECOMMENDED VALUES
-	// var METER_HUD_X = 450; //px
-	// var METER_HUD_Y = 185; //px
+	var METER_HUD_X = 450; //px
+	var METER_HUD_Y = (1/16)*canvas.height; //px
 
-	var x_pos = canvas_position.x;
-	var y_pos = canvas_position.y;
-	
-	var battery_img_str = "./assets/art/Battery.png";
-	var battery_img_scale = 1.0;
-	this.batterySprite = new jaws.Sprite({image : battery_img_str, anchor : "center", x : x_pos, y : y_pos, scale : battery_img_scale}); 
-	
-	
+	var x_pos = METER_HUD_X;
+	var y_pos = METER_HUD_Y;
 
-	this.barSprite = new jaws.Sprite({image : "./assets/art/MeterBar.png", anchor : "center", x : METER_HUD_X, y : METER_HUD_Y, scale : 0.75});
+	this.batterySprite = new jaws.Sprite({image : "./assets/art/Battery.png", anchor : "center", x : x_pos, y : y_pos, scale : 2.0}); 
+	
+	x_pos += 60;
+	this.barSprite = new jaws.Sprite({image : "./assets/art/MeterBar.png", anchor : "center", x : x_pos, y : y_pos, scale : 0.50});
 
 	this.indicatorSprite = new jaws.Sprite({
-		image : "./assets/art/MeterBar.png",
+		image : "./assets/art/BatteryIndicator.png",
 		anchor : "center_left",
-		x : 615.1,
+		x : x_pos-40,
 		y : METER_HUD_Y,
-		scale : 0.75
+		scale : 0.50
 	});
 	this.indicatorSprite.setWidth(0);
 
 	this.update = function() {
 
-		var new_indicator_sprite_width;
-
-		if (type == 'medicine') {
-			new_indicator_sprite_width = (player.medicineLife / 100.0) * 122;
-		} else if (type == 'light') {
-			new_indicator_sprite_width = (player.lightExposure / 100.0) * 122;
-		}
-
-		// Meter Sprite has an effective drawing width of 122 px (for 100% life),
-		// we must scale it down 1.22 px for every unit change of fluid
+		var new_indicator_sprite_width = (player.batteryLevel / 100.0) * 82;
+		
+		// Meter Sprite has an effective drawing width of 82 px (for 100% life),
+		// we must scale it down .82 px for every unit change of battery
 		this.indicatorSprite.setWidth(new_indicator_sprite_width);
 	}
 
 	this.draw = function() {
+		this.batterySprite.draw();
 		this.indicatorSprite.draw();
 		this.barSprite.draw();
 

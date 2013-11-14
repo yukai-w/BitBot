@@ -28,6 +28,9 @@ function init() {
 	jaws.assets.add("./assets/art/ArrowLeft.png");
 	jaws.assets.add("./assets/art/ArrowRight.png");
 	jaws.assets.add("./assets/art/ArrowUp.png");
+	jaws.assets.add("./assets/art/Battery.png");
+	jaws.assets.add("./assets/art/MeterBar.png");
+	jaws.assets.add("./assets/art/BatteryIndicator.png");
 	
 	
 	////Music
