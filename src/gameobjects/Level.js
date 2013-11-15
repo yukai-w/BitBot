@@ -7,8 +7,9 @@ function Level(level_data) {
 	var pathfinding_information;
 	
 	/* These correspond to the tile (flat) representation of the level.*/
-	var tile_map;
-	var level_tiles;
+	this.levelTiles = [];
+	this.tileMap = undefined;
+	
 
 	/* Class attributes */
 	this.levelData = level_data;
@@ -18,7 +19,9 @@ function Level(level_data) {
 	var goalTileCoordinates = undefined;
 
 	/* Class initialization */
-	setup(level_data);
+	var tile_information = setup(level_data);
+	this.levelTiles = tile_information.level_tiles;
+	this.tileMap = tile_information.tile_map;
 	jaws.preventDefaultKeys(["2", "3"]);
 
 	this.update = function() {
@@ -26,7 +29,7 @@ function Level(level_data) {
 	}
 
 	this.draw = function() {
-		jaws.draw(level_tiles);	
+		jaws.draw(this.levelTiles);	
 	}
 
 	this.getPathFindingInformation = function() {
@@ -42,7 +45,7 @@ function Level(level_data) {
 		return startTileCoordinates;
 	}
 	
-	function setup(level_data) {
+	function setup(level_data, level_tiles, tile_map) {
 				
 		this.cellWidth = jaws.TileMap.prototype.default_options.cell_size[0]; // 32
 		this.cellHeight = jaws.TileMap.prototype.default_options.cell_size[1]; // 32
@@ -54,13 +57,13 @@ function Level(level_data) {
 		var num_of_vert_cells = canvas_height / this.cellHeight; // 18
 			
 		/* Flat world setup */
-		tile_map = new jaws.TileMap({
+		var level_tiles = setup_level_tiles(level_data, num_of_vert_cells, num_of_horiz_cells, this.cellWidth - 1, this.cellHeight - 1);
+		var tile_map = new jaws.TileMap({
 			size : [num_of_horiz_cells, num_of_vert_cells],
 			cell_size : [this.cellWidth, this.cellHeight]
 		});
-
-		level_tiles = setup_level_tiles(level_data, num_of_vert_cells, num_of_horiz_cells, this.cellWidth - 1, this.cellHeight - 1);
 		tile_map.push(level_tiles);
+		
 		// this.cellWidth and this.cellHeight are modified by -1 so that when drawn, the border lines overlap, as opposed to
 		// lying side by side (if they are side by side, they create a "bolded line" effect)
 
@@ -69,6 +72,8 @@ function Level(level_data) {
 		
 		pathfinding_information = extract_pathfinding_information(level_data);
 		console.log("Level.js: setup complete");
+		
+		return {level_tiles:level_tiles,tile_map:tile_map};
 	}
 	
 	function find_tile_coordinates(level_data, max_rows, max_cols, tile_width, tile_height, tile_type) {
