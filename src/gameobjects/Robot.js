@@ -3,11 +3,10 @@
  */
 function Robot(pos, type) {
 	
-	/* Sprite attributes */
-	this.flatSprite = new jaws.Sprite({x:pos.x,y:pos.y,image:Robot.types[type].tile_img});
-	// this.blockSprite = new jaws.Sprite({x:pos.x,y:pos.y,anchor:"center",image:Robot.types[type].block_img});
-	this.activeSprite = this.flatSprite;
+	var starting_position = pos;
 	
+	/* Sprite attributes */
+	this.activeSprite = new jaws.Sprite({x:pos.x,y:pos.y,image:Robot.types[type].tile_img});
 	
 	/* Drawing attributes */
 	var robot_tile_step_offset = jaws.TileMap.prototype.default_options.cell_size[0]-1; //31px
@@ -19,12 +18,13 @@ function Robot(pos, type) {
 	this.isPlayerControlled = (type == 'human_controlled' ? true : false);
 	this.isPlanning = false;
 	this.isExecuting = false;
-	this.isIdle = true;
+	this.isFalling = true; //true if we just fell off the game level
+	this.isIdle = false;
 	this.actionQueue = new goog.structs.Queue();
 	this.actionQueueSizeMax = 12; //max 12 actions queued
 	
 	this.millisecondsSpentPlanning = 0.0;
-	var planning_millisecond_threshold = 2000.0; //2 seconds
+	var planning_millisecond_threshold = 1000.0; //2 seconds
 	this.millisecondsSpentExecuting = 0.0;
 	var executing_millisecond_delay = 500.0; //.5 seconds
 	
@@ -35,7 +35,7 @@ function Robot(pos, type) {
 	
 	this.update = function() {
 		
-		if(this.isPlayerControlled) {
+		if(this.isPlayerControlled && !this.isFalling) {
 			
 			if(this.isIdle) {
 				
@@ -83,11 +83,22 @@ function Robot(pos, type) {
 			}
 		}
 		
+		else if(this.isFalling) {
+			//if we're falling, we must increase 'y' until we're off the screen
+			if(!is_outside_canvas(this.activeSprite)) {
+				this.activeSprite.y+=9.8;
+			} else {
+				this.setMode('idle');
+				this.activeSprite.moveTo(starting_position.x, starting_position.y);
+			}
+			
+		}
 		
 		else { // Do AI
 			handle_AI_input(this); //TODO: IMPLEMENT
 		}
 		
+		this.batteryLevel+=0.1; //TODO: REMOVE LATER
 		bound_player_attributes(this);
 	}
 
@@ -98,21 +109,30 @@ function Robot(pos, type) {
 	/**
 	 * Sets this Robot to the parameter mode.
 	 * @param mode a String which represents the mode to switch into.
-	 * (Acceptable values are 'planning', 'executing', and 'idle'; defaults to 'idle' if mode is unrecognized.)
+	 * (Acceptable values are 'planning', 'executing', 'idle', and 'falling'; 
+	 * defaults to 'idle' if mode is unrecognized.)
 	 */
 	this.setMode = function(mode) {
 		if(mode == 'planning') {
 			this.isIdle = false;
 			this.isPlanning = true;
 			this.isExecuting = false;
+			this.isFalling = false;
 		} else if(mode == 'executing') {
 			this.isIdle = false;
 			this.isPlanning = false;
 			this.isExecuting = true;
+			this.isFalling = false;
+		} else if(mode == 'falling') {
+			this.isIdle = false;
+			this.isPlanning = false;
+			this.isExecuting = false;
+			this.isFalling = true;
 		} else {
 			this.isIdle = true;
 			this.isPlanning = false;
 			this.isExecuting = false;
+			this.isFalling = false;
 		}
 	}
 	
