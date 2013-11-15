@@ -10,7 +10,6 @@ function PlayState() {
 	var current_background_idx;
 	var do_background_anim;
 	var background_sprites;
-	var heads_up_display;
 
 	this.setup = function() {
 
@@ -33,7 +32,7 @@ function PlayState() {
 
 		/* Level setup */
 		current_stage = new LevelStage();
-		heads_up_display = new HUD(current_stage.player);
+		
 	}
 
 	this.update = function() {
@@ -49,7 +48,6 @@ function PlayState() {
 		}
 		
 		current_stage.update();
-		heads_up_display.update();
 		fps.innerHTML = jaws.game_loop.fps;
 	}
 
@@ -58,7 +56,6 @@ function PlayState() {
 		jaws.context.clearRect(0, 0, jaws.width, jaws.height);
 		current_background.draw();
 		current_stage.draw();
-		heads_up_display.draw();
 	}
 }
 
