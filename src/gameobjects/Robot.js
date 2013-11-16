@@ -3,10 +3,11 @@
  */
 function Robot(pos, type) {
 	
-	var starting_position = pos;
+	this.startingPosition = pos;
+	this.previousPosition = undefined;
 	
 	/* Sprite attributes */
-	this.activeSprite = new jaws.Sprite({x:pos.x,y:pos.y,image:Robot.types[type].tile_img});
+	this.sprite = new jaws.Sprite({x:pos.x,y:pos.y,image:Robot.types[type].tile_img});
 	
 	/* Drawing attributes */
 	var robot_tile_step_offset = jaws.TileMap.prototype.default_options.cell_size[0]-1; //31px
@@ -85,11 +86,11 @@ function Robot(pos, type) {
 		
 		else if(this.isFalling) {
 			//if we're falling, we must increase 'y' until we're off the screen
-			if(!is_outside_canvas(this.activeSprite)) {
-				this.activeSprite.y+=9.8;
+			if(!is_outside_canvas(this.sprite)) {
+				this.sprite.y+=9.8;
 			} else {
 				this.setMode('idle');
-				this.activeSprite.moveTo(starting_position.x, starting_position.y);
+				this.sprite.moveTo(this.startingPosition.x, this.startingPosition.y);
 			}
 			
 		}
@@ -103,7 +104,7 @@ function Robot(pos, type) {
 	}
 
 	this.draw = function() {
-		this.activeSprite.draw();
+		this.sprite.draw();
 	}
 	
 	/**
@@ -141,14 +142,17 @@ function Robot(pos, type) {
 	 * @param action the action to execute ('left','right','up', or 'down')
 	 */
 	this.executeAction = function(action) {
+		
+		this.previousPosition = {x:this.sprite.x,y:this.sprite.y};
+		
 		if(action == 'left') {
-			this.activeSprite.x -= robot_tile_step_offset;
+			this.sprite.x -= robot_tile_step_offset;
 		} else if (action == 'right') {
-			this.activeSprite.x += robot_tile_step_offset;
+			this.sprite.x += robot_tile_step_offset;
 		} else if(action == 'up') {
-			this.activeSprite.y -= robot_tile_step_offset;
+			this.sprite.y -= robot_tile_step_offset;
 		} else { //action == 'down'
-			this.activeSprite.y += robot_tile_step_offset;
+			this.sprite.y += robot_tile_step_offset;
 		} 
 	}	
 	
@@ -165,19 +169,19 @@ function Robot(pos, type) {
 	function handle_player_input(player) {
 		var key_was_pressed = false;
 		if (jaws.pressedWithoutRepeat("left")) {
-			// player.activeSprite.x -= robot_tile_step_offset;
+			// player.sprite.x -= robot_tile_step_offset;
 			player.actionQueue.enqueue('left');
 			key_was_pressed = true;
 		} else if (jaws.pressedWithoutRepeat("right")) {
-			// player.activeSprite.x += robot_tile_step_offset;
+			// player.sprite.x += robot_tile_step_offset;
 			player.actionQueue.enqueue('right');
 			key_was_pressed = true;
 		} else if(jaws.pressedWithoutRepeat("up")) {
-			// player.activeSprite.y -= robot_tile_step_offset;
+			// player.sprite.y -= robot_tile_step_offset;
 			player.actionQueue.enqueue('up');
 			key_was_pressed = true
 		} else if(jaws.pressedWithoutRepeat("down")) {
-			// player.activeSprite.y += robot_tile_step_offset;
+			// player.sprite.y += robot_tile_step_offset;
 			player.actionQueue.enqueue('down');
 			key_was_pressed = true;
 		}
