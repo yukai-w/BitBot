@@ -67,8 +67,8 @@ function Level(level_data) {
 		// this.cellWidth and this.cellHeight are modified by -1 so that when drawn, the border lines overlap, as opposed to
 		// lying side by side (if they are side by side, they create a "bolded line" effect)
 
-		startTileCoordinates = find_tile_coordinates(level_data, num_of_vert_cells, num_of_horiz_cells, this.cellWidth - 1, this.cellHeight - 1, 'start');
-		goalTileCoordinates = find_tile_coordinates(level_data, num_of_vert_cells, num_of_horiz_cells, this.cellWidth - 1, this.cellHeight - 1, 'goal');
+		startTileCoordinates = find_tile_coordinates(level_data, num_of_vert_cells, num_of_horiz_cells, this.cellWidth - 1, this.cellHeight - 1, 'start_tile');
+		goalTileCoordinates = find_tile_coordinates(level_data, num_of_vert_cells, num_of_horiz_cells, this.cellWidth - 1, this.cellHeight - 1, 'goal_tile');
 		
 		pathfinding_information = extract_pathfinding_information(level_data);
 		console.log("Level.js: setup complete");
@@ -77,14 +77,7 @@ function Level(level_data) {
 	}
 	
 	function find_tile_coordinates(level_data, max_rows, max_cols, tile_width, tile_height, tile_type) {
-		var data_to_match = 0;
-		if(tile_type == 'start') {
-			data_to_match = 3;
-		} else if(tile_type == 'goal') {
-			data_to_match = 4;
-		} else {
-			data_to_match = -1; //error
-		}
+		var data_to_match = Tile.enumValueForType(tile_type); 
 		
 		var tile_coordinates = undefined;
 		for (var row_idx = 0; row_idx < max_rows; row_idx++) {
@@ -147,35 +140,6 @@ function Level(level_data) {
 	}
 	
 }
-
-Level.image_map = {
-	0 : {
-		tile : undefined,
-		offset : undefined
-	},
-	
-	1 : {
-		tile : "./assets/art/Tile.png",
-		offset : 0
-	},
-	
-	3 : {
-		tile : "./assets/art/StartTile.png",
-		offset : 0
-	},
-	
-	4 : {
-		tile : "./assets/art/GoalTile.png",
-		offset : 0
-	},
-	
-	8 : {
-		tile : "./assets/art/TileGap.png",
-		offset : 1 
-	}
-
-};
-
 
 
 

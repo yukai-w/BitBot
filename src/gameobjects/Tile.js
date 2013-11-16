@@ -2,15 +2,15 @@
  * Tiles in the world have an image associated to them, and also have a type.
  * @param {Number} x the starting x coordinate for this Tile
  * @param {Number} y the starting y coordinate for this Tile
- * @param {Number} tile_type the type of this Tile.  See Tile.enum for available types.
+ * @param {Number} enum_val the enum of this Tile.  See Tile.enum for available types.
  */
-function Tile(x, y, tile_type) {	
+function Tile(x, y, enum_val) {	
 	
 	/* Sprite attributes */
 	this.x = x; //I use internal 'x' and 'y' attributes for use in a TileMap. 
 	this.y = y;
-	this.img  = Tile.enum[tile_type].img;
-	this.type = Tile.enum[tile_type].type;
+	this.img  = Tile.enum[enum_val].img;
+	this.type = Tile.enum[enum_val].type;
 	this.sprite = new jaws.Sprite({x:this.x, y:this.y, image:this.img});
 
 	this.update = function() {
@@ -55,3 +55,23 @@ Tile.enum = {
 	}
 
 };
+
+/**
+ * Returns the enum value for the Tile given by the String tile_type.
+ * See Tile.enum for more information.
+ * @param {Object} tile_type the String that denotes the tile's type
+ */
+Tile.enumValueForType = function(tile_type) {
+	if(tile_type == 'regular_tile') {
+		return 1;
+	} else if(tile_type == 'start_tile') {
+		return 3;
+	} else if(tile_type == 'goal_tile') {
+		return 4;
+	} else if(tile_type == 'obstacle_tile') {
+		return 8;
+	} else {
+		return 0;
+	}
+}
+
