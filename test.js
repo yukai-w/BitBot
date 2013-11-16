@@ -12,3 +12,15 @@ function test_antidiagonal_transform() {
 		console.log(transformed_matrix[i][0] + "," + transformed_matrix[i][1] + "," + transformed_matrix[i][2] + "," + transformed_matrix[i][3])
 	}
 }
+
+function test_goog_queue() {
+	var q = new goog.structs.Queue();
+	q.enqueue(2);
+	q.enqueue(3);
+	q.enqueue(4);
+	console.log(q.dequeue());
+	console.log(q);
+	
+	
+}
+

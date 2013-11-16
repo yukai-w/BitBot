@@ -1,33 +1,40 @@
 <!DOCTYPE html> 
 <html>
 	<head>
-	    <script src="./lib/jaws.js"></script>
+	    <script src="./lib/jaws/jaws.js"></script>
+	    <script src="./lib/jaws/tile_map.js"></script>
 	    <script src="./lib/howler.js"></script>
+	    <script src="./lib/closure/goog/base.js"></script>
+	    <script src="./lib/closure/goog/structs/queue.js"></script>
 	    <script src="./lib/underscore-min.js"></script>
+	    <script src="./lib/pathfinding-browser.min.js"></script>
 	    <script src="./lib/jquery/jquery-2.0.3.min.js"></script>
-	    <link type="text/css" rel="stylesheet" href="style.css" />
-	    <title>CoffeeBot (Working Title)</title>
-	</head>
+		
+		<script src="main.js"></script>
+		<script src="./src/util/game_util.js"></script>
+		<script src="./src/gameobjects/HUD.js"></script>
+		<script src="./src/gameobjects/Tile.js"></script>
+		<script src="./src/gameobjects/Robot.js"></script>
+		<script src="./src/gameobjects/Person.js"></script>
+		<script src="./src/gameobjects/Level.js"></script>
 
-	<script src="main.js"></script>
-	<script src="./src/util/game_util.js"></script>
-	<script src="./src/gameobjects/Dude.js"></script>
-	<script src="./src/gameobjects/Person.js"></script>
-	<script src="./src/gameobjects/Level.js"></script>
-	
-	<script src="./src/stages/LevelStage.js"></script>
-	<script src="./src/states/MenuState.js"></script>
-	<script src="./src/states/PlayState.js"></script>
+		<script src="./src/stages/LevelStage.js"></script>
+		<script src="./src/states/MenuState.js"></script>
+		<script src="./src/states/PlayState.js"></script>
+
+	    <link type="text/css" rel="stylesheet" href="./css/game.css" />
+	    <title>BitBot</title>
+	</head>
 
 	<body>
 		
 	    <canvas width=576 height=576 id="canvas"> </canvas>
 	    
-	    FPS: <span id="fps"> </span>. Press 2 to display flat. Press 3 to display isometric.
+	    FPS: <span id="fps"> </span>. Press arrows to move around.
 	
 	    <div id="info">
-	      <h1>CoffeeBot (Working Title)</h1>
-	      <code>CoffeeBot</code> was developed by Rogelio E. Cardona-Rivera, Jos&eacute; D. V&eacute;lez, Allison G. Mart&Iacute;nez-Arocho, and Ian Coleman as part of the 2013 Github Game Jam.
+	      <h1>BitBot</h1>
+	      <code>BitBot</code> was developed by Rogelio E. Cardona-Rivera, Jos&eacute; D. V&eacute;lez, Allison G. Mart&Iacute;nez-Arocho, and Ian Coleman as part of the 2013 Github Game Jam.
 	    </div >
 	
 	    <h1>jaws log</h1>

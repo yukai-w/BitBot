@@ -14,18 +14,26 @@ function init() {
 
 	//Tiles
 	jaws.assets.add("./assets/art/Tile.png");
-	jaws.assets.add("./assets/art/TileGap.png");
+	jaws.assets.add("./assets/art/ObstacleTile.png");
 	jaws.assets.add("./assets/art/StartTile.png");
 	jaws.assets.add("./assets/art/GoalTile.png");
 	
+	//Robots
+	jaws.assets.add("./assets/art/Robot.png");
+	jaws.assets.add("./assets/art/TileRobot.png");
 	
-	//Blocks
-	jaws.assets.add("./assets/art/StartBlock.png");
-	jaws.assets.add("./assets/art/GoalBlock.png");
-	jaws.assets.add("./assets/art/Block.png");
+	//HUD
+	jaws.assets.add("./assets/art/CommandPrompt.png");
+	jaws.assets.add("./assets/art/ArrowDown.png");
+	jaws.assets.add("./assets/art/ArrowLeft.png");
+	jaws.assets.add("./assets/art/ArrowRight.png");
+	jaws.assets.add("./assets/art/ArrowUp.png");
+	jaws.assets.add("./assets/art/Battery.png");
+	jaws.assets.add("./assets/art/MeterBar.png");
+	jaws.assets.add("./assets/art/BatteryIndicator.png");
 	
 	
-	//Music
+	////Music
 	// jaws.assets.add("./assets/sound/crowd.wav");
 	jaws.start(MenuState);
 	

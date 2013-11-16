@@ -3,46 +3,33 @@
  */
 function LevelStage() {
 
-	var player;
-	var background;
-	var level_tiles;
-	var tile_map;
-	var active_level;
-	
-	this.setup = function(playerReference) {
-		
-		var level_data = setup_sample_level();
-		
-		// Player setup.
-		player = playerReference;
-		
-		// Level setup.
-		active_level = new Level(level_data);
-		
-		// To quit, press 'esc'
-		jaws.on_keydown("esc", function() {
-			jaws.switchGameState(MenuState);
-		});
+	/* Class initialization */
+	this.activeLevel = new Level(setup_sample_level());
+	this.player = new Robot(this.activeLevel.getStartTileCoordinates(), 'human_controlled');
+	this.hud = new HUD(this.player);
 
-		// Prevent the browser from catching the following keys:
-		jaws.preventDefaultKeys(["2", "3", "up", "down", "left", "right", "space"]);
-	}
+	// To quit, press 'esc'
+	jaws.on_keydown("esc", function() {
+		jaws.switchGameState(MenuState);
+	});
 
 	this.update = function() {
-		
-		active_level.update();
-		player.update();
-		
-
-		// delete items for which isOutsideCanvas(item) is true
-		fps.innerHTML = jaws.game_loop.fps;
+		this.activeLevel.update();
+		this.player.update();		
+		this.hud.update();
 	}
 
 	this.draw = function() {
 		
-		active_level.draw();
-		player.draw();
-		// will call draw() on all items in the list
+		if(this.player.isFalling) {
+			this.player.draw();
+			this.activeLevel.draw();
+		} else {
+			this.activeLevel.draw();
+			this.player.draw();
+		}
+		
+		this.hud.draw();
 	}
 	
 	function setup_sample_level() {
