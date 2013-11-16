@@ -105,14 +105,8 @@ function Level(level_data) {
 		for (var row_idx = 0; row_idx < max_rows; row_idx++) {
 			for (var col_idx = 0; col_idx < max_cols; col_idx++) {
 				var data = level_data[row_idx][col_idx];
-				var img_string = Level.image_map[data].tile;
-				if (img_string != undefined) {
-					var tile = new jaws.Sprite({
-						image : img_string,
-						x : col_idx * tile_width,
-						y : row_idx * tile_height
-					});
-
+				if (data != 0) {
+					var tile = new Tile(col_idx * tile_width, row_idx*tile_height, data);
 					lvl_tiles[lvl_tiles.length]=tile;
 				}
 			}
