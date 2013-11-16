@@ -20,6 +20,10 @@
 	width: 100%;
 }
 
+.editor-tile-undefined {
+	background-color: #000000;
+}
+
 .editor-tile-flat {
 	background-color: #aaaaaa;
 }

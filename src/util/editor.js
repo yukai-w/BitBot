@@ -29,7 +29,7 @@ var Editor = {
 	mouseDown: false,
 	editorContainer: null,
 	printoutContainer: null,
-	keyModifier: null,
+	keyModifier: undefined,
 	generateGridButton: null,
 	
 	// tile type enum
@@ -70,7 +70,10 @@ var Editor = {
 			}
 			else if(event.which == 71) {
 				editor.keyModifier = 'g';
-			}
+			} 
+//			else {
+//				editor.keyModifier = undefined;
+//			}
 		});
 		
 		$(document).keyup(function(event) {
@@ -86,7 +89,7 @@ var Editor = {
 		for(var i=0; i < this.height; i++) {
 			this.grid[i] = new Array(this.width);
 			for(var j=0; j < this.width; j++) {
-				this.grid[i][j] = -1;
+				this.grid[i][j] = 0;
 			}
 		}
 	},
@@ -182,7 +185,9 @@ var Editor = {
 		case this.tileTypes.RAISED:
 			tile.addClass("editor-tile-raised");
 			break;
+		case this.tileTypes.UNDEFINED:
 		default:
+			tile.addClass("editor-tile-undefined");
 			break;
 		}
 	},
@@ -209,8 +214,11 @@ var Editor = {
 			else if(editor.keyModifier === 'g') {					
 				tileType = editor.tileTypes.GOAL;					
 			}
-			else {
+			else if(editor.keyModifier === 'f') {
 				tileType = editor.tileTypes.FLAT;
+			}
+			else if(editor.keyModifier === undefined) {
+				tileType = editor.tileTypes.UNDEFINED;
 			}
 			editor.setTileType(tile, tileType);
 			editor.updateGrid(columnIndex, rowIndex, tileType);
@@ -242,7 +250,7 @@ var Editor = {
 		
 		editor.printoutContainer.append("[");
 		$.each(this.grid, function(index, row) {
-			editor.printoutContainer.append("[<span class='editor-output-row'>" + row.toString() + "<span>]" + ((index < $(this).length-1) ? "," : ""));			
+			editor.printoutContainer.append("<span class='editor-output-row'>[" + row.toString() + "]" + ((index < $(this).length-1) ? "," : "") + "<span><br />");			
 		});
 		editor.printoutContainer.append("]");
 	}
