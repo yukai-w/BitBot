@@ -113,12 +113,11 @@ function antidiagonal_transform(rectangular_matrix) {
 
 }
 
- /** 
-   * Tests whether or not 'item' is outside the game's canvas.
-   * @param {Object} item an object that has a coordinate
-   * @return True if the object is outside the canvas
-   */
-  function is_outside_canvas(item) { 
-    return (item.x < 0 || item.y < 0 || item.x > jaws.width || item.y > jaws.height); 
-  }
-
+/** 
+  * Tests whether or not 'item' is outside the game's canvas.
+  * @param {Object} item an object that has a coordinate
+  * @return True if the object is outside the canvas
+  */
+function is_outside_canvas(item) { 
+	return (item.x < 0 || item.y < 0 || item.x > jaws.width || item.y > jaws.height); 
+}
