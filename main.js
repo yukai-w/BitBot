@@ -14,7 +14,7 @@ function init() {
 
 	//Tiles
 	jaws.assets.add("./assets/art/Tile.png");
-	jaws.assets.add("./assets/art/TileGap.png");
+	jaws.assets.add("./assets/art/ObstacleTile.png");
 	jaws.assets.add("./assets/art/StartTile.png");
 	jaws.assets.add("./assets/art/GoalTile.png");
 	
