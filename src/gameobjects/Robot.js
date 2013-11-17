@@ -7,6 +7,8 @@ function Robot(pos, type, speed) {
 	var robot_step_distance = Tile.default_size.width-1; //31px
 	var robot_vert_offset = 10;
 	
+	/* Sound attributes */
+	this.fallingSfx = new Howl({urls:['./assets/sounds/fx/fall.mp3']});
 	
 	/* Sprite attributes */	
 	this.sprite = new jaws.Sprite({
@@ -50,7 +52,7 @@ function Robot(pos, type, speed) {
 	jaws.preventDefaultKeys(["up", "down", "left", "right"]); 
 	
 	this.update = function() {
-		
+			
 		if(this.isPlayerControlled && !this.isFalling) {
 			
 			if(this.isIdle) {
@@ -109,12 +111,17 @@ function Robot(pos, type, speed) {
 		}
 		
 		else if(this.isPlayerControlled && this.isFalling) {
+			
+			//this is true only once, right before we fall, so play the fall sound
+			if(this.sprite.y == this.previousPosition.y) {
+				this.fallingSfx.play(); 
+			}
+			
 			//if we're falling, we must increase 'y' until we're off the screen
 			if(!is_outside_canvas(this.sprite)) {
 				this.sprite.y+=9.8;
 			} else {
-				this.setMode('idle');
-				this.sprite.moveTo(this.startingPosition.x, this.startingPosition.y);
+				this.reset();
 			}
 			
 		}
@@ -129,6 +136,13 @@ function Robot(pos, type, speed) {
 
 	this.draw = function() {
 		this.sprite.draw();
+	}
+	
+	this.reset = function() {
+		this.setMode('idle');
+		this.sprite.moveTo(this.startingPosition.x, this.startingPosition.y);
+		this.targetPosition = undefined;
+		this.actionQueue.clear();
 	}
 	
 	/**
