@@ -3,8 +3,17 @@
  */
 function Robot(pos, type, speed) {
 		
-	/* Sprite attributes */
-	this.sprite = new jaws.Sprite({x:pos.x,y:pos.y+10,image:Robot.types[type].tile_img,anchor:"center_bottom"});
+	/* Sprite attributes */	
+	this.sprite = new jaws.Sprite({
+		x : pos.x,
+		y : pos.y-10,
+		image : Robot.types[type].tile_img,
+		anchor : "center_bottom",
+		scale : 0.85
+	}); 
+
+	this.width = this.sprite.rect().width;
+	this.height = this.sprite.rect().height;
 	this.speed = speed || 3;
 	this.velocityX = 0.0;
 	this.velocityY = 0.0;

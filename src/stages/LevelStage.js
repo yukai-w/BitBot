@@ -5,7 +5,7 @@ function LevelStage() {
 
 	/* Class initialization */
 	this.activeLevel = new Level(setup_sample_level());
-	this.player = new Robot(this.activeLevel.startTile.getCenterCoordinate(), 'human_controlled');
+	this.player = new Robot(this.activeLevel.startTile.getPositionAsCoordinate(), 'human_controlled');
 	this.hud = new HUD(this.player);
 
 	// To quit, press 'esc'
@@ -27,16 +27,20 @@ function LevelStage() {
 		
 		//if the player updates and moves to a place where there is an obstacle tile, 
 		//then revert the move and apply a penalty
-		// if(tiles_at_new_player_position != undefined && tiles_at_new_player_position.length > 0) {
-			// var tile = tiles_at_new_player_position[0];  //guaranteed to be of length 1
-			// if(tile.type == 'obstacle_tile') {
-				// this.player.sprite.moveTo(this.player.previousPosition.x, this.player.previousPosition.y);
-			// }
-// 			
-// 			
-			// //TODO: Apply penalty
-// 			
-		// }
+		// console.log(tiles_at_new_player_position);
+		if(tiles_at_new_player_position != undefined && tiles_at_new_player_position.length > 0) {
+			var tile = tiles_at_new_player_position[0];  //guaranteed to be of length 1
+			if(tile.type == 'obstacle_tile') {
+				console.log('obstacle detected!');
+				this.player.targetPosition = {x:this.player.previousPosition.x, y:this.player.previousPosition.y};
+				this.player.setMode('executing');
+				//TODO: Apply penalty
+			}
+			
+			
+			
+			
+		}
 		
 		//if the player updates and moves to a place where there is an enemy
 		//robot, then revert the move and apply a penalty
@@ -62,6 +66,8 @@ function LevelStage() {
 		var sample_level = [[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0],
 							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0],
 							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0],
@@ -72,8 +78,6 @@ function LevelStage() {
 							[ 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[ 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[ 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];								
