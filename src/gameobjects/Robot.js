@@ -4,13 +4,13 @@
 function Robot(pos, type, speed) {
 		
 	/* Sprite attributes */
-	this.sprite = new jaws.Sprite({x:pos.x,y:pos.y,image:Robot.types[type].tile_img});
+	this.sprite = new jaws.Sprite({x:pos.x,y:pos.y+10,image:Robot.types[type].tile_img,anchor:"center_bottom"});
 	this.speed = speed || 3;
 	this.velocityX = 0.0;
 	this.velocityY = 0.0;
 	
 	/* Drawing attributes */
-	var robot_step_distance = jaws.TileMap.prototype.default_options.cell_size[0]-1; //31px
+	var robot_step_distance = Tile.default_size.width-1; //31px
 
 	/* Game logic attributes */
 	this.startingPosition = pos;
@@ -23,8 +23,8 @@ function Robot(pos, type, speed) {
 	this.isPlayerControlled = (type == 'human_controlled' ? true : false);
 	this.isPlanning = false;
 	this.isExecuting = false;
-	this.isFalling = true; //true if we just fell off the game level
-	this.isIdle = false;
+	this.isFalling = false; //true if we just fell off the game level
+	this.isIdle = true;
 	this.actionQueue = new goog.structs.Queue();
 	this.actionQueueSizeMax = 12; //max 12 actions queued
 	
@@ -43,7 +43,6 @@ function Robot(pos, type, speed) {
 		if(this.isPlayerControlled && !this.isFalling) {
 			
 			if(this.isIdle) {
-				
 				if(handle_player_input(this)) {
 					//when you're idle, and you begin inputting commands, you enter planning mode.
 					this.setMode('planning'); 
@@ -227,7 +226,7 @@ function Robot(pos, type, speed) {
  */
 Robot.types = {
 	'human_controlled' : {
-		tile_img : "./assets/art/TileRobot.png",
+		tile_img : "./assets/art/BitBot39x54Blue.png",
 		block_img : "./assets/art/Robot.png",
 	},
 	

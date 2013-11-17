@@ -21,6 +21,10 @@ function init() {
 	//Robots
 	jaws.assets.add("./assets/art/Robot.png");
 	jaws.assets.add("./assets/art/TileRobot.png");
+	jaws.assets.add("./assets/art/BitBot39x54Blue.png");
+	jaws.assets.add("./assets/art/BitBot39x54Gray.png");
+	
+	
 	
 	//HUD
 	jaws.assets.add("./assets/art/CommandPrompt.png");
