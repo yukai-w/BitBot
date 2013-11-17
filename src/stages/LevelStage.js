@@ -21,21 +21,39 @@ function LevelStage() {
 		var player_y_pos = this.player.sprite.y;
 		var tiles_at_new_player_position = this.activeLevel.tileMap.at(player_x_pos, player_y_pos);
 		
-		//if the player updates and moves to a place where there is no tile,
-		//have the player fall
-		
-		
-		//if the player updates and moves to a place where there is an obstacle tile, 
-		//then revert the move and apply a penalty
-		// console.log(tiles_at_new_player_position);
-		if(tiles_at_new_player_position != undefined && tiles_at_new_player_position.length > 0) {
-			var tile = tiles_at_new_player_position[0];  //guaranteed to be of length 1
-			if(tile.type == 'obstacle_tile') {
-				console.log('obstacle detected!');
-				this.player.targetPosition = {x:this.player.previousPosition.x, y:this.player.previousPosition.y};
-				this.player.setMode('executing');
-				//TODO: Apply penalty
+		if(tiles_at_new_player_position != undefined) {
+			
+			//if the player updates and moves to a place where there is no tile,
+			if (tiles_at_new_player_position.length == 0) {
+				
+				//the check below happens when the player is still 
+				//for the brief instant that she is finding a new
+				//tile to target - needed so that the player actually
+				//animates to move over the hole, and then falls.
+				if(this.player.targetPosition == undefined) {
+					this.player.setMode('falling'); //have the player fall	
+				}
+				
+			} else {
+				var tile = tiles_at_new_player_position[0]; //guaranteed to be of length 1
+				if (tile.type == 'obstacle_tile') {
+					//if the player updates and moves to a place where there is
+					//an obstacle tile, then revert the move and apply a penalty
+					
+					this.player.targetPosition = {
+						x : this.player.previousPosition.x,
+						y : this.player.previousPosition.y
+					};
+					this.player.setMode('executing');
+					//TODO: Apply penalty
+				}
 			}
+		}
+		
+		
+		
+		
+		if(tiles_at_new_player_position != undefined && tiles_at_new_player_position.length > 0) {
 			
 			
 			

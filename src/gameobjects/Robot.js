@@ -2,11 +2,16 @@
  * A Robot. 
  */
 function Robot(pos, type, speed) {
-		
+	
+	/* Drawing attributes */
+	var robot_step_distance = Tile.default_size.width-1; //31px
+	var robot_vert_offset = 10;
+	
+	
 	/* Sprite attributes */	
 	this.sprite = new jaws.Sprite({
 		x : pos.x,
-		y : pos.y-10,
+		y : pos.y-robot_vert_offset,
 		image : Robot.types[type].tile_img,
 		anchor : "center_bottom",
 		scale : 0.85
@@ -18,11 +23,8 @@ function Robot(pos, type, speed) {
 	this.velocityX = 0.0;
 	this.velocityY = 0.0;
 	
-	/* Drawing attributes */
-	var robot_step_distance = Tile.default_size.width-1; //31px
-
 	/* Game logic attributes */
-	this.startingPosition = pos;
+	this.startingPosition = {x:pos.x,y:pos.y-robot_vert_offset};
 	this.previousPosition = undefined;
 	this.targetPostion = undefined;
 	
