@@ -113,13 +113,15 @@ function Robot(pos, type, speed) {
 		else if(this.isPlayerControlled && this.isFalling) {
 			
 			//this is true only once, right before we fall, so play the fall sound
-			if(this.sprite.y == this.previousPosition.y) {
+			if(this.sprite.x == this.previousPosition.x ||
+				this.sprite.y == this.previousPosition.y) {
 				this.fallingSfx.play(); 
 			}
 			
 			//if we're falling, we must increase 'y' until we're off the screen
 			if(!is_outside_canvas(this.sprite)) {
 				this.sprite.y+=9.8;
+				this.sprite.x+=0.1; //done to avoid playing the sound forever
 			} else {
 				this.reset();
 			}
