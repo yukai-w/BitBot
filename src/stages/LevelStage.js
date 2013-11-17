@@ -3,7 +3,26 @@
  */
 function LevelStage() {
 
-	/* Class initialization */
+	/* Fx files */
+	var powerupSound = new Howl({
+		urls : ['./assets/sounds/fx/powerup.mp3']
+	});
+	var errorSound = new Howl({
+		urls : ['./assets/sounds/fx/error.mp3']
+	});
+
+	/* Music files */
+	var gameOverMusic = new Howl({
+		urls : ['./assets/sounds/music/gameover.mid']
+	});
+	var metonymyMusic = new Howl({
+		urls : ['./assets/sounds/music/metonymy.mid'],
+		loop : true
+	});
+	
+	metonymyMusic.play();
+
+	/* Level initialization */
 	this.activeLevel = new Level(setup_sample_level());
 	this.player = new Robot(this.activeLevel.startTile.getPositionAsCoordinate(), 'human_controlled');
 	this.hud = new HUD(this.player);
@@ -45,8 +64,9 @@ function LevelStage() {
 						y : this.player.previousPosition.y
 					};
 					this.player.setMode('executing');
+					this.player.actionQueue.clear();
 					//TODO: Apply penalty
-				}
+				}	
 			}
 		}
 		
