@@ -1,18 +1,22 @@
 /**
  * A Robot. 
  */
-function Robot(pos, type) {
-	
-	this.startingPosition = pos;
-	this.previousPosition = undefined;
-	
+function Robot(pos, type, speed) {
+		
 	/* Sprite attributes */
 	this.sprite = new jaws.Sprite({x:pos.x,y:pos.y,image:Robot.types[type].tile_img});
+	this.speed = speed || 3;
+	this.velocityX = 0.0;
+	this.velocityY = 0.0;
 	
 	/* Drawing attributes */
-	var robot_tile_step_offset = jaws.TileMap.prototype.default_options.cell_size[0]-1; //31px
+	var robot_step_distance = jaws.TileMap.prototype.default_options.cell_size[0]-1; //31px
 
 	/* Game logic attributes */
+	this.startingPosition = pos;
+	this.previousPosition = undefined;
+	this.targetPostion = undefined;
+	
 	this.batteryLevel = 100.0;
 	var battery_decay = 10.0;
 	
@@ -64,22 +68,32 @@ function Robot(pos, type) {
 				}
 			} else { //must be in execution
 				
-				//this execution delay is so that the player takes actions slowly
-				//(for game aesthetic purposes)
-				if(this.millisecondsSpentExecuting > executing_millisecond_delay) {
-					if( ! this.actionQueue.isEmpty()) {
-						var action = this.actionQueue.dequeue();
-						this.executeAction(action);
-						this.batteryLevel -= battery_decay;
-					} else {
-						this.setMode('idle');	
-					}
+				//if we have a target, move to it.
+				if(this.targetPosition != undefined) {
+					var tx = this.targetPosition.x - this.sprite.x;
+					var ty = this.targetPosition.y - this.sprite.y;
+					var distance_to_target = Math.sqrt((tx*tx) + (ty*ty));
 					
-					this.millisecondsSpentExecuting = 0.0;
+					this.velocityX = (tx/distance_to_target) * this.speed;
+					this.velocityY = (ty/distance_to_target) * this.speed;
+					
+					if(distance_to_target > 1) {
+						this.sprite.x += this.velocityX;
+						this.sprite.y += this.velocityY;
+					} else {
+						this.sprite.x = this.targetPosition.x;
+						this.sprite.y = this.targetPosition.y;
+						this.targetPosition = undefined;
+					}
+				} else if (! this.actionQueue.isEmpty()) {
+					//otherwise, try to find a new target.
+					this.previousPosition = {x:this.sprite.x,y:this.sprite.y};
+					var action = this.actionQueue.dequeue();
+					this.findActionTarget(action);
+					this.batteryLevel -= battery_decay;
 				} else {
-					this.millisecondsSpentExecuting += jaws.game_loop.tick_duration;
+					this.setMode('idle');
 				}
-				
 					
 			}
 		}
@@ -138,21 +152,21 @@ function Robot(pos, type) {
 	}
 	
 	/**
-	 * Executes the parameter action on this Robot.
+	 * Sets this Robot's target given the action to execute.
 	 * @param action the action to execute ('left','right','up', or 'down')
 	 */
-	this.executeAction = function(action) {
+	this.findActionTarget = function(action) {
 		
-		this.previousPosition = {x:this.sprite.x,y:this.sprite.y};
+		this.targetPosition = {x: this.sprite.x, y: this.sprite.y};
 		
 		if(action == 'left') {
-			this.sprite.x -= robot_tile_step_offset;
+			this.targetPosition.x -= robot_step_distance;
 		} else if (action == 'right') {
-			this.sprite.x += robot_tile_step_offset;
+			this.targetPosition.x += robot_step_distance;
 		} else if(action == 'up') {
-			this.sprite.y -= robot_tile_step_offset;
+			this.targetPosition.y -= robot_step_distance;
 		} else { //action == 'down'
-			this.sprite.y += robot_tile_step_offset;
+			this.targetPosition.y += robot_step_distance;
 		} 
 	}	
 	
@@ -169,19 +183,19 @@ function Robot(pos, type) {
 	function handle_player_input(player) {
 		var key_was_pressed = false;
 		if (jaws.pressedWithoutRepeat("left")) {
-			// player.sprite.x -= robot_tile_step_offset;
+			// player.sprite.x -= robot_step_distance;
 			player.actionQueue.enqueue('left');
 			key_was_pressed = true;
 		} else if (jaws.pressedWithoutRepeat("right")) {
-			// player.sprite.x += robot_tile_step_offset;
+			// player.sprite.x += robot_step_distance;
 			player.actionQueue.enqueue('right');
 			key_was_pressed = true;
 		} else if(jaws.pressedWithoutRepeat("up")) {
-			// player.sprite.y -= robot_tile_step_offset;
+			// player.sprite.y -= robot_step_distance;
 			player.actionQueue.enqueue('up');
 			key_was_pressed = true
 		} else if(jaws.pressedWithoutRepeat("down")) {
-			// player.sprite.y += robot_tile_step_offset;
+			// player.sprite.y += robot_step_distance;
 			player.actionQueue.enqueue('down');
 			key_was_pressed = true;
 		}

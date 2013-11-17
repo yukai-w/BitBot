@@ -31,8 +31,6 @@ function LevelStage() {
 			var tile = tiles_at_new_player_position[0];  //guaranteed to be of length 1
 			if(tile.type == 'obstacle_tile') {
 				this.player.sprite.moveTo(this.player.previousPosition.x, this.player.previousPosition.y);
-				shakescreen(2);
-								
 			}
 			
 			
