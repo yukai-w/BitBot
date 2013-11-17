@@ -13,14 +13,16 @@ function LevelStage() {
 
 	/* Music files */
 	var gameOverMusic = new Howl({
-		urls : ['./assets/sounds/music/gameover.mid']
-	});
-	var metonymyMusic = new Howl({
-		urls : ['./assets/sounds/music/metonymy.mid'],
-		loop : true
+		urls : ['./assets/sounds/music/gameover.mp3']
 	});
 	
-	metonymyMusic.play();
+	var metonymyMusic = new Howl({
+		urls : ['./assets/sounds/music/metonymy.mp3'],
+		loop : true,
+		volume : 0.1
+	}).play(); 
+
+	
 
 	/* Level initialization */
 	this.activeLevel = new Level(setup_sample_level());
@@ -65,6 +67,7 @@ function LevelStage() {
 					};
 					this.player.setMode('executing');
 					this.player.actionQueue.clear();
+					errorSound.play();
 					//TODO: Apply penalty
 				}	
 			}
