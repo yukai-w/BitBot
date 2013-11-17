@@ -52,3 +52,17 @@
 	right: 10px;
 	top: 40px;
 }
+
+#alert {
+	border: solid 2px #0f0f0f;
+	width: 200px;
+	height: 60px;
+	position: absolute;
+	top: 5px;
+	top: 20px;
+	z-index: 10;
+	background-color: #f3f3f3;
+	color: #0f0f0f;
+	text-align: center;
+	padding-top: 10px;
+}
