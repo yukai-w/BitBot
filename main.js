@@ -19,8 +19,8 @@ function init() {
 	jaws.assets.add("./assets/art/GoalTile.png");
 	
 	//Robots
-	jaws.assets.add("./assets/art/BitBot39x54Blue.png");
-	jaws.assets.add("./assets/art/BitBot39x54Gray.png");
+	jaws.assets.add("./assets/art/BitBot.png");
+	jaws.assets.add("./assets/art/BitBotTrainer-DreyfusClass.png");
 	
 	
 	//HUD

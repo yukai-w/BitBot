@@ -108,7 +108,7 @@ function Robot(pos, type, speed) {
 			}
 		}
 		
-		else if(this.isFalling) {
+		else if(this.isPlayerControlled && this.isFalling) {
 			//if we're falling, we must increase 'y' until we're off the screen
 			if(!is_outside_canvas(this.sprite)) {
 				this.sprite.y+=9.8;
@@ -237,12 +237,10 @@ function Robot(pos, type, speed) {
  */
 Robot.types = {
 	'human_controlled' : {
-		tile_img : "./assets/art/BitBot39x54Blue.png",
-		block_img : "./assets/art/Robot.png",
+		tile_img : "./assets/art/BitBot.png",
 	},
 	
 	'dreyfus_class' : {
-		tile_img : "./assets/art/TileRobot.png",
-		block_img : "./assets/art/Robot.png"
+		tile_img : "./assets/art/BitBotTrainer-DreyfusClass.png",
 	}
 };

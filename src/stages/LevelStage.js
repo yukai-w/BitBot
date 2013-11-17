@@ -50,16 +50,6 @@ function LevelStage() {
 			}
 		}
 		
-		
-		
-		
-		if(tiles_at_new_player_position != undefined && tiles_at_new_player_position.length > 0) {
-			
-			
-			
-			
-		}
-		
 		//if the player updates and moves to a place where there is an enemy
 		//robot, then revert the move and apply a penalty
 			
