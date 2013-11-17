@@ -36,7 +36,7 @@ function init() {
 	
 	////Music
 	jaws.assets.add("./assets/sounds/music/metonymy.mp3");
-	jaws.assets.add("./assets/sounds/music/gameover.mid");
+	jaws.assets.add("./assets/sounds/music/gameover.mp3");
 	jaws.assets.add("./assets/sounds/fx/error.mp3");
 	jaws.assets.add("./assets/sounds/fx/fall.mp3");
 	jaws.assets.add("./assets/sounds/fx/powerup.mp3");
