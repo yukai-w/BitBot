@@ -1,8 +1,11 @@
 #editor-container {
 	position: relative;
 	width: 1024px;
-	text-align: center;
-	margin: 0 auto;
+}
+
+#editor-grid-container {
+	position: relative;
+	width: 900px;
 }
 
 .editor-tile {
@@ -11,6 +14,14 @@
 	background-color: #000000;
 	border: solid 1px #ffffff;
 	position: absolute;
+}
+
+.editor-output-row {
+	width: 100%;
+}
+
+.editor-tile-undefined {
+	background-color: #000000;
 }
 
 .editor-tile-flat {
@@ -29,6 +40,29 @@
 	background-color: #555555;
 }
 
-span.editor-output-row {
-	
+#editor-gen-grid-btn-container {
+	position: absolute;
+	width: 30px;
+	right: 10px;
+}
+
+#printout-container {
+	position: absolute;
+	width: 100px;
+	right: 10px;
+	top: 40px;
+}
+
+#alert {
+	border: solid 2px #0f0f0f;
+	width: 200px;
+	height: 60px;
+	position: absolute;
+	top: 5px;
+	top: 20px;
+	z-index: 10;
+	background-color: #f3f3f3;
+	color: #0f0f0f;
+	text-align: center;
+	padding-top: 10px;
 }
