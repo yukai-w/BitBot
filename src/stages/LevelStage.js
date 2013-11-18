@@ -26,6 +26,7 @@ function LevelStage() {
 
 	/* Level initialization */
 	this.activeLevel = new Level(setup_sample_level());
+	this.enemies = Robot.extractRobotInformation(setup_sample_enemies());
 	this.player = new Robot(this.activeLevel.startTile.getCenterCoordinate(), 'human_controlled');
 	this.hud = new HUD(this.player);
 
@@ -37,14 +38,18 @@ function LevelStage() {
 	this.update = function() {
 		this.player.update();
 		this.activeLevel.update();
+		jaws.update(this.enemies);
 		
 		
 		var x_pos = this.player.sprite.x;
 		var y_pos = this.player.sprite.y;
 		var tiles_at_new_player_position = this.activeLevel.tileMap.at(x_pos,y_pos);
 		
+		//TODO:
+		//I need to do the below for everyone, not just the player - 
+		//otherwise, the robot might land on top of an obstacle.
+		
 		if(tiles_at_new_player_position != undefined) {
-			console.log(tiles_at_new_player_position);
 			//if the player updates and moves to a place where there is no tile,
 			if (tiles_at_new_player_position.length == 0) {
 				
@@ -70,7 +75,9 @@ function LevelStage() {
 					this.player.actionQueue.clear();
 					errorSound.play();
 					//TODO: Apply penalty
-				}	
+				} else if(tile.type == 'goal_tile') {
+					//TODO: you win!
+				}
 			}
 		}
 		
@@ -90,6 +97,7 @@ function LevelStage() {
 			this.player.draw();
 		}
 		
+		jaws.draw(this.enemies);
 		this.hud.draw();
 	}
 	
@@ -115,6 +123,30 @@ function LevelStage() {
 							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];								
 		
 		return sample_level;
-	}	
+	}
+	
+	function setup_sample_enemies() {
+		
+		var sample_enemies = [[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 8, 0, 0, 7, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
+							
+		return sample_enemies;	
+	}
 }
 
