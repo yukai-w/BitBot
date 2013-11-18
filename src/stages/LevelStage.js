@@ -32,7 +32,9 @@ function LevelStage() {
 	
 	this.robotsInPlay = [];
 	this.robotsOutOfPlay = [];
-	this.robotsFreezeFrame = [];
+	
+	this.robotsFreezeFrameInPlay = [];
+	this.robotsFreezeFrameOutOfPlay = [];
 
 	this.hud = new HUD(this.player);
 
@@ -47,17 +49,28 @@ function LevelStage() {
 		
 		//create freeze frames
 		if(this.player.isPlanning) {
-			if(this.robotsFreezeFrame.length == 0) {
+			if(this.robotsFreezeFrameInPlay.length == 0 && this.robotsFreezeFrameOutOfPlay.length == 0) {
 				var number_of_robots = this.robots.length, robot = null;
 				for (var robot_idx = 0; robot_idx < number_of_robots; robot_idx++) {
 					robot = this.robots[robot_idx];
 					pos = {x:robot.sprite.x, y:robot.sprite.y-robot.drawing_vert_offset};
-					this.robotsFreezeFrame[this.robotsFreezeFrame.length] = new Robot(pos, robot.type, robot.directionCode, robot.orientation);
+					
+					if(robot.isFalling) {
+						this.robotsFreezeFrameOutOfPlay[this.robotsFreezeFrameOutOfPlay.length] = new Robot(pos, robot.type, robot.directionCode, robot.orientation);
+					} else {
+						this.robotsFreezeFrameInPlay[this.robotsFreezeFrameInPlay.length] = new Robot(pos, robot.type, robot.directionCode, robot.orientation);
+					}
+					
+					
 				}
 			}
 		} else {
-			if(this.robotsFreezeFrame.length != 0) {
-				goog.array.clear(this.robotsFreezeFrame);
+			if(this.robotsFreezeFrameInPlay.length != 0) {
+				goog.array.clear(this.robotsFreezeFrameInPlay);
+			}
+			
+			if(this.robotsFreezeFrameOutOfPlay.length != 0) {
+				goog.array.clear(this.robotsFreezeFrameOutOfPlay);
 			}
 		}
 		
@@ -150,8 +163,9 @@ function LevelStage() {
 			this.activeLevel.draw();
 			jaws.draw(this.robotsInPlay);
 		} else {
+			jaws.draw(this.robotsFreezeFrameOutOfPlay);
 			this.activeLevel.draw();
-			jaws.draw(this.robotsFreezeFrame);
+			jaws.draw(this.robotsFreezeFrameInPlay);
 		}		
 		this.hud.draw();
 	}
