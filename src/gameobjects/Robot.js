@@ -24,7 +24,7 @@ function Robot(pos, type, direction_code) {
 
 	this.width = this.sprite.rect().width;
 	this.height = this.sprite.rect().height;
-	this.speed = 3;
+	this.speed = (type == 'player_controlled' ? 3 : 1);
 	this.velocityX = 0.0;
 	this.velocityY = 0.0;
 
@@ -41,7 +41,7 @@ function Robot(pos, type, direction_code) {
 	this.batteryLevel = 100.0;
 	var battery_decay = 10.0;
 
-	this.isPlayerControlled = (type == 'human_controlled' ? true : false);
+	this.isPlayerControlled = (type == 'player_controlled' ? true : false);
 	this.isPlanning = false;
 	this.isExecuting = false;
 	this.isFalling = false;
@@ -133,7 +133,9 @@ function Robot(pos, type, direction_code) {
 		} else {
 			//this is true only once, right before we fall, so play the fall sound
 			if (this.sprite.x == this.previousPosition.x || this.sprite.y == this.previousPosition.y) {
-				this.fallingSfx.play();
+				if(this.isPlayerControlled) {
+					this.fallingSfx.play(); //only play sounds for the player
+				}
 			}
 
 			//if we're falling, we must increase 'y' until we're off the screen
@@ -285,7 +287,7 @@ function Robot(pos, type, direction_code) {
  * An enum of the Robot types, which contains information of image files.
  */
 Robot.types = {
-	'human_controlled' : {
+	'player_controlled' : {
 		img : "./assets/art/BitBot.png",
 	},
 
