@@ -107,7 +107,7 @@ function Robot(pos, type, direction_code, orientation) {
 		{
 			if (this.isIdle) 
 			{
-				//if we're idle, and the moving sfx was playing, stop it
+				//if we're idle, and the executing sfx was playing, stop it
 				if(this.executingSfx.pos() > 0) {
 					this.executingSfx.stop();
 				}
@@ -187,7 +187,7 @@ function Robot(pos, type, direction_code, orientation) {
 					}
 					
 					if(ty > 0) {
-						this.sprite.setImage(this.idleAnimation.next());
+						this.sprite.setImage(this.walkDownFrame);
 						this.orientation = this.walkDownFrame;
 					}
 					
