@@ -22,8 +22,7 @@ function Robot(pos, type, direction_code) {
 	this.walkUpFrame = animation.slice(0,1);
 	this.walkLeftFrame = animation.slice(1,2);
 	this.walkRightFrame = animation.slice(2,3);
-	this.idleAnimation = animation.slice(3,6);
-		
+	this.idleAnimation = animation.slice(3,6);		
 	this.sprite = new jaws.Sprite({
 		x : pos.x,
 		y : (pos.y + this.drawing_vert_offset),
@@ -32,32 +31,6 @@ function Robot(pos, type, direction_code) {
 	});
 	
 	this.sprite.setImage(this.idleAnimation.next());
-	
-	
-	
-	// var player_vert_anim = new jaws.Animation({
-		// sprite_sheet : "./assets/art/player_spritesheet_updown.png",
-		// frame_size : [128, 128],
-		// loop : true
-	// });
-// 
-	// //Sprite and collision attributes
-	// this.sprite = new jaws.Sprite({
-		// x : x,
-		// y : y,
-		// anchor : "center",
-		// scale : 0.75
-	// });
-	// this.anim_walk_left = player_horiz_anim.slice(0, 8);
-	// this.anim_walk_right = player_horiz_anim.slice(8, 16);
-	// this.anim_walk_down = player_vert_anim.slice(0, 8);
-
-	
-	
-	
-	
-	
-
 	this.width = this.sprite.rect().width;
 	this.height = this.sprite.rect().height;
 	this.speed = (type == 'player_controlled' ? 3 : 1);
@@ -108,6 +81,8 @@ function Robot(pos, type, direction_code) {
 					if (handle_player_input(this)) {
 						//when you're idle, and you begin inputting commands, you enter planning mode.
 						this.setMode('planning');
+					} else {
+						this.sprite.setImage(this.idleAnimation.next());
 					}
 				} else {// Do AI
 					handle_AI_input(this);
