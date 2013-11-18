@@ -11,6 +11,8 @@ function Level(level_data) {
 	this.startTile = setup_information.start_tile;
 	this.goalTile = setup_information.goal_tile;
 	var pathfinding_information = setup_information.pathfinding_information;
+	
+	console.log(this.tileMap.toString());
 
 	jaws.preventDefaultKeys(["2", "3"]);
 
@@ -43,7 +45,7 @@ function Level(level_data) {
 		var num_of_horiz_cells = canvas_width / tile_width; // 18
 		var num_of_vert_cells = canvas_height / tile_height; // 18
 		
-		var level_information = extract_level_information(level_data, num_of_vert_cells, num_of_horiz_cells, tile_width - 1, tile_height - 1);
+		var level_information = extract_level_information(level_data, num_of_vert_cells, num_of_horiz_cells, tile_width, tile_height);
 		var level_tiles = level_information.level_tiles;
 		var tile_map = new jaws.TileMap({
 			size : [num_of_horiz_cells, num_of_vert_cells],

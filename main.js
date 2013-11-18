@@ -20,6 +20,7 @@ function init() {
 	
 	//Robots
 	jaws.assets.add("./assets/art/BitBot.png");
+	jaws.assets.add("./assets/art/SmallBitBot.png");
 	jaws.assets.add("./assets/art/BitBotTrainer-DreyfusClass.png");
 	
 	

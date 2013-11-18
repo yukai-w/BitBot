@@ -26,7 +26,7 @@ function LevelStage() {
 
 	/* Level initialization */
 	this.activeLevel = new Level(setup_sample_level());
-	this.player = new Robot(this.activeLevel.startTile.getPositionAsCoordinate(), 'human_controlled');
+	this.player = new Robot(this.activeLevel.startTile.getCenterCoordinate(), 'human_controlled');
 	this.hud = new HUD(this.player);
 
 	// To quit, press 'esc'
@@ -35,15 +35,16 @@ function LevelStage() {
 	});
 
 	this.update = function() {
-		this.activeLevel.update();
 		this.player.update();
+		this.activeLevel.update();
 		
-		var player_x_pos = this.player.sprite.x;
-		var player_y_pos = this.player.sprite.y;
-		var tiles_at_new_player_position = this.activeLevel.tileMap.at(player_x_pos, player_y_pos);
+		
+		var x_pos = this.player.sprite.x;
+		var y_pos = this.player.sprite.y;
+		var tiles_at_new_player_position = this.activeLevel.tileMap.at(x_pos,y_pos);
 		
 		if(tiles_at_new_player_position != undefined) {
-			
+			console.log(tiles_at_new_player_position);
 			//if the player updates and moves to a place where there is no tile,
 			if (tiles_at_new_player_position.length == 0) {
 				

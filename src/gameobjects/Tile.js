@@ -11,9 +11,11 @@ function Tile(x, y, enum_val) {
 	this.y = y;
 	this.img  = Tile.enum[enum_val].img;
 	this.type = Tile.enum[enum_val].type;
-	this.sprite = new jaws.Sprite({x:this.x, y:this.y, image:this.img, anchor:"center_bottom"});
+	this.sprite = new jaws.Sprite({x:this.x, y:this.y, image:this.img});
 	this.width  = this.sprite.rect().width;
-	this.height = this.sprite.rect().height; 
+	this.height = this.sprite.rect().height;
+	this.centerX = this.x + this.width/2;
+	this.centerY = this.y + this.height/2; 
 
 	this.update = function() {
 		// these aren't necessary because tiles won't move, but
@@ -28,6 +30,10 @@ function Tile(x, y, enum_val) {
 	
 	this.getPositionAsCoordinate = function() {
 		return {x:this.x, y:this.y};
+	}
+	
+	this.getCenterCoordinate = function() {
+		return {x:this.centerX, y:this.centerY};
 	}
 	
 }

@@ -4,7 +4,7 @@
 function Robot(pos, type, speed) {
 	
 	/* Drawing attributes */
-	var robot_step_distance = Tile.default_size.width-1; //31px
+	var robot_step_distance = Tile.default_size.width; //32px
 	var robot_vert_offset = 10;
 	
 	/* Sound attributes */
@@ -13,8 +13,8 @@ function Robot(pos, type, speed) {
 	/* Sprite attributes */	
 	this.sprite = new jaws.Sprite({
 		x : pos.x,
-		y : pos.y-robot_vert_offset,
-		image : Robot.types[type].tile_img,
+		y : (pos.y+robot_vert_offset),
+		image : Robot.types[type].img,
 		anchor : "center_bottom",
 		scale : 0.85
 	}); 
@@ -111,6 +111,11 @@ function Robot(pos, type, speed) {
 		}
 		
 		else if(this.isPlayerControlled && this.isFalling) {
+			console.log(this.sprite);
+			
+			if(this.sprite.x == undefined) {
+				console.log('wat');
+			}
 			
 			//this is true only once, right before we fall, so play the fall sound
 			if(this.sprite.x == this.previousPosition.x ||
@@ -140,11 +145,19 @@ function Robot(pos, type, speed) {
 		this.sprite.draw();
 	}
 	
+	this.rect = function() {
+		return this.sprite.rect();
+	}
+	
 	this.reset = function() {
 		this.setMode('idle');
 		this.sprite.moveTo(this.startingPosition.x, this.startingPosition.y);
 		this.targetPosition = undefined;
 		this.actionQueue.clear();
+	}
+	
+	this.collisionPoint = function() {
+		
 	}
 	
 	/**
@@ -253,10 +266,10 @@ function Robot(pos, type, speed) {
  */
 Robot.types = {
 	'human_controlled' : {
-		tile_img : "./assets/art/BitBot.png",
+		img : "./assets/art/BitBot.png",
 	},
 	
 	'dreyfus_class' : {
-		tile_img : "./assets/art/BitBotTrainer-DreyfusClass.png",
+		img : "./assets/art/BitBotTrainer-DreyfusClass.png",
 	}
 };
