@@ -28,6 +28,10 @@ function LevelStage() {
 	this.activeLevel = new Level(setup_sample_level());
 	this.enemies = Robot.extractRobotInformation(setup_sample_enemies());
 	this.player = new Robot(this.activeLevel.startTile.getCenterCoordinate(), 'human_controlled');
+	
+	this.robots = this.enemies;
+	this.robots[this.robots.length] = this.player;
+	
 	this.hud = new HUD(this.player);
 
 	// To quit, press 'esc'
@@ -36,9 +40,8 @@ function LevelStage() {
 	});
 
 	this.update = function() {
-		this.player.update();
 		this.activeLevel.update();
-		jaws.update(this.enemies);
+		jaws.update(this.robots);
 		
 		
 		var x_pos = this.player.sprite.x;
