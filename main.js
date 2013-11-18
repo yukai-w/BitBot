@@ -43,6 +43,9 @@ function init() {
 	jaws.assets.add("./assets/sounds/fx/error.mp3");
 	jaws.assets.add("./assets/sounds/fx/fall.mp3");
 	jaws.assets.add("./assets/sounds/fx/powerup.mp3");
+	jaws.assets.add("./assets/sounds/fx/respawn.mp3");
+	jaws.assets.add("./assets/sounds/fx/move.mp3");
+	
 	
 	jaws.start(MenuState);
 	
