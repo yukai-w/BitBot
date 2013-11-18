@@ -114,10 +114,20 @@ function antidiagonal_transform(rectangular_matrix) {
 }
 
 /** 
-  * Tests whether or not 'item' is outside the game's canvas.
+  * Returns true if the item is outside the game's canvas.
   * @param {Object} item an object that has a coordinate
-  * @return True if the object is outside the canvas
   */
 function is_outside_canvas(item) { 
 	return (item.x < 0 || item.y < 0 || item.x > jaws.width || item.y > jaws.height); 
 }
+
+/**
+ * Like is_outside_canvas, but only checks vertical distance, and checks for items
+ * whose y is twice the screen's height. 
+ * @param {Object} item an object that has a coordinate
+ */
+function has_fallen_twice_screen_height(item) {
+	return (item.y > 2*jaws.height);
+}
+
+

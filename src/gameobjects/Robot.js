@@ -110,10 +110,9 @@ function Robot(pos, type, direction_code, orientation) {
 		{
 			if (this.isIdle) 
 			{
+				this.executingSfx.pause();
 				if (this.isPlayerControlled) 
 				{
-					this.executingSfx.stop();
-					
 					if (handle_player_input(this)) 
 					{
 						// when you're idle, and you begin inputting commands, 
@@ -242,13 +241,14 @@ function Robot(pos, type, direction_code, orientation) {
 				}
 			}
 
-			//if we're falling, we must increase 'y' until we're off the screen
-			if (!is_outside_canvas(this.sprite)) 
+			//if we're falling, we must increase 'y' until we're way off the screen
+			if (!has_fallen_twice_screen_height(this.sprite)) 
 			{
 				this.sprite.y += 9.8;
 				this.sprite.x += 0.1; //done to avoid playing the sound forever
 			}
 			
+			//once we're off the screen, respawn
 			else 
 			{
 				this.respawn();
