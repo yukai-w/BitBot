@@ -57,17 +57,17 @@ Tile.enum = {
 		type  : 'regular_tile' 
 	},
 	
-	3 : {
+	2 : {
 		img : "./assets/art/StartTile.png",
 		type  : 'start_tile'
 	},
 	
-	4 : {
+	3 : {
 		img : "./assets/art/GoalTile.png",
 		type  : 'goal_tile'
 	},
 	
-	8 : {
+	4 : {
 		img : "./assets/art/ObstacleTile.png",
 		type  : 'obstacle_tile'
 	}
