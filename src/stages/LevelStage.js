@@ -32,6 +32,7 @@ function LevelStage() {
 	
 	this.robotsInPlay = [];
 	this.robotsOutOfPlay = [];
+	this.robotsFreezeFrame = [];
 
 	this.hud = new HUD(this.player);
 
@@ -43,6 +44,23 @@ function LevelStage() {
 	this.update = function() {
 		this.activeLevel.update();
 		jaws.update(this.robots);
+		
+		//create freeze frames
+		if(this.player.isPlanning) {
+			if(this.robotsFreezeFrame.length == 0) {
+				var number_of_robots = this.robots.length, robot = null;
+				for (var robot_idx = 0; robot_idx < number_of_robots; robot_idx++) {
+					robot = this.robots[robot_idx];
+					pos = {x:robot.sprite.x, y:robot.sprite.y-robot.drawing_vert_offset};
+					this.robotsFreezeFrame[this.robotsFreezeFrame.length] = new Robot(pos, robot.type, robot.directionCode);
+				}
+			}
+		} else {
+			if(this.robotsFreezeFrame.length != 0) {
+				goog.array.clear(this.robotsFreezeFrame);
+			}
+		}
+		
 		
 		//clear the auxiliary robot arrays
 		this.robotsInPlay = [];
@@ -126,9 +144,15 @@ function LevelStage() {
 	}
 
 	this.draw = function() {
-		jaws.draw(this.robotsOutOfPlay);
-		this.activeLevel.draw();
-		jaws.draw(this.robotsInPlay);
+		
+		if(!this.player.isPlanning) {
+			jaws.draw(this.robotsOutOfPlay);
+			this.activeLevel.draw();
+			jaws.draw(this.robotsInPlay);
+		} else {
+			this.activeLevel.draw();
+			jaws.draw(this.robotsFreezeFrame);
+		}		
 		this.hud.draw();
 	}
 	function setup_sample_level() {
