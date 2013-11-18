@@ -1,7 +1,7 @@
 /**
  * A Robot.
  */
-function Robot(pos, type, direction_code) {
+function Robot(pos, type, direction_code, orientation) {
 
 	/* Drawing attributes */
 	var robot_step_distance = Tile.default_size.width; //32px
@@ -22,6 +22,7 @@ function Robot(pos, type, direction_code) {
 	this.walkUpFrame = animation.frames[0];
 	this.walkLeftFrame = animation.frames[1];
 	this.walkRightFrame = animation.frames[2];
+	this.walkDownFrame = animation.frames[3];
 	this.idleAnimation = animation.slice(3,6);		
 	this.sprite = new jaws.Sprite({
 		x : pos.x,
@@ -29,8 +30,9 @@ function Robot(pos, type, direction_code) {
 		anchor : "center_bottom",
 		scale : 0.85
 	});
+	this.orientation = orientation || this.walkDownFrame;
 	
-	this.sprite.setImage(this.idleAnimation.next());
+	this.sprite.setImage(this.orientation);
 	this.width = this.sprite.rect().width;
 	this.height = this.sprite.rect().height;
 	this.speed = (type == 'player_controlled' ? 3 : 1);
@@ -83,6 +85,7 @@ function Robot(pos, type, direction_code) {
 						this.setMode('planning');
 					} else {
 						this.sprite.setImage(this.idleAnimation.next());
+						this.orientation = this.walkDownFrame;
 					}
 				} else {// Do AI
 					handle_AI_input(this);
@@ -121,19 +124,23 @@ function Robot(pos, type, direction_code) {
 					
 					if(ty < 0) {
 						this.sprite.setImage(this.walkUpFrame);
+						this.orientation = this.walkUpFrame;
 					}
 					
 					if(ty > 0) {
 						this.sprite.setImage(this.idleAnimation.next());
+						this.orientation = this.walkDownFrame;
 					}
 					
 					
 					if(tx < 0 && distance_to_target > 1) {
 						this.sprite.setImage(this.walkLeftFrame);
+						this.orientation = this.walkLeftFrame;
 					}
 					
 					if(tx > 0 && distance_to_target > 1) {
 						this.sprite.setImage(this.walkRightFrame);
+						this.orientation = this.walkRightFrame;
 					}
 					
 

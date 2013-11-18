@@ -52,7 +52,7 @@ function LevelStage() {
 				for (var robot_idx = 0; robot_idx < number_of_robots; robot_idx++) {
 					robot = this.robots[robot_idx];
 					pos = {x:robot.sprite.x, y:robot.sprite.y-robot.drawing_vert_offset};
-					this.robotsFreezeFrame[this.robotsFreezeFrame.length] = new Robot(pos, robot.type, robot.directionCode);
+					this.robotsFreezeFrame[this.robotsFreezeFrame.length] = new Robot(pos, robot.type, robot.directionCode, robot.orientation);
 				}
 			}
 		} else {
