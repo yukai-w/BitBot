@@ -30,6 +30,14 @@ function Robot(pos, type, direction_code, orientation) {
 		anchor : "center_bottom",
 		scale : 0.85
 	});
+	
+	var that = this;
+	this.spawnAnimation = new jaws.Animation({
+		sprite_sheet : Robot.types[type].respawn_sprite_sheet,
+		frame_size : [39, 54],
+		loop : true,
+	});
+	
 	this.orientation = orientation || this.walkDownFrame;
 	
 	this.sprite.setImage(this.orientation);
@@ -55,27 +63,33 @@ function Robot(pos, type, direction_code, orientation) {
 	this.isPlayerControlled = (type == 'player_controlled' ? true : false);
 	this.isPlanning = false;
 	this.isExecuting = false;
-	this.isFalling = false;
-	//true if we just fell off the game level
+	this.isFalling = false; //true if we just fell off the game level
+	this.isRespawning = false;
+	
 	this.isIdle = true;
 	this.actionQueue = new goog.structs.Queue();
-	this.actionQueueSizeMax = 12;
-	//max 12 actions queued
+	this.actionQueueSizeMax = 12; //max 12 actions queued
+	
 
 	this.millisecondsSpentPlanning = 0.0;
-	var planning_millisecond_threshold = 1000.0;
-	//2 seconds
+	var planning_millisecond_threshold = 1000.0; //1 seconds
 	this.millisecondsSpentExecuting = 0.0;
-	var executing_millisecond_delay = 500.0;
-	//.5 seconds
+	var executing_millisecond_delay = 500.0; //.5 seconds
 
 	/* Game input attributes */
 	// Prevent the browser from catching the following keys:
 	jaws.preventDefaultKeys(["up", "down", "left", "right"]);
 	
 	this.update = function() {
-
-		if (!this.isFalling) {
+		if (this.isRespawning) {
+			this.sprite.setImage(this.spawnAnimation.next());
+			this.sprite.moveTo(this.startingPosition.x, this.startingPosition.y);	
+			
+			if(this.spawnAnimation.index == (this.spawnAnimation.frames.length-1)) {
+				this.setMode('idle');
+			}
+					
+		} else if (!this.isFalling) {
 
 			if (this.isIdle) {
 
@@ -96,8 +110,7 @@ function Robot(pos, type, direction_code, orientation) {
 
 				//in planning mode, several things could force you to jump into execution mode:
 				if (this.millisecondsSpentPlanning > planning_millisecond_threshold) {
-					this.setMode('executing');
-					//you have two seconds to keep inputting commands.
+					this.setMode('executing'); //you have two seconds to keep inputting commands.
 					this.millisecondsSpentPlanning = 0.0;
 				} else if (this.actionQueue.getCount() == this.actionQueueSizeMax) {
 					this.setMode('executing');
@@ -198,8 +211,7 @@ function Robot(pos, type, direction_code, orientation) {
 	}
 
 	this.reset = function() {
-		this.setMode('idle');
-		this.sprite.moveTo(this.startingPosition.x, this.startingPosition.y);
+		this.setMode('respawning');
 		this.targetPosition = undefined;
 		this.actionQueue.clear();
 	}
@@ -219,21 +231,31 @@ function Robot(pos, type, direction_code, orientation) {
 			this.isPlanning = true;
 			this.isExecuting = false;
 			this.isFalling = false;
+			this.isRespawning = false;
 		} else if (mode == 'executing') {
 			this.isIdle = false;
 			this.isPlanning = false;
 			this.isExecuting = true;
 			this.isFalling = false;
+			this.isRespawning = false;
 		} else if (mode == 'falling') {
 			this.isIdle = false;
 			this.isPlanning = false;
 			this.isExecuting = false;
 			this.isFalling = true;
+			this.isRespawning = false;
+		} else if (mode == 'respawning') {
+			this.isIdle = false;
+			this.isPlanning = false;
+			this.isExecuting = false;
+			this.isFalling = false;
+			this.isRespawning = true;
 		} else {
 			this.isIdle = true;
 			this.isPlanning = false;
 			this.isExecuting = false;
 			this.isFalling = false;
+			this.isRespawning = false;
 		}
 	}
 	/**
@@ -320,12 +342,14 @@ function Robot(pos, type, direction_code, orientation) {
 Robot.types = {
 	'player_controlled' : {
 		img : "./assets/art/BitBot.png",
-		sprite_sheet : "./assets/art/BitBotSpriteSheet.png"
+		sprite_sheet : "./assets/art/BitBotSpriteSheet.png",
+		respawn_sprite_sheet : "./assets/art/BitBotSpawnSpriteSheet.png"
 	},
 
 	'dreyfus_class' : {
 		img : "./assets/art/BitBotTrainer-DreyfusClass.png",
 		sprite_sheet : "./assets/art/BitBotTrainer-DreyfusClassSpriteSheet.png",
+		respawn_sprite_sheet : "./assets/art/BitBotSpawnSpriteSheet.png",
 		direction : {
 			5 : 'left',
 			6 : 'down',

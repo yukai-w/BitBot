@@ -60,8 +60,6 @@ function LevelStage() {
 					} else {
 						this.robotsFreezeFrameInPlay[this.robotsFreezeFrameInPlay.length] = new Robot(pos, robot.type, robot.directionCode, robot.orientation);
 					}
-					
-					
 				}
 			}
 		} else {
