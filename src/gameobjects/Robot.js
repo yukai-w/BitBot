@@ -234,6 +234,11 @@ function Robot(pos, type, direction_code, orientation) {
 		//this isFalling!
 		else 
 		{
+			//if the robot was executing, stop the sfx (otherwise it'll sound all the way down)
+			if(this.executingSfx.pos() > 0) {
+					this.executingSfx.stop();
+			}
+			
 			//this is true only once, right before we fall, so play the fall sound
 			if (this.sprite.x == this.previousPosition.x || this.sprite.y == this.previousPosition.y) 
 			{
