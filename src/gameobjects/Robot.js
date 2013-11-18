@@ -16,37 +16,37 @@ function Robot(pos, type, direction_code, orientation) {
 	var animation = new jaws.Animation({
 		sprite_sheet : Robot.types[type].sprite_sheet,
 		frame_size : [39, 54],
-		loop : true
+		loop : true,
+		orientation : 'right'
 	});
 	
 	this.walkUpFrame = animation.frames[0];
-	this.walkLeftFrame = animation.frames[1];
-	this.walkRightFrame = animation.frames[2];
-	this.walkDownFrame = animation.frames[3];
-	this.idleAnimation = animation.slice(3,6);		
+	this.walkDownFrame = animation.frames[1];
+	this.idleAnimation = animation.slice(2,5);
+	this.walkLeftFrame = animation.frames[5];
+	this.walkRightFrame = animation.frames[6];
+	this.spawnAnimation = animation.slice(7,32);
+	
 	this.sprite = new jaws.Sprite({
 		x : pos.x,
 		y : (pos.y + this.drawing_vert_offset),
 		anchor : "center_bottom",
 		scale : 0.85
 	});
+	
 	this.shadowSprite = new jaws.Sprite({
 		x : pos.x,
 		y : (pos.y + this.drawing_vert_offset),
 		anchor : "center_bottom",
-		scale : 0.85
+		scale : 0.75,
+		image : "./assets/art/Shadow.png"
 	});
 	
-	
-	this.spawnAnimation = new jaws.Animation({
-		sprite_sheet : Robot.types[type].respawn_sprite_sheet,
-		frame_size : [39, 54],
-		loop : true,
-	});
-	
+	/* This is only useful for when making a deep copy of this Robot */
 	this.orientation = orientation || this.walkDownFrame;
-	
 	this.sprite.setImage(this.orientation);
+	
+	
 	this.width = this.sprite.rect().width;
 	this.height = this.sprite.rect().height;
 	this.speed = (type == 'player_controlled' ? 3 : 2);
@@ -56,10 +56,7 @@ function Robot(pos, type, direction_code, orientation) {
 	/* Game logic attributes */
 	this.type = type;
 	this.directionCode = direction_code || undefined;
-	this.startingPosition = {
-		x : pos.x,
-		y : pos.y + this.drawing_vert_offset
-	};
+	this.startingPosition = {x : pos.x, y : pos.y + this.drawing_vert_offset};
 	this.previousPosition = undefined;
 	this.targetPostion = undefined;
 
@@ -110,7 +107,11 @@ function Robot(pos, type, direction_code, orientation) {
 		{
 			if (this.isIdle) 
 			{
-				this.executingSfx.pause();
+				//if we're idle, and the moving sfx was playing, stop it
+				if(this.executingSfx.pos() > 0) {
+					this.executingSfx.stop();
+				}
+				
 				if (this.isPlayerControlled) 
 				{
 					if (handle_player_input(this)) 
@@ -403,15 +404,11 @@ function Robot(pos, type, direction_code, orientation) {
  */
 Robot.types = {
 	'player_controlled' : {
-		img : "./assets/art/BitBot.png",
-		sprite_sheet : "./assets/art/BitBotSpriteSheet.png",
-		respawn_sprite_sheet : "./assets/art/BitBotSpawnSpriteSheet.png"
+		sprite_sheet : "./assets/art/BlueBitBot-SpriteSheet.png",
 	},
 
 	'dreyfus_class' : {
-		img : "./assets/art/BitBotTrainer-DreyfusClass.png",
-		sprite_sheet : "./assets/art/BitBotTrainer-DreyfusClassSpriteSheet.png",
-		respawn_sprite_sheet : "./assets/art/BitBotSpawnSpriteSheet.png",
+		sprite_sheet : "./assets/art/BlueBitBot-SpriteSheet.png",
 		direction : {
 			5 : 'left',
 			6 : 'down',

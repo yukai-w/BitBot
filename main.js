@@ -1,10 +1,7 @@
 
 function init() {
 	////Art
-	jaws.assets.add("./assets/art/BitBotSpriteSheet.png");
-	jaws.assets.add("./assets/art/BitBotTrainer-DreyfusClassSpriteSheet.png");
-	jaws.assets.add("./assets/art/BitBotSpawnSpriteSheet.png");
-
+	
 	//Background
 	jaws.assets.add("./assets/art/LevelBackground01.png");
 	jaws.assets.add("./assets/art/LevelBackground02.png");
@@ -21,9 +18,8 @@ function init() {
 	jaws.assets.add("./assets/art/GoalTile.png");
 	
 	//Robots
-	jaws.assets.add("./assets/art/BitBot.png");
-	jaws.assets.add("./assets/art/SmallBitBot.png");
-	jaws.assets.add("./assets/art/BitBotTrainer-DreyfusClass.png");
+	jaws.assets.add("./assets/art/BlueBitBot-SpriteSheet.png");
+	jaws.assets.add("./assets/art/Shadow.png");
 	
 	
 	//HUD
