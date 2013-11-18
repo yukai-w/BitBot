@@ -4,9 +4,8 @@
 function Robot(pos, type, direction_code) {
 
 	/* Drawing attributes */
-	var robot_step_distance = Tile.default_size.width;
-	//32px
-	var robot_vert_offset = 10;
+	var robot_step_distance = Tile.default_size.width; //32px
+	this.drawing_vert_offset = 10;
 
 	/* Sound attributes */
 	this.fallingSfx = new Howl({
@@ -16,7 +15,7 @@ function Robot(pos, type, direction_code) {
 	/* Sprite attributes */
 	this.sprite = new jaws.Sprite({
 		x : pos.x,
-		y : (pos.y + robot_vert_offset),
+		y : (pos.y + this.drawing_vert_offset),
 		image : Robot.types[type].img,
 		anchor : "center_bottom",
 		scale : 0.85
@@ -24,7 +23,7 @@ function Robot(pos, type, direction_code) {
 
 	this.width = this.sprite.rect().width;
 	this.height = this.sprite.rect().height;
-	this.speed = 3;
+	this.speed = (type == 'player_controlled' ? 3 : 1);
 	this.velocityX = 0.0;
 	this.velocityY = 0.0;
 
@@ -33,7 +32,7 @@ function Robot(pos, type, direction_code) {
 	this.directionCode = direction_code || undefined;
 	this.startingPosition = {
 		x : pos.x,
-		y : pos.y + robot_vert_offset
+		y : pos.y + this.drawing_vert_offset
 	};
 	this.previousPosition = undefined;
 	this.targetPostion = undefined;
@@ -61,7 +60,7 @@ function Robot(pos, type, direction_code) {
 	/* Game input attributes */
 	// Prevent the browser from catching the following keys:
 	jaws.preventDefaultKeys(["up", "down", "left", "right"]);
-
+	
 	this.update = function() {
 
 		if (!this.isFalling) {
@@ -222,6 +221,7 @@ function Robot(pos, type, direction_code) {
 			this.targetPosition.y += robot_step_distance;
 		}
 	}
+	
 	function handle_AI_input(player_AI) {
 		if (player_AI.type == 'dreyfus_class') {
 			for (var action_idx = 0; action_idx < player_AI.actionQueueSizeMax; action_idx++) {
@@ -230,11 +230,6 @@ function Robot(pos, type, direction_code) {
 		}
 	}
 
-
-	this.overrideAndExecuteQueuedActions = function(number_of_actions) {
-		var number_of_actions_to_execute = (number_of_actions > this.actionQueue.getCount() ? this.actionQueue.getCount() : number_of_actions)
-
-	}
 	/**
 	 * Auxiliary function to handle player input if this object is player controlled.
 	 * Returns true if a key was pressed.
@@ -338,4 +333,3 @@ Robot.extractRobotInformation = function(robot_data, data_rows, data_cols, tile_
 
 	return robots;
 }
-
