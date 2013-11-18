@@ -19,9 +19,9 @@ function Robot(pos, type, direction_code) {
 		loop : true
 	});
 	
-	this.walkUpFrame = animation.slice(0,1);
-	this.walkLeftFrame = animation.slice(1,2);
-	this.walkRightFrame = animation.slice(2,3);
+	this.walkUpFrame = animation.frames[0];
+	this.walkLeftFrame = animation.frames[1];
+	this.walkRightFrame = animation.frames[2];
 	this.idleAnimation = animation.slice(3,6);		
 	this.sprite = new jaws.Sprite({
 		x : pos.x,
@@ -118,6 +118,24 @@ function Robot(pos, type, direction_code) {
 
 					this.velocityX = (tx / distance_to_target) * this.speed;
 					this.velocityY = (ty / distance_to_target) * this.speed;
+					
+					if(ty < 0) {
+						this.sprite.setImage(this.walkUpFrame);
+					}
+					
+					if(ty > 0) {
+						this.sprite.setImage(this.idleAnimation.next());
+					}
+					
+					
+					if(tx < 0 && distance_to_target > 1) {
+						this.sprite.setImage(this.walkLeftFrame);
+					}
+					
+					if(tx > 0 && distance_to_target > 1) {
+						this.sprite.setImage(this.walkRightFrame);
+					}
+					
 
 					if (distance_to_target > 1) {
 						this.sprite.x += this.velocityX;
