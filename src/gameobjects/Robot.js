@@ -74,8 +74,8 @@ function Robot(pos, type, direction_code) {
 						this.setMode('planning');
 					}
 				} else {// Do AI
-					// handle_AI_input(this);
-					// this.setMode('execution');
+					handle_AI_input(this);
+					this.setMode('executing');
 				}
 
 			} else if (this.isPlanning) {
@@ -131,7 +131,6 @@ function Robot(pos, type, direction_code) {
 
 			}
 		} else {
-
 			//this is true only once, right before we fall, so play the fall sound
 			if (this.sprite.x == this.previousPosition.x || this.sprite.y == this.previousPosition.y) {
 				this.fallingSfx.play();
@@ -229,6 +228,9 @@ function Robot(pos, type, direction_code) {
 		}
 	}
 
+
+	this.overrideAndExecuteQueuedActions = function(number_of_actions) {
+		var number_of_actions_to_execute = (number_of_actions > this.actionQueue.getCount() ? this.actionQueue.getCount() : number_of_actions)
 
 	}
 	/**
