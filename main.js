@@ -1,7 +1,8 @@
 
 function init() {
 	////Art
-	jaws.assets.add("./assets/art/person1.png");
+	jaws.assets.add("./assets/art/BitBotSpriteSheet.png");
+	jaws.assets.add("./assets/art/BitBotTrainer-DreyfusClassSpriteSheet.png");
 
 	//Background
 	jaws.assets.add("./assets/art/LevelBackground01.png");

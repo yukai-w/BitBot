@@ -12,14 +12,51 @@ function Robot(pos, type, direction_code) {
 		urls : ['./assets/sounds/fx/fall.mp3']
 	});
 
-	/* Sprite attributes */
+	/* Sprite and Animation attributes */
+	var animation = new jaws.Animation({
+		sprite_sheet : Robot.types[type].sprite_sheet,
+		frame_size : [39, 54],
+		loop : true
+	});
+	
+	this.walkUpFrame = animation.slice(0,1);
+	this.walkLeftFrame = animation.slice(1,2);
+	this.walkRightFrame = animation.slice(2,3);
+	this.idleAnimation = animation.slice(3,6);
+		
 	this.sprite = new jaws.Sprite({
 		x : pos.x,
 		y : (pos.y + this.drawing_vert_offset),
-		image : Robot.types[type].img,
 		anchor : "center_bottom",
 		scale : 0.85
 	});
+	
+	this.sprite.setImage(this.idleAnimation.next());
+	
+	
+	
+	// var player_vert_anim = new jaws.Animation({
+		// sprite_sheet : "./assets/art/player_spritesheet_updown.png",
+		// frame_size : [128, 128],
+		// loop : true
+	// });
+// 
+	// //Sprite and collision attributes
+	// this.sprite = new jaws.Sprite({
+		// x : x,
+		// y : y,
+		// anchor : "center",
+		// scale : 0.75
+	// });
+	// this.anim_walk_left = player_horiz_anim.slice(0, 8);
+	// this.anim_walk_right = player_horiz_anim.slice(8, 16);
+	// this.anim_walk_down = player_vert_anim.slice(0, 8);
+
+	
+	
+	
+	
+	
 
 	this.width = this.sprite.rect().width;
 	this.height = this.sprite.rect().height;
@@ -148,8 +185,7 @@ function Robot(pos, type, direction_code) {
 
 		}
 
-		this.batteryLevel += 0.1;
-		//TODO: REMOVE LATER
+		this.batteryLevel += 0.1; //TODO: REMOVE LATER
 		bound_player_attributes(this);
 	}
 
@@ -284,10 +320,12 @@ function Robot(pos, type, direction_code) {
 Robot.types = {
 	'player_controlled' : {
 		img : "./assets/art/BitBot.png",
+		sprite_sheet : "./assets/art/BitBotSpriteSheet.png"
 	},
 
 	'dreyfus_class' : {
 		img : "./assets/art/BitBotTrainer-DreyfusClass.png",
+		sprite_sheet : "./assets/art/BitBotTrainer-DreyfusClassSpriteSheet.png",
 		direction : {
 			5 : 'left',
 			6 : 'down',
