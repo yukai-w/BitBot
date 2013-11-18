@@ -24,7 +24,7 @@ function Robot(pos, type, direction_code) {
 
 	this.width = this.sprite.rect().width;
 	this.height = this.sprite.rect().height;
-	this.speed = (type == 'player_controlled' ? 3 : 1);
+	this.speed = 3;
 	this.velocityX = 0.0;
 	this.velocityY = 0.0;
 
@@ -159,7 +159,7 @@ function Robot(pos, type, direction_code) {
 	}
 
 	this.rect = function() {
-		return this.sprite.rect();
+		return this.sprite.rect().resizeTo(this.width/2,this.height/2);
 	}
 
 	this.reset = function() {
