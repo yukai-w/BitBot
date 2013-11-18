@@ -30,8 +30,14 @@ function Robot(pos, type, direction_code, orientation) {
 		anchor : "center_bottom",
 		scale : 0.85
 	});
+	this.shadowSprite = new jaws.Sprite({
+		x : pos.x,
+		y : (pos.y + this.drawing_vert_offset),
+		anchor : "center_bottom",
+		scale : 0.85
+	});
 	
-	var that = this;
+	
 	this.spawnAnimation = new jaws.Animation({
 		sprite_sheet : Robot.types[type].respawn_sprite_sheet,
 		frame_size : [39, 54],
@@ -43,7 +49,7 @@ function Robot(pos, type, direction_code, orientation) {
 	this.sprite.setImage(this.orientation);
 	this.width = this.sprite.rect().width;
 	this.height = this.sprite.rect().height;
-	this.speed = (type == 'player_controlled' ? 3 : 1);
+	this.speed = (type == 'player_controlled' ? 3 : 2);
 	this.velocityX = 0.0;
 	this.velocityY = 0.0;
 
@@ -200,10 +206,16 @@ function Robot(pos, type, direction_code, orientation) {
 
 		this.batteryLevel += 0.1; //TODO: REMOVE LATER
 		bound_player_attributes(this);
+		this.moveToMyPosition(this.shadowSprite);
 	}
 
 	this.draw = function() {
-		this.sprite.draw();
+		if(this.isFalling || this.isRespawning) {
+			this.sprite.draw();
+		} else {
+			this.shadowSprite.draw();
+			this.sprite.draw();
+		}
 	}
 
 	this.rect = function() {
@@ -216,9 +228,11 @@ function Robot(pos, type, direction_code, orientation) {
 		this.actionQueue.clear();
 	}
 
-	this.collisionPoint = function() {
-
+	this.moveToMyPosition = function(sprite) {
+		sprite.x = this.sprite.x;
+		sprite.y = this.sprite.y;
 	}
+	
 	/**
 	 * Sets this Robot to the parameter mode.
 	 * @param mode a String which represents the mode to switch into.
