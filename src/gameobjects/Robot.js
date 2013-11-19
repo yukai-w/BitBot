@@ -424,6 +424,13 @@ Robot.types = {
 	}
 };
 
+Robot.opposite_actions = {
+	'left' : 'right',
+	'right' : 'left',
+	'up' : 'down',
+	'down' : 'up'
+};
+
 /**
  * Returns an array of Robot sprites, placed at locations given by robot_data.
  * @param {Object} robot_data the robot data
