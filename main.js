@@ -19,6 +19,7 @@ function init() {
 	
 	//Robots
 	jaws.assets.add("./assets/art/BlueBitBot-SpriteSheet.png");
+	jaws.assets.add("./assets/art/GrayBitBot-SpriteSheet.png");
 	jaws.assets.add("./assets/art/Shadow.png");
 	
 	

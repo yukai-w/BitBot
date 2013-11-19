@@ -413,7 +413,7 @@ Robot.types = {
 	},
 
 	'dreyfus_class' : {
-		sprite_sheet : "./assets/art/BlueBitBot-SpriteSheet.png",
+		sprite_sheet : "./assets/art/GrayBitBot-SpriteSheet.png",
 		direction : {
 			5 : 'left',
 			6 : 'down',

@@ -4,18 +4,11 @@
 function LevelStage() {
 
 	/* Fx files */
-	var powerupSound = new Howl({
-		urls : ['./assets/sounds/fx/powerup.mp3']
-	});
-	var errorSound = new Howl({
-		urls : ['./assets/sounds/fx/error.mp3']
-	});
+	var powerupSound = new Howl({urls : ['./assets/sounds/fx/powerup.mp3']});
+	var errorSound = new Howl({urls : ['./assets/sounds/fx/error.mp3']});
 
 	/* Music files */
-	var gameOverMusic = new Howl({
-		urls : ['./assets/sounds/music/gameover.mp3']
-	});
-
+	var gameOverMusic = new Howl({urls : ['./assets/sounds/music/gameover.mp3']});
 	var metonymyMusic = new Howl({
 		urls : ['./assets/sounds/music/metonymy.mp3'],
 		loop : true,
