@@ -13,7 +13,7 @@ function Tile(x, y, enum_val) {
 	this.depthImg = Tile.enum[enum_val].depth_img;
 	this.type = Tile.enum[enum_val].type;
 	this.sprite = new jaws.Sprite({x:this.x, y:this.y, image:this.img});
-	this.depthSprite = new jaws.Sprite({x:this.x, y:this.y+Tile.default_size.height, image:this.depthImg, scale:1.0});
+	this.depthSprite = new jaws.Sprite({x:this.x, y:this.y+Tile.default_size.height-5, image:this.depthImg, scale:1.0});
 	this.width  = this.sprite.rect().width;
 	this.height = this.sprite.rect().height;
 	this.centerX = this.x + this.width/2;
