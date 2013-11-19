@@ -91,11 +91,11 @@ Tile.enumValueForType = function(tile_type) {
 	if(tile_type == 'regular_tile') {
 		return 1;
 	} else if(tile_type == 'start_tile') {
-		return 3;
+		return 2;
 	} else if(tile_type == 'goal_tile') {
-		return 4;
+		return 3;
 	} else if(tile_type == 'obstacle_tile') {
-		return 8;
+		return 4;
 	} else {
 		return 0;
 	}
