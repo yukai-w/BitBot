@@ -149,6 +149,9 @@ function LevelStage() {
 		}
 
 		this.hud.update();
+		
+		//sort robots in drawing order - closer ones go first
+		goog.array.stableSort(this.robots, drawing_order_compare);
 	}
 
 	this.draw = function() {
@@ -164,6 +167,7 @@ function LevelStage() {
 		}		
 		this.hud.draw();
 	}
+	
 	function setup_sample_level() {
 		
 		var sample_level = [[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],

@@ -130,4 +130,26 @@ function has_fallen_twice_screen_height(item) {
 	return (item.y > 2*jaws.height);
 }
 
+/**
+ * Compares two items that are assumed to have a jaws.sprite property. In this
+ * game, sprites that are lower on the screen (have a greater 'y'), are closer,
+ * and therefore should be drawn first.  This function is used to sort items,
+ * come draw time.
+ *  
+ * Return a negative number, zero, or a positive number depending on whether the
+ * first argument is less than, equal to, or greater than the second.
+ * @param {Object} item1 an object with a jaws.sprite property
+ * @param {Object} item2 an object with a jaws.sprite property
+ */
+function drawing_order_compare(item1, item2) {
+	
+	if(item1.sprite.y > item2.sprite.y) {
+		return 1;
+	} else if(item1.sprite.y < item2.sprite.y) {
+		return -1;
+	} else {
+		return 0;
+	}
+}
+
 

@@ -38,7 +38,7 @@ function Robot(pos, type, direction_code, orientation) {
 		x : pos.x,
 		y : (pos.y + this.drawing_vert_offset),
 		anchor : "center_bottom",
-		scale : 0.75,
+		scale : 0.65,
 		image : "./assets/art/Shadow.png"
 	});
 	
