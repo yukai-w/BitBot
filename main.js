@@ -13,9 +13,13 @@ function init() {
 
 	//Tiles
 	jaws.assets.add("./assets/art/Tile.png");
+	jaws.assets.add("./assets/art/TileBottom.png");
 	jaws.assets.add("./assets/art/ObstacleTile.png");
 	jaws.assets.add("./assets/art/StartTile.png");
+	jaws.assets.add("./assets/art/StartTileBottom.png");
 	jaws.assets.add("./assets/art/GoalTile.png");
+	jaws.assets.add("./assets/art/GoalTileBottom.png");
+	
 	
 	//Robots
 	jaws.assets.add("./assets/art/BlueBitBot-SpriteSheet.png");

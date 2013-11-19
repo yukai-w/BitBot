@@ -10,8 +10,10 @@ function Tile(x, y, enum_val) {
 	this.x = x; //I use internal 'x' and 'y' attributes for use in a TileMap. 
 	this.y = y;
 	this.img  = Tile.enum[enum_val].img;
+	this.depthImg = Tile.enum[enum_val].depth_img;
 	this.type = Tile.enum[enum_val].type;
 	this.sprite = new jaws.Sprite({x:this.x, y:this.y, image:this.img});
+	this.depthSprite = new jaws.Sprite({x:this.x+0.8, y:this.y+20, image:this.depthImg, scale:0.95});
 	this.width  = this.sprite.rect().width;
 	this.height = this.sprite.rect().height;
 	this.centerX = this.x + this.width/2;
@@ -25,6 +27,7 @@ function Tile(x, y, enum_val) {
 	}
 
 	this.draw = function() {
+		this.depthSprite.draw();
 		this.sprite.draw();
 	}
 	
@@ -49,26 +52,31 @@ Tile.default_size = {
 Tile.enum = {
 	0 : {
 		img : undefined,
+		depth_img : undefined,
 		type  : undefined
 	},
 	
 	1 : {
 		img : "./assets/art/Tile.png",
+		depth_img : "./assets/art/TileBottom.png",
 		type  : 'regular_tile' 
 	},
 	
 	2 : {
 		img : "./assets/art/StartTile.png",
+		depth_img : "./assets/art/StartTileBottom.png",
 		type  : 'start_tile'
 	},
 	
 	3 : {
 		img : "./assets/art/GoalTile.png",
+		depth_img : "./assets/art/GoalTileBottom.png",
 		type  : 'goal_tile'
 	},
 	
 	4 : {
 		img : "./assets/art/ObstacleTile.png",
+		depth_img : "./assets/art/TileBottom.png",
 		type  : 'obstacle_tile'
 	}
 
