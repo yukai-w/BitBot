@@ -71,6 +71,7 @@ function Robot(pos, type, direction_code, orientation) {
 	
 	this.isIdle = true;
 	this.actionQueue = new goog.structs.Queue();
+	this.previousPositionStack = [];
 	this.actionQueueSizeMax = 12; //max 12 actions queued
 	
 
@@ -217,6 +218,7 @@ function Robot(pos, type, direction_code, orientation) {
 				else if (! this.actionQueue.isEmpty()) 
 				{
 					this.previousPosition = {x : this.sprite.x, y : this.sprite.y};
+					this.previousPositionStack.push({x : this.sprite.x, y : this.sprite.y});
 					var action = this.actionQueue.dequeue();
 					this.findActionTarget(action);
 					this.batteryLevel -= battery_decay;
@@ -283,6 +285,7 @@ function Robot(pos, type, direction_code, orientation) {
 		this.setMode('respawning');
 		this.targetPosition = undefined;
 		this.actionQueue.clear();
+		goog.array.clear(this.previousPositionStack);
 	}
 
 	this.moveToMyPosition = function(sprite) {

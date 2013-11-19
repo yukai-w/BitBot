@@ -127,19 +127,22 @@ function LevelStage() {
 				}
 			}
 		}
-
+		
 		//if the player updates and moves to a place where there is an enemy robot,
 		//then revert the move and apply a penalty
 		if(this.robotsInPlay.length > 1) {
 			var colliding_pairs = jaws.collideManyWithMany(this.robotsInPlay, this.robotsInPlay, function(r1,r2) {
-				r1.targetPosition = {x: r1.previousPosition.x, y:r1.previousPosition.y};
+				
+				var prev_position = r1.previousPositionStack.pop();
+				r1.targetPosition = prev_position || {x:r1.previousPosition.x, y:r1.previousPosition.y+32};
 				r1.setMode('executing');
 				r1.actionQueue.clear();
 				if(r1.isPlayerControlled) {
 					errorSound.play();
 				}
 				
-				r2.targetPosition = {x: r2.previousPosition.x, y:r2.previousPosition.y};
+				var prev_position = r2.previousPositionStack.pop();
+				r2.targetPosition = prev_position || {x:r2.previousPosition.x, y:r2.previousPosition.y+32};
 				r2.setMode('executing');
 				r2.actionQueue.clear();
 				if(r2.isPlayerControlled) {
