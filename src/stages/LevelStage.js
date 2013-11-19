@@ -12,8 +12,12 @@ function LevelStage() {
 	var metonymyMusic = new Howl({
 		urls : ['./assets/sounds/music/metonymy.mp3'],
 		loop : true,
-		volume : 0.1
-	}).play();
+		volume : 0.1,
+		sprite: {
+    		loop: [0, 30000]
+    	}
+		
+	}).play('loop');
 
 	/* Level initialization */
 	this.activeLevel = new Level(setup_sample_level());
