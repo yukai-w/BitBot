@@ -84,9 +84,9 @@ function LevelStage() {
 		}
 		
 
-		var number_of_robots = this.robots.length, robot = null;
+		var number_of_robots = this.robotsInPlay.length, robot = null;
 		for (var robot_idx = 0; robot_idx < number_of_robots; robot_idx++) {
-			robot = this.robots[robot_idx];
+			robot = this.robotsInPlay[robot_idx];
 			var x_pos = robot.sprite.x;
 			var y_pos = robot.sprite.y;
 			var tiles_at_robot_pos = this.activeLevel.tileMap.at(x_pos,y_pos);
