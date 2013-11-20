@@ -11,7 +11,7 @@
 
 
 $(document).ready(function() {
-	Editor.init(18, 18);
+	Editor.init(12, 12);
 }); 
 
 /**
@@ -35,6 +35,12 @@ var Editor = {
 	goalCount: 0,
 	startLimit: 1,
 	startCount: 0,
+	maxHorizontalTile: 0,
+	minHorizontalTile: 0,
+	maxVerticalTile: 0,
+	minVerticalTile: 0,
+	maxGameplayWidth: 12,
+	maxGameplayHeight: 12,
 	
 	// tile type enum
 	tileTypes:  {
@@ -79,7 +85,8 @@ var Editor = {
 		});
 		
 		$(document).keyup(function(event) {
-			editor.keyModifier = undefined; 
+			editor.keyModifier = undefined;
+			console.log("key modifier undefined");
 		});
 	},
 	
@@ -214,6 +221,8 @@ var Editor = {
 		var rowIndex = parseInt(tile.attr('y'));
 		var columnIndex = parseInt(tile.attr('x'));
 		
+		if(this.val)
+		
 		if(editor.keyModifier === 'r') {					
 			tileType = editor.tileTypes.RAISED;					
 		}
@@ -229,8 +238,9 @@ var Editor = {
 		else if(editor.keyModifier === undefined) {
 			tileType = editor.tileTypes.UNDEFINED;
 		}
+		
 		editor.setTileType(tile, tileType);
-			editor.updateGrid(columnIndex, rowIndex, tileType);
+		editor.updateGrid(columnIndex, rowIndex, tileType);
 	},
 	
 	/**
@@ -265,6 +275,52 @@ var Editor = {
 	
 	showAlert: function(msg) {
 		$("#alert").html(msg).fadeIn(500).delay(3000).fadeOut(500);
-	} 
+	},
+	
+	validateTilePlacement: function(tile) {
+		var tileX = tile.attr('x'); 
+		var tileY = tile.attr('y');
+		
+		// check horizontal dimension
+		if (tileX < this.minHorizontalTile && (this.maxHorizontalTile - tileX) <= this.maxGameplayWidth) {
+			this.updateMinHorizontalTile(tileX);
+		}
+		else if (tileX > this.maxHorizontalTile && (tileX - this.minHorizontalTile) <= this.maxGameplayWidth) {
+			this.updateMaxHorizontalTile(tileX);
+		} else {
+			return false;
+		}
+		// check vertical dimension		
+		if (tileY < this.minVerticalTile && (this.maxVerticalTile - tileY) <= this.maxGameplayHeight) {
+			this.updateMinVerticalTile(tileY)
+		}
+		else if (tileY < this.maxVerticalTile && (tileY - this.minVerticalTile) <= this.maxGameplayHeight) {
+			this.updateMaxVerticalTile(tileY)
+		} else {
+			return false;
+		}
+		return true;
+		
+	},
+	
+//	validateDimensions: function(width, height) {
+//		return (width <= this.maxGameplayWidth && height <= this.maxGameplayHeight);
+//	},
+	
+	updateMaxHorizontalTile: function(xIndex) {
+		this.maxHorizontalTile = xIndex;		
+	}, 
+	
+	updateMinHorizontalTile: function(xIndex) {
+		this.minHorizontalTile = xIndex;
+	},
+	
+	updateMaxVerticalTile: function(yIndex) {
+		this.maxVerticalTile = yIndex;
+	},
+	
+	updateMinVerticalTile: function(yIndex) {
+		this.minVerticalTile = yIndex;
+	},
 };
 
