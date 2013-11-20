@@ -4,17 +4,11 @@
 function LevelStage() {
 
 	/* Fx files */
-	var powerupSound = new Howl({
-		urls : ['./assets/sounds/fx/powerup.mp3']
-	});
-	var errorSound = new Howl({
-		urls : ['./assets/sounds/fx/error.mp3']
-	});
+	var powerupSound = new Howl({urls : ['./assets/sounds/fx/powerup.mp3']});
+	var errorSound = new Howl({urls : ['./assets/sounds/fx/error.mp3']});
 
 	/* Music files */
-	var gameOverMusic = new Howl({
-		urls : ['./assets/sounds/music/gameover.mp3']
-	});
+	var gameOverMusic = new Howl({urls : ['./assets/sounds/music/gameover.mp3']});
 	var metonymyMusic = new Howl({
 		urls : ['./assets/sounds/music/metonymy.mp3'],
 		loop : true,
@@ -26,6 +20,10 @@ function LevelStage() {
 	}).play('loop');
 
 	/* Level initialization */
+	this.robotsInPlay = [];
+	this.robotsOutOfPlay = [];
+	this.robotsFreezeFrameInPlay = [];
+	this.robotsFreezeFrameOutOfPlay = [];	
 	this.activeLevel = new Level(setup_sample_level());
 	var level_elements = LevelStage.extractLevelElementInformation(setup_sample_elements(), this.activeLevel);
 	this.enemies = level_elements.robots;
@@ -33,18 +31,13 @@ function LevelStage() {
 	this.player = new Robot({
 		position : this.activeLevel.startTile.getCenterCoordinate(),
 		type : 'player_controlled',
-		level : this.activeLevel
+		world : this
 	});
 
 	this.robots = this.enemies;
 	this.robots[this.robots.length] = this.player;
-
-	this.robotsInPlay = [];
-	this.robotsOutOfPlay = [];
-
-	this.robotsFreezeFrameInPlay = [];
-	this.robotsFreezeFrameOutOfPlay = [];
-
+	
+	
 	this.hud = new HUD(this.player);
 
 	// To quit, press 'esc'
@@ -62,10 +55,7 @@ function LevelStage() {
 				var number_of_robots = this.robots.length, robot = null;
 				for (var robot_idx = 0; robot_idx < number_of_robots; robot_idx++) {
 					robot = this.robots[robot_idx];
-					pos = {
-						x : robot.sprite.x,
-						y : robot.sprite.y - robot.drawing_vert_offset
-					};
+					pos = {x : robot.sprite.x, y : robot.sprite.y - robot.drawing_vert_offset};
 
 					if (robot.isFalling) {
 						this.robotsFreezeFrameOutOfPlay.push(new Robot({
@@ -73,7 +63,7 @@ function LevelStage() {
 							type : robot.type,
 							direction : robot.directionCode,
 							orientation : robot.orientation,
-							level : this.activeLevel
+							world : this
 						}));
 
 					} else {
@@ -82,7 +72,7 @@ function LevelStage() {
 							type : robot.type,
 							direction : robot.directionCode,
 							orientation : robot.orientation,
-							level : this.activeLevel
+							world : this
 						}));
 					}
 				}
@@ -243,13 +233,13 @@ function LevelStage() {
  * @param {Number} tile_width the width of the tile in which robots roam (defaults to 32)
  * @param {Number} tile_height the height of the tile in which robots roam (defaults to 32)
  */
-LevelStage.extractLevelElementInformation = function(elements_data, level, data_rows, data_cols, tile_width, tile_height) {
+LevelStage.extractLevelElementInformation = function(elements_data, world, data_rows, data_cols, tile_width, tile_height) {
 
 	var max_rows = data_rows || 18;
 	var max_cols = data_cols || 18;
 	var t_width = tile_width || 32;
 	var t_height = tile_height || 32;
-	var level_info = level || undefined; 
+	var world_info = world || undefined; 
 
 	var robots = [];
 	var batteries = [];
@@ -272,7 +262,7 @@ LevelStage.extractLevelElementInformation = function(elements_data, level, data_
 						position : position,
 						type : type,
 						direction : dir_code,
-						level : level_info
+						world : world_info
 						
 					});
 					robots.push(robot);
