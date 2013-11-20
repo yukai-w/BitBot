@@ -16,7 +16,7 @@ function Battery(pos) {
 	});
 	
 	/* Game logic attributes */
-	this.level = 10.0;
+	this.level = 25.0;
 		
 	this.draw = function() {
 		this.sprite.draw();
