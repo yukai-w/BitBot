@@ -27,12 +27,13 @@ function LevelStage() {
 
 	/* Level initialization */
 	this.activeLevel = new Level(setup_sample_level());
-	var level_elements = LevelStage.extractLevelElementInformation(setup_sample_elements());
+	var level_elements = LevelStage.extractLevelElementInformation(setup_sample_elements(), this.activeLevel);
 	this.enemies = level_elements.robots;
 	this.batteries = level_elements.batteries;
 	this.player = new Robot({
 		position : this.activeLevel.startTile.getCenterCoordinate(),
-		type : 'player_controlled'
+		type : 'player_controlled',
+		level : this.activeLevel
 	});
 
 	this.robots = this.enemies;
@@ -71,7 +72,8 @@ function LevelStage() {
 							position : pos,
 							type : robot.type,
 							direction : robot.directionCode,
-							orientation : robot.orientation
+							orientation : robot.orientation,
+							level : this.activeLevel
 						}));
 
 					} else {
@@ -79,7 +81,8 @@ function LevelStage() {
 							position : pos,
 							type : robot.type,
 							direction : robot.directionCode,
-							orientation : robot.orientation
+							orientation : robot.orientation,
+							level : this.activeLevel
 						}));
 					}
 				}
@@ -240,12 +243,13 @@ function LevelStage() {
  * @param {Number} tile_width the width of the tile in which robots roam (defaults to 32)
  * @param {Number} tile_height the height of the tile in which robots roam (defaults to 32)
  */
-LevelStage.extractLevelElementInformation = function(elements_data, data_rows, data_cols, tile_width, tile_height) {
+LevelStage.extractLevelElementInformation = function(elements_data, level, data_rows, data_cols, tile_width, tile_height) {
 
 	var max_rows = data_rows || 18;
 	var max_cols = data_cols || 18;
 	var t_width = tile_width || 32;
 	var t_height = tile_height || 32;
+	var level_info = level || undefined; 
 
 	var robots = [];
 	var batteries = [];
@@ -267,7 +271,9 @@ LevelStage.extractLevelElementInformation = function(elements_data, data_rows, d
 					var robot = new Robot({
 						position : position,
 						type : type,
-						direction : dir_code
+						direction : dir_code,
+						level : level_info
+						
 					});
 					robots.push(robot);
 				}

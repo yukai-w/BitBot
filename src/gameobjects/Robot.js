@@ -8,6 +8,7 @@ function Robot(configuration_options) {
 	this.directionCode = configuration_options.direction || undefined;
 	this.orientation = configuration_options.orientation || this.walkDownFrame;
 	this.type = configuration_options.type || 'player_controlled';
+	this.internalLevelRepresentation = configuration_options.level || undefined;
 
 	/* Drawing attributes */
 	var robot_step_distance = Tile.default_size.width; //32px
