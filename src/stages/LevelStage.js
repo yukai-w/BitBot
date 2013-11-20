@@ -55,9 +55,10 @@ function LevelStage() {
 					pos = {x:robot.sprite.x, y:robot.sprite.y-robot.drawing_vert_offset};
 					
 					if(robot.isFalling) {
-						this.robotsFreezeFrameOutOfPlay[this.robotsFreezeFrameOutOfPlay.length] = new Robot(pos, robot.type, robot.directionCode, robot.orientation);
+						this.robotsFreezeFrameOutOfPlay.push(new Robot(pos, robot.type, robot.directionCode, robot.orientation));
+						
 					} else {
-						this.robotsFreezeFrameInPlay[this.robotsFreezeFrameInPlay.length] = new Robot(pos, robot.type, robot.directionCode, robot.orientation);
+						this.robotsFreezeFrameInPlay.push(new Robot(pos, robot.type, robot.directionCode, robot.orientation));
 					}
 				}
 			}
@@ -79,9 +80,9 @@ function LevelStage() {
 		for (var robot_idx = 0; robot_idx < number_of_robots; robot_idx++) {
 			robot = this.robots[robot_idx];
 			if(robot.isFalling) { //if it's falling, it's out of play
-				this.robotsOutOfPlay[this.robotsOutOfPlay.length] = robot;
+				this.robotsOutOfPlay.push(robot);
 			} else {
-				this.robotsInPlay[this.robotsInPlay.length] = robot;
+				this.robotsInPlay.push(robot);
 			}
 		}
 		
