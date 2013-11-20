@@ -9,9 +9,9 @@ function Battery(pos) {
 	this.sprite = new jaws.Sprite({x:pos.x, y:pos.y-this.drawing_vert_offset, scale:1.60, anchor:"center", image:"./assets/art/Battery.png"});
 	this.shadowSprite = new jaws.Sprite({
 		x : pos.x,
-		y : (pos.y + this.drawing_vert_offset),
+		y : (pos.y + 6),
 		anchor : "center_bottom",
-		scale : 0.25,
+		scale : 0.35,
 		image : "./assets/art/Shadow.png"
 	});
 	
@@ -19,6 +19,7 @@ function Battery(pos) {
 	this.level = 25.0;
 		
 	this.draw = function() {
+		this.shadowSprite.draw();
 		this.sprite.draw();
 	}
 	
