@@ -21,7 +21,9 @@ function LevelStage() {
 
 	/* Level initialization */
 	this.activeLevel = new Level(setup_sample_level());
-	this.enemies = LevelStage.extractRobotInformation(setup_sample_elements());
+	var level_elements = LevelStage.extractLevelElementInformation(setup_sample_elements());
+	this.enemies = level_elements.robots;
+	this.batteries = level_elements.batteries;
 	this.player = new Robot(this.activeLevel.startTile.getCenterCoordinate(), 'player_controlled');
 
 	this.robots = this.enemies;
@@ -167,7 +169,9 @@ function LevelStage() {
 			jaws.draw(this.robotsFreezeFrameOutOfPlay);
 			this.activeLevel.draw();
 			jaws.draw(this.robotsFreezeFrameInPlay);
-		}		
+		}
+		
+		jaws.draw(this.batteries);
 		this.hud.draw();
 	}
 	
@@ -207,7 +211,7 @@ function LevelStage() {
 							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0],
 							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[ 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 							[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -221,14 +225,14 @@ function LevelStage() {
 }
 
 /**
- * Returns an array of Robot sprites, placed at locations given by robot_data.
- * @param {Object} robot_data the robot data
+ * Returns a map of level elements.
+ * @param {Object} elements_data the elements data
  * @param {Number} data_rows number of rows in the robot_data (defaults to 18)
  * @param {Number} data_cols number of cols in the robot_data (defaults to 18)
  * @param {Number} tile_width the width of the tile in which robots roam (defaults to 32)
  * @param {Number} tile_height the height of the tile in which robots roam (defaults to 32)
  */
-LevelStage.extractRobotInformation = function(robot_data, data_rows, data_cols, tile_width, tile_height) {
+LevelStage.extractLevelElementInformation = function(elements_data, data_rows, data_cols, tile_width, tile_height) {
 
 	var max_rows = data_rows || 18;
 	var max_cols = data_cols || 18;
@@ -236,23 +240,32 @@ LevelStage.extractRobotInformation = function(robot_data, data_rows, data_cols, 
 	var t_height = tile_height || 32;
 
 	var robots = [];
+	var batteries = [];
 	for (var row_idx = 0; row_idx < max_rows; row_idx++) {
 		for (var col_idx = 0; col_idx < max_cols; col_idx++) {
-			var data = robot_data[row_idx][col_idx];
+			var data = elements_data[row_idx][col_idx];
 			if (data != 0) {
 				var position = {
 					x : (col_idx * t_width) + (t_width / 2),
 					y : (row_idx * t_height) + (t_height / 2)
 				};
-				var type = 'dreyfus_class';
-				var dir_code = data;
-
-				var robot = new Robot(position, type, data);
-				robots[robots.length] = robot;
+				
+				if(data == 9) {
+					var battery = new Battery(position);
+					batteries.push(battery);
+				} else {
+					var type = 'dreyfus_class';
+					var dir_code = data;
+					var robot = new Robot(position, type, dir_code);
+					robots.push(robot);	
+				}
 			}
 		}
 	}
 
-	return robots;
+	return {
+		'robots' : robots,
+		'batteries' : batteries
+	};
 }
 
