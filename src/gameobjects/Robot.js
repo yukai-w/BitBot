@@ -61,7 +61,8 @@ function Robot(pos, type, direction_code, orientation) {
 	this.targetPostion = undefined;
 
 	this.batteryLevel = 100.0;
-	var battery_decay = 10.0;
+	var battery_movement_cost = 5.0;
+	var battery_decay = 0.1;
 
 	this.isPlayerControlled = (type == 'player_controlled' ? true : false);
 	this.isPlanning = false;
@@ -221,7 +222,7 @@ function Robot(pos, type, direction_code, orientation) {
 					this.previousPositionStack.push({x : this.sprite.x, y : this.sprite.y});
 					var action = this.actionQueue.dequeue();
 					this.findActionTarget(action);
-					this.batteryLevel -= battery_decay;
+					this.batteryLevel -= battery_movement_cost;
 				} 
 				
 				//but if there are no more actions, then you're done.
@@ -263,7 +264,7 @@ function Robot(pos, type, direction_code, orientation) {
 			}
 		}
 
-		this.batteryLevel += 0.1; //TODO: REMOVE LATER
+		this.batteryLevel -= battery_decay;
 		bound_player_attributes(this);
 		this.moveToMyPosition(this.shadowSprite);
 	}
