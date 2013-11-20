@@ -113,12 +113,43 @@ function antidiagonal_transform(rectangular_matrix) {
 
 }
 
- /** 
-   * Tests whether or not 'item' is outside the game's canvas.
-   * @param {Object} item an object that has a coordinate
-   * @return True if the object is outside the canvas
-   */
-  function is_outside_canvas(item) { 
-    return (item.x < 0 || item.y < 0 || item.x > jaws.width || item.y > jaws.height); 
-  }
+/** 
+  * Returns true if the item is outside the game's canvas.
+  * @param {Object} item an object that has a coordinate
+  */
+function is_outside_canvas(item) { 
+	return (item.x < 0 || item.y < 0 || item.x > jaws.width || item.y > jaws.height); 
+}
+
+/**
+ * Like is_outside_canvas, but only checks vertical distance, and checks for items
+ * whose y is twice the screen's height. 
+ * @param {Object} item an object that has a coordinate
+ */
+function has_fallen_twice_screen_height(item) {
+	return (item.y > 2*jaws.height);
+}
+
+/**
+ * Compares two items that are assumed to have a jaws.sprite property. In this
+ * game, sprites that are lower on the screen (have a greater 'y'), are closer,
+ * and therefore should be drawn first.  This function is used to sort items,
+ * come draw time.
+ *  
+ * Return a negative number, zero, or a positive number depending on whether the
+ * first argument is less than, equal to, or greater than the second.
+ * @param {Object} item1 an object with a jaws.sprite property
+ * @param {Object} item2 an object with a jaws.sprite property
+ */
+function drawing_order_compare(item1, item2) {
+	
+	if(item1.sprite.y > item2.sprite.y) {
+		return 1;
+	} else if(item1.sprite.y < item2.sprite.y) {
+		return -1;
+	} else {
+		return 0;
+	}
+}
+
 
