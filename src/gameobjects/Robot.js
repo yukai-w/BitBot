@@ -14,8 +14,7 @@ function Robot(configuration_options) {
 	this.internalWorldRepresentation = configuration_options.world || undefined;
 
 	/* Drawing attributes */
-	var robot_step_distance = Tile.default_size.width;
-	//32px
+	var robot_step_distance = Tile.default_size.width; //32px
 	this.drawing_vert_offset = 10;
 
 	/* Sound attributes */
@@ -105,17 +104,19 @@ function Robot(configuration_options) {
 
 	this.update = function() {
 		if (this.isRespawning) {
-			this.sprite.setImage(this.spawnAnimation.next());
-			this.sprite.moveTo(this.startingPosition.x, this.startingPosition.y);
-			this.orientation = this.spawnAnimation.currentFrame();
-
-			if (this.spawnAnimation.index == 1 && this.isPlayerControlled) {
-				this.respawningSfx.play();
-			}
-
-			if (this.spawnAnimation.index == (this.spawnAnimation.frames.length - 1)) {
-				this.previousPositionStack.push(this.startingPosition);
-				this.setMode('idle');
+			if (this.internalWorldRepresentation) {
+				this.sprite.setImage(this.spawnAnimation.next());
+				this.sprite.moveTo(this.startingPosition.x, this.startingPosition.y);
+				this.orientation = this.spawnAnimation.currentFrame();
+	
+				if (this.spawnAnimation.index == 1 && this.isPlayerControlled) {
+					this.respawningSfx.play();
+				}
+	
+				if (this.spawnAnimation.index == (this.spawnAnimation.frames.length - 1)) {
+					this.previousPositionStack.push(this.startingPosition);
+					this.setMode('idle');
+				}
 			}
 		} else if (!this.isFalling) {
 			if (this.isIdle) {
@@ -272,7 +273,15 @@ function Robot(configuration_options) {
 	this.rect = function() {
 		return this.sprite.rect().resizeTo(this.width / 2, this.height / 2);
 	}
+	
+	this.updateInternalWorldRepresentation = function(world_update) {
+		this.internalWorldRepresentation = world_update;
+	}
 
+	/**
+	 * Respawns this Robot by moving it to it's starting position, clearing
+	 * its queue of remaining actions, and beginning the respawn sequence.
+	 */
 	this.respawn = function() {
 		this.setMode('respawning');
 		this.targetPosition = undefined;
@@ -280,10 +289,15 @@ function Robot(configuration_options) {
 		goog.array.clear(this.previousPositionStack);
 	}
 
+	/**
+	 * Moves the paramter jaws.Sprite to my position.
+	 * @param sprite a jaws.Sprite.
+	 */
 	this.moveToMyPosition = function(sprite) {
 		sprite.x = this.sprite.x;
 		sprite.y = this.sprite.y;
 	}
+	
 	/**
 	 * Sets this Robot to the parameter mode.
 	 * @param mode a String which represents the mode to switch into.
@@ -323,12 +337,14 @@ function Robot(configuration_options) {
 			this.isRespawning = false;
 		}
 	}
+	
 	/**
 	 * Determines whether this robot is in play.
 	 */
 	this.isInPlay = function() {
 		return !(this.isFalling || this.isRespawning);
 	}
+	
 	/**
 	 * Sets this Robot's target given the action to execute.
 	 * @param action the action to execute ('left','right','up', or 'down')
@@ -350,6 +366,11 @@ function Robot(configuration_options) {
 			this.targetPosition.y += robot_step_distance;
 		}
 	}
+	
+	/**
+	 * Auxiliary function to handle AI input.  Very limited right now.
+	 * @param player_AI the Robot whom you'd like to apply AI moves.
+	 */
 	function handle_AI_input(player_AI) {
 		if (player_AI.type == 'dreyfus_class') {
 			for (var action_idx = 0; action_idx < player_AI.actionQueueSizeMax; action_idx++) {
