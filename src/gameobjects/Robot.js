@@ -1,7 +1,13 @@
 /**
  * A Robot.
  */
-function Robot(pos, type, direction_code, orientation) {
+function Robot(configuration_options) {
+
+	/* Configuration Attributes */
+	var pos = configuration_options.position || {x:0, y:0};
+	this.directionCode = configuration_options.direction || undefined;
+	this.orientation = configuration_options.orientation || this.walkDownFrame;
+	this.type = configuration_options.type || 'player_controlled';
 
 	/* Drawing attributes */
 	var robot_step_distance = Tile.default_size.width; //32px
@@ -13,13 +19,7 @@ function Robot(pos, type, direction_code, orientation) {
 	this.respawningSfx = new Howl({urls : ['./assets/sounds/fx/respawn.mp3']});
 
 	/* Sprite and Animation attributes */
-	var animation = new jaws.Animation({
-		sprite_sheet : Robot.types[type].sprite_sheet,
-		frame_size : [39, 54],
-		loop : true,
-		orientation : 'right'
-	});
-	
+	var animation = new jaws.Animation({sprite_sheet : Robot.types[this.type].sprite_sheet, frame_size : [39, 54], loop : true, orientation : 'right'});
 	this.walkUpFrame = animation.frames[0];
 	this.walkDownFrame = animation.frames[1];
 	this.idleAnimation = animation.slice(2,5);
@@ -27,35 +27,22 @@ function Robot(pos, type, direction_code, orientation) {
 	this.walkRightFrame = animation.frames[6];
 	this.spawnAnimation = animation.slice(7,32);
 	
-	this.sprite = new jaws.Sprite({
-		x : pos.x,
-		y : (pos.y + this.drawing_vert_offset),
-		anchor : "center_bottom",
-		scale : 0.85
-	});
-	
-	this.shadowSprite = new jaws.Sprite({
-		x : pos.x,
-		y : (pos.y + this.drawing_vert_offset),
-		anchor : "center_bottom",
-		scale : 0.65,
-		image : "./assets/art/Shadow.png"
-	});
+	this.sprite = new jaws.Sprite({x : pos.x, y : (pos.y + this.drawing_vert_offset), anchor : "center_bottom", scale : 0.85});
+	this.shadowSprite = new jaws.Sprite({x : pos.x, y : (pos.y + this.drawing_vert_offset), anchor : "center_bottom", scale : 0.65, image : "./assets/art/Shadow.png"});
 	
 	/* This is only useful for when making a deep copy of this Robot */
-	this.orientation = orientation || this.walkDownFrame;
 	this.sprite.setImage(this.orientation);
-	
-	
+
+	/* Helper attributes */
 	this.width = this.sprite.rect().width;
 	this.height = this.sprite.rect().height;
-	this.speed = (type == 'player_controlled' ? 3 : 2);
+	this.speed = (this.type == 'player_controlled' ? 3 : 2);
 	this.velocityX = 0.0;
 	this.velocityY = 0.0;
 
 	/* Game logic attributes */
-	this.type = type;
-	this.directionCode = direction_code || undefined;
+	
+	
 	this.startingPosition = {x : pos.x, y : pos.y + this.drawing_vert_offset};
 	this.previousPosition = undefined;
 	this.targetPostion = undefined;
@@ -64,7 +51,7 @@ function Robot(pos, type, direction_code, orientation) {
 	var battery_movement_cost = 5.0;
 	var battery_decay = 0.1;
 
-	this.isPlayerControlled = (type == 'player_controlled' ? true : false);
+	this.isPlayerControlled = (this.type == 'player_controlled' ? true : false);
 	this.isPlanning = false;
 	this.isExecuting = false;
 	this.isFalling = false; //true if we just fell off the game level
