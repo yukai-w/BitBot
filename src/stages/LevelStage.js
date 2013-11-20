@@ -154,18 +154,18 @@ function LevelStage() {
 						errorSound.play();
 					}
 				});
-			
-			//if you collide against batteries, take the battery value and add
-			//it to your Robot
-			if(this.player.isInPlay()) {
-				var collided_batteries = jaws.collideOneWithMany(this.player, this.batteries);
-				
-				var number_of_batteries = collided_batteries.length, battery = null;
-				for (var battery_idx = 0; battery_idx < number_of_batteries; battery_idx++) {
-					var battery = collided_batteries[battery_idx];
-					goog.array.remove(this.batteries, battery);
-					this.player.batteryLevel += battery.level;
-				}
+		}
+		
+		
+		//if you collide against batteries, take the battery value and add it to your Robot
+		if(this.player.isInPlay()) {
+			var collided_batteries = jaws.collideOneWithMany(this.player, this.batteries);
+			var number_of_batteries = collided_batteries.length, battery = null;
+			for (var battery_idx = 0; battery_idx < number_of_batteries; battery_idx++) {
+				var battery = collided_batteries[battery_idx];
+				console.log(battery);
+				console.log(goog.array.remove(this.batteries, battery));
+				this.player.batteryLevel += battery.level;
 			}
 		}
 
