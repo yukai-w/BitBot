@@ -16,14 +16,14 @@ function Battery(pos) {
 	});
 	
 	/* Game logic attributes */
-	this.value = 10;
+	this.level = 10.0;
 		
 	this.draw = function() {
 		this.sprite.draw();
 	}
 	
 	this.rect = function() {
-		return this.sprite.rect();
+		return this.sprite.rect().resizeTo(8,15);
 	}
 	
 	

@@ -334,6 +334,13 @@ function Robot(pos, type, direction_code, orientation) {
 	}
 	
 	/**
+	 * Determines whether this robot is in play.
+	 */
+	this.isInPlay = function() {
+		return !(this.isFalling || this.isRespawning);
+	}
+	
+	/**
 	 * Sets this Robot's target given the action to execute.
 	 * @param action the action to execute ('left','right','up', or 'down')
 	 */
