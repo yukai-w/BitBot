@@ -300,10 +300,10 @@ var Editor = {
 		}
 		// check vertical dimension		
 		if (tileY < this.minVerticalTile && (this.maxVerticalTile - tileY) <= this.maxGameplayHeight) {
-			this.updateMinVerticalTile(tileY)
+			this.updateMinVerticalTile(tileY);
 		}
 		else if (tileY < this.maxVerticalTile && (tileY - this.minVerticalTile) <= this.maxGameplayHeight) {
-			this.updateMaxVerticalTile(tileY)
+			this.updateMaxVerticalTile(tileY);
 		} else {
 			return false;
 		}
@@ -330,5 +330,12 @@ var Editor = {
 	updateMinVerticalTile: function(yIndex) {
 		this.minVerticalTile = yIndex;
 	},
+	
+	resetGrid: function() {
+		var editorTiles = $(".editor-tile");
+		editorTiles.removeClass();
+		editorTiles.addClass("editor-tile editor-tile-undefined");
+		
+	}
 };
 
