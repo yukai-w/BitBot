@@ -1,39 +1,54 @@
 /**
  * A Robot.
  */
-function Robot(pos, type, direction_code, orientation) {
+function Robot(configuration_options) {
+
+	/* Configuration Attributes */
+	var pos = configuration_options.position || {
+		x : 0,
+		y : 0
+	};
+	this.directionCode = configuration_options.direction || undefined;
+	this.orientation = configuration_options.orientation || this.walkDownFrame;
+	this.type = configuration_options.type || 'player_controlled';
+	this.internalWorldRepresentation = configuration_options.world || undefined;
 
 	/* Drawing attributes */
-	var robot_step_distance = Tile.default_size.width; //32px
+	var robot_step_distance = Tile.default_size.width;
+	//32px
 	this.drawing_vert_offset = 10;
 
 	/* Sound attributes */
-	this.fallingSfx = new Howl({urls : ['./assets/sounds/fx/fall.mp3']});
-	this.executingSfx = new Howl({urls : ['./assets/sounds/fx/move.mp3']});
-	this.respawningSfx = new Howl({urls : ['./assets/sounds/fx/respawn.mp3']});
+	this.fallingSfx = new Howl({
+		urls : ['./assets/sounds/fx/fall.mp3']
+	});
+	this.executingSfx = new Howl({
+		urls : ['./assets/sounds/fx/move.mp3']
+	});
+	this.respawningSfx = new Howl({
+		urls : ['./assets/sounds/fx/respawn.mp3']
+	});
 
 	/* Sprite and Animation attributes */
 	var animation = new jaws.Animation({
-		sprite_sheet : Robot.types[type].sprite_sheet,
+		sprite_sheet : Robot.types[this.type].sprite_sheet,
 		frame_size : [39, 54],
 		loop : true,
 		orientation : 'right'
 	});
-	
 	this.walkUpFrame = animation.frames[0];
 	this.walkDownFrame = animation.frames[1];
-	this.idleAnimation = animation.slice(2,5);
+	this.idleAnimation = animation.slice(2, 5);
 	this.walkLeftFrame = animation.frames[5];
 	this.walkRightFrame = animation.frames[6];
-	this.spawnAnimation = animation.slice(7,32);
-	
+	this.spawnAnimation = animation.slice(7, 32);
+
 	this.sprite = new jaws.Sprite({
 		x : pos.x,
 		y : (pos.y + this.drawing_vert_offset),
 		anchor : "center_bottom",
 		scale : 0.85
 	});
-	
 	this.shadowSprite = new jaws.Sprite({
 		x : pos.x,
 		y : (pos.y + this.drawing_vert_offset),
@@ -41,22 +56,22 @@ function Robot(pos, type, direction_code, orientation) {
 		scale : 0.65,
 		image : "./assets/art/Shadow.png"
 	});
-	
+
 	/* This is only useful for when making a deep copy of this Robot */
-	this.orientation = orientation || this.walkDownFrame;
 	this.sprite.setImage(this.orientation);
-	
-	
+
+	/* Helper attributes */
 	this.width = this.sprite.rect().width;
 	this.height = this.sprite.rect().height;
-	this.speed = (type == 'player_controlled' ? 3 : 2);
+	this.speed = (this.type == 'player_controlled' ? 3 : 2);
 	this.velocityX = 0.0;
 	this.velocityY = 0.0;
 
 	/* Game logic attributes */
-	this.type = type;
-	this.directionCode = direction_code || undefined;
-	this.startingPosition = {x : pos.x, y : pos.y + this.drawing_vert_offset};
+	this.startingPosition = {
+		x : pos.x,
+		y : pos.y + this.drawing_vert_offset
+	};
 	this.previousPosition = undefined;
 	this.targetPostion = undefined;
 
@@ -64,146 +79,120 @@ function Robot(pos, type, direction_code, orientation) {
 	var battery_movement_cost = 5.0;
 	var battery_decay = 0.1;
 
-	this.isPlayerControlled = (type == 'player_controlled' ? true : false);
+	this.isPlayerControlled = (this.type == 'player_controlled' ? true : false);
 	this.isPlanning = false;
 	this.isExecuting = false;
-	this.isFalling = false; //true if we just fell off the game level
+	this.isFalling = false;
+	//true if we just fell off the game level
 	this.isRespawning = false;
-	
+
 	this.isIdle = true;
 	this.actionQueue = new goog.structs.Queue();
 	this.previousPositionStack = [];
-	this.actionQueueSizeMax = 12; //max 12 actions queued
-	
+	this.actionQueueSizeMax = 12;
+	//max 12 actions queued
 
 	this.millisecondsSpentPlanning = 0.0;
-	var planning_millisecond_threshold = 1000.0; //1 seconds
+	var planning_millisecond_threshold = 1000.0;
+	//1 seconds
 	this.millisecondsSpentExecuting = 0.0;
-	var executing_millisecond_delay = 500.0; //.5 seconds
+	var executing_millisecond_delay = 500.0;
+	//.5 seconds
 
 	/* Game input attributes */
 	// Prevent the browser from catching the following keys:
 	jaws.preventDefaultKeys(["up", "down", "left", "right"]);
-	
-	this.update = function() 
-	{
-		if (this.isRespawning) 
-		{
+
+	this.update = function() {
+		if (this.isRespawning) {
 			this.sprite.setImage(this.spawnAnimation.next());
 			this.sprite.moveTo(this.startingPosition.x, this.startingPosition.y);
 			this.orientation = this.spawnAnimation.currentFrame();
-			
-			if(this.spawnAnimation.index == 1 && this.isPlayerControlled) 
-			{
+
+			if (this.spawnAnimation.index == 1 && this.isPlayerControlled) {
 				this.respawningSfx.play();
 			}
-			
-			if(this.spawnAnimation.index == (this.spawnAnimation.frames.length-1)) 
-			{
+
+			if (this.spawnAnimation.index == (this.spawnAnimation.frames.length - 1)) {
+				this.previousPositionStack.push(this.startingPosition);
 				this.setMode('idle');
 			}
-					
-		} 
-		
-		else if (!this.isFalling) 
-		{
-			if (this.isIdle) 
-			{
+		} else if (!this.isFalling) {
+			if (this.isIdle) {
 				//if we're idle, and the executing sfx was playing, stop it
-				if(this.executingSfx.pos() > 0) {
+				if (this.executingSfx.pos() > 0) {
 					this.executingSfx.stop();
 				}
-				
-				if (this.isPlayerControlled) 
-				{
-					if (handle_player_input(this)) 
-					{
-						// when you're idle, and you begin inputting commands, 
+
+				if (this.isPlayerControlled) {
+					if (handle_player_input(this)) {
+						// when you're idle, and you begin inputting commands,
 						// you enter planning mode.
 						this.setMode('planning');
-					} 
-					
-					else 
-					{
+					} else {
 						this.sprite.setImage(this.idleAnimation.next());
 						this.orientation = this.walkDownFrame;
 					}
-					
-				} 
-				
-				else 
-				{
+
+				} else {
 					// Do AI
 					handle_AI_input(this);
 					this.setMode('executing');
 				}
 
-			} 
-			
-			else if (this.isPlanning) 
-			{
+			} else if (this.isPlanning) {
 				// in planning mode, several things could force you to jump into execution mode...
-				
+
 				//  ...you only have two seconds to keep inputting commands, and
-				// you can't exceed the max number of actions				
-				if (this.millisecondsSpentPlanning > planning_millisecond_threshold ||
-					this.actionQueue.getCount() == this.actionQueueSizeMax) 
-				{
-					this.setMode('executing'); 
+				// you can't exceed the max number of actions
+				if (this.millisecondsSpentPlanning > planning_millisecond_threshold || this.actionQueue.getCount() == this.actionQueueSizeMax) {
+					this.setMode('executing');
 					this.millisecondsSpentPlanning = 0.0;
-					if(this.isPlayerControlled) 
-					{
-						this.executingSfx.play();	//we will begin to execute - only play for the player
+					if (this.isPlayerControlled) {
+						this.executingSfx.play();
+						//we will begin to execute - only play for the player
 					}
-					
-				} 
-				
-				else 
-				{
+
+				} else {
 					this.millisecondsSpentPlanning += jaws.game_loop.tick_duration;
-					
+
 					//when you're planning, and you input commands, the planning timer resets
-					if (handle_player_input(this)) 
-					{
+					if (handle_player_input(this)) {
 						this.millisecondsSpentPlanning = 0.0;
 					}
 				}
-			} 
-			
+			}
+
 			//must be in execution
-			else 
-			{
+			else {
 				//if we have a target, move to it.
-				if (this.targetPosition != undefined) 
-				{
+				if (this.targetPosition != undefined) {
 					var tx = this.targetPosition.x - this.sprite.x;
 					var ty = this.targetPosition.y - this.sprite.y;
 					var distance_to_target = Math.sqrt((tx * tx) + (ty * ty));
 
 					this.velocityX = (tx / distance_to_target) * this.speed;
 					this.velocityY = (ty / distance_to_target) * this.speed;
-					
-					if(ty < 0) {
+
+					if (ty < 0) {
 						this.sprite.setImage(this.walkUpFrame);
 						this.orientation = this.walkUpFrame;
 					}
-					
-					if(ty > 0) {
+
+					if (ty > 0) {
 						this.sprite.setImage(this.walkDownFrame);
 						this.orientation = this.walkDownFrame;
 					}
-					
-					
-					if(tx < 0 && distance_to_target > 1) {
+
+					if (tx < 0 && distance_to_target > 1) {
 						this.sprite.setImage(this.walkLeftFrame);
 						this.orientation = this.walkLeftFrame;
 					}
-					
-					if(tx > 0 && distance_to_target > 1) {
+
+					if (tx > 0 && distance_to_target > 1) {
 						this.sprite.setImage(this.walkRightFrame);
 						this.orientation = this.walkRightFrame;
 					}
-					
 
 					if (distance_to_target > 1) {
 						this.sprite.x += this.velocityX;
@@ -213,53 +202,55 @@ function Robot(pos, type, direction_code, orientation) {
 						this.sprite.y = this.targetPosition.y;
 						this.targetPosition = undefined;
 					}
-				} 
-				
+				}
+
 				//otherwise, try to find a new target.
-				else if (! this.actionQueue.isEmpty()) 
-				{
-					this.previousPosition = {x : this.sprite.x, y : this.sprite.y};
-					this.previousPositionStack.push({x : this.sprite.x, y : this.sprite.y});
+				else if (! this.actionQueue.isEmpty()) {
+					this.previousPosition = {
+						x : this.sprite.x,
+						y : this.sprite.y
+					};
+					this.previousPositionStack.push({
+						x : this.sprite.x,
+						y : this.sprite.y
+					});
 					var action = this.actionQueue.dequeue();
 					this.findActionTarget(action);
 					this.batteryLevel -= battery_movement_cost;
-				} 
-				
+				}
+
 				//but if there are no more actions, then you're done.
-				else 
-				{
+				else {
 					this.setMode('idle');
 				}
 
 			}
-		} 
-		
+		}
+
 		//this isFalling!
-		else 
-		{
+		else {
 			//if the robot was executing, stop the sfx (otherwise it'll sound all the way down)
-			if(this.executingSfx.pos() > 0) {
-					this.executingSfx.stop();
+			if (this.executingSfx.pos() > 0) {
+				this.executingSfx.stop();
 			}
-			
+
 			//this is true only once, right before we fall, so play the fall sound
-			if (this.sprite.x == this.previousPosition.x || this.sprite.y == this.previousPosition.y) 
-			{
-				if(this.isPlayerControlled) {
-					this.fallingSfx.play(); //only play sounds for the player
+			if (this.sprite.x == this.previousPosition.x || this.sprite.y == this.previousPosition.y) {
+				if (this.isPlayerControlled) {
+					this.fallingSfx.play();
+					//only play sounds for the player
 				}
 			}
 
 			//if we're falling, we must increase 'y' until we're way off the screen
-			if (!has_fallen_twice_screen_height(this.sprite)) 
-			{
+			if (!has_fallen_twice_screen_height(this.sprite)) {
 				this.sprite.y += 9.8;
-				this.sprite.x += 0.1; //done to avoid playing the sound forever
+				this.sprite.x += 0.1;
+				//done to avoid playing the sound forever
 			}
-			
+
 			//once we're off the screen, respawn
-			else 
-			{
+			else {
 				this.respawn();
 			}
 		}
@@ -270,7 +261,7 @@ function Robot(pos, type, direction_code, orientation) {
 	}
 
 	this.draw = function() {
-		if(this.isFalling || this.isRespawning) {
+		if (this.isFalling || this.isRespawning) {
 			this.sprite.draw();
 		} else {
 			this.shadowSprite.draw();
@@ -279,7 +270,7 @@ function Robot(pos, type, direction_code, orientation) {
 	}
 
 	this.rect = function() {
-		return this.sprite.rect().resizeTo(this.width/2,this.height/2);
+		return this.sprite.rect().resizeTo(this.width / 2, this.height / 2);
 	}
 
 	this.respawn = function() {
@@ -293,7 +284,6 @@ function Robot(pos, type, direction_code, orientation) {
 		sprite.x = this.sprite.x;
 		sprite.y = this.sprite.y;
 	}
-	
 	/**
 	 * Sets this Robot to the parameter mode.
 	 * @param mode a String which represents the mode to switch into.
@@ -333,14 +323,12 @@ function Robot(pos, type, direction_code, orientation) {
 			this.isRespawning = false;
 		}
 	}
-	
 	/**
 	 * Determines whether this robot is in play.
 	 */
 	this.isInPlay = function() {
 		return !(this.isFalling || this.isRespawning);
 	}
-	
 	/**
 	 * Sets this Robot's target given the action to execute.
 	 * @param action the action to execute ('left','right','up', or 'down')
@@ -362,7 +350,6 @@ function Robot(pos, type, direction_code, orientation) {
 			this.targetPosition.y += robot_step_distance;
 		}
 	}
-	
 	function handle_AI_input(player_AI) {
 		if (player_AI.type == 'dreyfus_class') {
 			for (var action_idx = 0; action_idx < player_AI.actionQueueSizeMax; action_idx++) {

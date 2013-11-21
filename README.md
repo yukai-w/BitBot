@@ -6,3 +6,7 @@
 * [José D. Vélez](http://twitter.com/danivive), Pixel artist. Songwriter. Comicbook nerd.
 * [Allison G. Martínez-Arocho](http://twitter.com/vamoavel), Student with a passion for sewing, coding, and all things in between.
 * [Ian Coleman](http://twitter.com/iancoleman), M.S. Student and Professional Web Developer. 
+
+## Live
+
+[Click here](http://recardona.github.io/game-off-2013) for a live version of the game.
