@@ -241,34 +241,7 @@ function Robot(configuration_options) {
 
 		//this isFalling!
 		else {
-			//if the robot was executing, stop the sfx (otherwise it'll sound all the way down)
-			if (this.executingSfx.pos() > 0) {
-				this.executingSfx.stop();
-			}
-
-			//this is true only once, right before we fall, so play the fall sound
-			if (this.sprite.x == this.previousPosition.x || this.sprite.y == this.previousPosition.y) {
-				if (this.isPlayerControlled) {
-					this.fallingSfx.play();
-					//only play sounds for the player
-				}
-			}
-
-			//if we're falling, we must increase 'y' until we're way off the screen
-			if (!has_fallen_twice_screen_height(this.sprite)) {
-				this.sprite.y += 9.8;
-				this.sprite.x += 0.1;
-				//done to avoid playing the sound forever
-			}
-
-			//once we're off the screen, respawn
-			else {
-
-				//check if you're able to respawn
-				if (this.canRespawn) {
-					this.beginRespawn();
-				}
-			}
+			this.fall();
 		}
 
 		this.batteryLevel -= battery_decay;
@@ -399,6 +372,38 @@ function Robot(configuration_options) {
 				this.millisecondsSpentPlanning = 0.0;
 			}
 		}		
+	}
+	
+	/**
+	 * Makes the robot fall from its current location, until it falls beyond
+	 * twice the canvas' height, at which point it begins the process for respawning.
+	 */
+	this.fall = function() {
+		
+		//if the robot was executing, stop the sfx (otherwise it'll sound all the way down)
+		if (this.executingSfx.pos() > 0) {
+			this.executingSfx.stop();
+		}
+
+		//this is true only once, right before we fall, so play the fall sound
+		if (this.sprite.x == this.previousPosition.x || this.sprite.y == this.previousPosition.y) {
+			if (this.isPlayerControlled) {
+				this.fallingSfx.play();
+				//only play sounds for the player
+			}
+		}
+
+		//if we're falling, we must increase 'y' until we're way off the screen
+		if (!has_fallen_twice_screen_height(this.sprite)) {
+			this.sprite.y += 9.8;
+			this.sprite.x += 0.1; //x is increased to avoid playing the falling sound forever
+		} else {
+
+			//check if you're able to respawn (no one is blocking your spawn point)
+			if (this.canRespawn) {
+				this.beginRespawn();
+			}
+		}
 	}
 	
 	
