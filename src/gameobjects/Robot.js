@@ -139,51 +139,19 @@ function Robot(configuration_options) {
 			this.respawn();
 		} else if(this.isRebooting) {
 			this.reboot();
-		} else if (!this.isFalling) {
-			if (this.isIdle) {
-				executing_watchdog_timer = 0.0;
-
-				//if we're idle, and the executing sfx was playing, stop it
-				if (this.executingSfx.pos() > 0) {
-					this.executingSfx.stop();
-				}
-
-				if (this.isPlayerControlled) {
-					if (handle_player_input(this)) {
-						// when you're idle, and you begin inputting commands,
-						// you enter planning mode.
-						this.setMode('planning');
-					} else {
-						this.sprite.setImage(this.idleAnimation.next());
-						this.orientation = this.walkDownFrame;
-					}
-
-				} else {
-					// Do AI
-					handle_AI_input(this);
-					this.setMode('executing');
-				}
-			} else if(this.isPlanning) {
-				this.plan();
-			}   
-			
-			//must be in execution
-			else {
-				this.execute();
-			}
-		}
-
-		//this isFalling!
-		else {
+		} else if(this.isFalling) {
 			this.fall();
+		} else if(this.isPlanning) {
+			this.plan();
+		} else if(this.isExecuting) {
+			this.execute();
+		} else { //this is idle
+			this.standby();
 		}
-
+		
 		this.batteryLevel -= battery_decay;
 		bound_player_attributes(this);
 		this.moveToMyPosition(this.shadowSprite);
-		if(this.isPlayerControlled) {
-			console.log(this.getMode());	
-		}
 	}
 
 	this.draw = function() {
@@ -384,6 +352,34 @@ function Robot(configuration_options) {
 	}
 	
 	/**
+	 * Handles standing by in the Robot's 'idle' state.
+	 */
+	this.standby = function() {
+		executing_watchdog_timer = 0.0;
+
+		//if we're idle, and the executing sfx was playing, stop it
+		if (this.executingSfx.pos() > 0) {
+			this.executingSfx.stop();
+		}
+
+		if (this.isPlayerControlled) {
+			if (handle_player_input(this)) {
+				// when you're idle, and you begin inputting commands,
+				// you enter planning mode.
+				this.setMode('planning');
+			} else {
+				this.sprite.setImage(this.idleAnimation.next());
+				this.orientation = this.walkDownFrame;
+			}
+
+		} else {
+			// Do AI
+			handle_AI_input(this);
+			this.setMode('executing');
+		}
+	}
+	
+	/**
 	 * Makes the robot fall from its current location, until it falls beyond
 	 * twice the canvas' height, at which point it begins the process for respawning.
 	 */
@@ -414,7 +410,6 @@ function Robot(configuration_options) {
 			}
 		}
 	}
-	
 	
 	/**
 	 * Wipes this Robot's memory by clearing its target position, its
