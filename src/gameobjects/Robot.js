@@ -163,32 +163,13 @@ function Robot(configuration_options) {
 					handle_AI_input(this);
 					this.setMode('executing');
 				}
-
-			} else if (this.isPlanning) {
-				// in planning mode, several things could force you to jump into execution mode...
-
-				//  ...you only have two seconds to keep inputting commands, and
-				// you can't exceed the max number of actions
-				if (this.millisecondsSpentPlanning > planning_millisecond_threshold || this.actionQueue.getCount() == this.actionQueueSizeMax) {
-					this.setMode('executing');
-					this.millisecondsSpentPlanning = 0.0;
-					if (this.isPlayerControlled) {
-						this.executingSfx.play();
-						//we will begin to execute - only play for the player
-					}
-
-				} else {
-					this.millisecondsSpentPlanning += jaws.game_loop.tick_duration;
-
-					//when you're planning, and you input commands, the planning timer resets
-					if (handle_player_input(this)) {
-						this.millisecondsSpentPlanning = 0.0;
-					}
-				}
-			}
-
+			} else if(this.isPlanning) {
+				this.plan();
+			}   
+			
 			//must be in execution
 			else {
+				
 				executing_watchdog_timer += jaws.game_loop.tick_duration;
 				if (executing_watchdog_timer >= watchdog_timer_threshold) {
 					//that means we've gotten into a weird state :( - RESET!
@@ -293,6 +274,9 @@ function Robot(configuration_options) {
 		this.batteryLevel -= battery_decay;
 		bound_player_attributes(this);
 		this.moveToMyPosition(this.shadowSprite);
+		if(this.isPlayerControlled) {
+			console.log(this.getMode());	
+		}
 	}
 
 	this.draw = function() {
@@ -339,12 +323,15 @@ function Robot(configuration_options) {
 
 		if (this.spawnAnimation.index == 1 && this.isPlayerControlled) {
 			this.respawningSfx.play();
+			console.log(this.spawnAnimation);
 		}
 
-		if (this.spawnAnimation.index == (this.spawnAnimation.frames.length - 1)) {
+		if (this.spawnAnimation.atLastFrame()) {
 			this.previousPositionStack.push(this.startingPosition);
 			this.setMode('idle');
 		}
+		
+		console.log(this.spawnAnimation.index);
 	}
 	
 	/**
@@ -355,7 +342,6 @@ function Robot(configuration_options) {
 		this.setMode('rebooting');
 		this.wipeMemory();
 	}
-	
 	
 	/**
 	 * Reboots this Robot by resetting its watchdog timer, and animating the reboot.
@@ -374,6 +360,45 @@ function Robot(configuration_options) {
 		if(this.rebootAnimation.atLastFrame()) {
 			this.setMode('idle');
 		}
+	}
+	
+	/**
+	 * Executes the planning process for this Robot.  If commands are entered during
+	 * the process, the planning timer resets.  If the timer expires, you are forced
+	 * into execution - and if you hit max actions, you're also forced into execution.
+	 */
+	this.plan = function() {
+
+		// in planning mode, several things could force you to jump into execution mode...
+		var robot_must_begin_executing = false;
+		
+		//  ...you only have x seconds to keep inputting commands, and...
+		if (this.millisecondsSpentPlanning > planning_millisecond_threshold) {
+			robot_must_begin_executing = true;
+		}
+		
+		// ...you can't exceed the max number of actions
+		if (this.actionQueue.getCount() == this.actionQueueSizeMax) {
+			robot_must_begin_executing = true;
+		}
+
+		if (robot_must_begin_executing) {
+			
+			this.setMode('executing');
+			this.millisecondsSpentPlanning = 0.0;
+			
+			if (this.isPlayerControlled) {
+				this.executingSfx.play();
+			}
+			
+		} else {
+			this.millisecondsSpentPlanning += jaws.game_loop.tick_duration;
+
+			//when you're planning, and you input commands, the planning timer resets
+			if (handle_player_input(this)) {
+				this.millisecondsSpentPlanning = 0.0;
+			}
+		}		
 	}
 	
 	
