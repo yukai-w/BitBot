@@ -176,6 +176,14 @@ var Editor = {
 		tile.removeClass();
 		tile.addClass("editor-tile");
 		
+		// decrement count of tiles being removed/overwritten
+		if(type !== tile.attr("type")) {
+			if(tile.attr("type") === "start")
+				this.startCount--;
+			if(tile.attr("type") === "goal")
+				this.goalCount--;
+		}
+		
 		// add new type class
 		switch(type) {
 		case this.tileTypes.FLAT:
