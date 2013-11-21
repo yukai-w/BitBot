@@ -180,12 +180,14 @@ var Editor = {
 		switch(type) {
 		case this.tileTypes.FLAT:
 			tile.addClass("editor-tile-flat");
+			tile.attr("type", "flat");
 			break;
 		case this.tileTypes.START:
 			if(this.startCount + 1 > this.startLimit) {
 				this.showAlert("start tile limit reached");
 			} else {
 				tile.addClass("editor-tile-start");
+				tile.attr("type", "start");
 				this.startCount++;
 			}
 			break;
@@ -194,21 +196,25 @@ var Editor = {
 				this.showAlert("goal tile limit reached");
 			} else {
 				tile.addClass("editor-tile-goal");
+				tile.attr("type", "goal");
 				this.goalCount++;
 			}
 			break;
 		case this.tileTypes.RAISED:
 			tile.addClass("editor-tile-raised");
+			tile.attr("type", "raised");
 			break;
 		case this.tileTypes.UNDEFINED:
 		default:
 			tile.addClass("editor-tile-undefined");
+			tile.attr("type", "undefined");
 			break;
 		}
 	},
 	
 	/**
 	 * Updates tile info based on input events
+	 * @author Ian Coleman <ian@sweetcarolinagames.com>
 	 */
 	updateTile: function(tile) {
 		var editor = this;
