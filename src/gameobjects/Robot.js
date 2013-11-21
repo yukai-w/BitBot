@@ -256,7 +256,6 @@ function Robot(configuration_options) {
 
 				//but if there are no more actions, then you're done.
 				else {
-					console.log(executing_watchdog_timer);
 					this.setMode('idle');
 				}
 
@@ -298,9 +297,6 @@ function Robot(configuration_options) {
 		this.batteryLevel -= battery_decay;
 		bound_player_attributes(this);
 		this.moveToMyPosition(this.shadowSprite);
-		if (this.isPlayerControlled) {
-			console.log(this.getMode());
-		}
 	}
 
 	this.draw = function() {
@@ -480,10 +476,6 @@ function Robot(configuration_options) {
 		} else if (jaws.pressedWithoutRepeat("down")) {
 			player.actionQueue.enqueue('down');
 			key_was_pressed = true;
-		}
-
-		if (key_was_pressed) {
-			console.log("Key was pressed!");
 		}
 
 		return key_was_pressed;

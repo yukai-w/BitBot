@@ -12,10 +12,6 @@ function Level(level_data) {
 	this.goalTile = setup_information.goal_tile;
 	var pathfinding_information = setup_information.pathfinding_information;
 	
-	console.log(this.tileMap.toString());
-
-	jaws.preventDefaultKeys(["2", "3"]);
-
 	this.update = function() {
 		
 	}
@@ -57,8 +53,6 @@ function Level(level_data) {
 		// lying side by side (if they are side by side, they create a "bolded line" effect)
 		
 		var pathfinding_information = extract_pathfinding_information(level_data);
-		console.log("Level.js: setup complete");
-		
 		
 		return {
 			level_tiles : level_tiles,
