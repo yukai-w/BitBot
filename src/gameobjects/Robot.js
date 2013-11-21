@@ -49,7 +49,13 @@ function Robot(configuration_options) {
 	this.walkLeftFrame = animation.frames[5];
 	this.walkRightFrame = animation.frames[6];
 	this.spawnAnimation = animation.slice(7, 32);
-	this.rebootAnimation = animation.slice(0, 7);
+	this.rebootAnimation = new jaws.Animation({
+		frames : [this.walkLeftFrame, this.walkUpFrame, this.walkRightFrame, this.walkDownFrame],
+		index : 0,
+		loop : true
+	}); 
+	
+	
 	
 	
 
@@ -198,15 +204,12 @@ function Robot(configuration_options) {
 
 		if (this.spawnAnimation.index == 1 && this.isPlayerControlled) {
 			this.respawningSfx.play();
-			console.log(this.spawnAnimation);
 		}
 
 		if (this.spawnAnimation.atLastFrame()) {
 			this.previousPositionStack.push(this.startingPosition);
 			this.setMode('idle');
 		}
-		
-		console.log(this.spawnAnimation.index);
 	}
 	
 	/**
@@ -227,12 +230,19 @@ function Robot(configuration_options) {
 		executing_watchdog_timer = 0.0;
 		this.sprite.setImage(this.rebootAnimation.next());
 		this.orientation = this.rebootAnimation.currentFrame();
+		
+		//if the Robot was moving, stop the sound 
+		if(this.executingSfx.pos() > 0) {
+			this.executingSfx.stop();
+		}
 			
 		if(this.rebootAnimation.index == 1 && this.isPlayerControlled) {
-			this.rebootSfx.play()
+			if(this.rebootSfx.pos() == 0) {
+				this.rebootSfx.play();	
+			}
 		}
 				
-		if(this.rebootAnimation.atLastFrame()) {
+		if(this.rebootSfx.pos() > 2) {
 			this.setMode('idle');
 		}
 	}
@@ -284,13 +294,6 @@ function Robot(configuration_options) {
 	 */
 	this.execute = function() {
 		
-		executing_watchdog_timer += jaws.game_loop.tick_duration;
-		if (executing_watchdog_timer >= watchdog_timer_threshold) {
-			//that means we've gotten into a weird state :( - RESET!
-			executing_watchdog_timer = 0.0;
-			this.beginReboot();
-		}
-
 		//if we have a target, move to it.
 		if (this.targetPosition != undefined) {
 			var tx = this.targetPosition.x - this.sprite.x;
@@ -348,6 +351,14 @@ function Robot(configuration_options) {
 		//but if there are no more actions, then you're done.
 		else {
 			this.setMode('idle');
+		}
+		
+		//check if you have been there too long!
+		executing_watchdog_timer += jaws.game_loop.tick_duration;
+		if (executing_watchdog_timer >= watchdog_timer_threshold) {
+			//that means we've gotten into a weird state :( - RESET!
+			executing_watchdog_timer = 0.0;
+			this.beginReboot();
 		}
 	}
 	
@@ -496,7 +507,7 @@ function Robot(configuration_options) {
 			return 'falling';
 		} else if (this.isRespawning) {
 			return 'respawning';
-		} else if (this.isRespawning) {
+		} else if (this.isRebooting) {
 			return 'rebooting';
 		} else {
 			return 'idle'
