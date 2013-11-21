@@ -31,6 +31,7 @@ var Editor = {
 	printoutContainer: null,
 	keyModifier: undefined,
 	generateGridButton: null,
+	clearGridTilesButton: null,
 	goalLimit: 1,
 	goalCount: 0,
 	startLimit: 1,
@@ -63,6 +64,7 @@ var Editor = {
 		this.editorContainer = $("#editor-container");
 		this.printoutContainer = $("#printout-container");
 		this.generateGridButton = $("#editor-gen-grid-btn");
+		this.clearGridTilesButton = $("#editor-clear-grid-btn");
 		$("#alert").hide();
 		this.clearGrid();
 		this.draw();
@@ -159,9 +161,14 @@ var Editor = {
 			}
 		});
 		
-		// generate grid definition button click
+		// generate grid definition button click event
 		this.generateGridButton.on('click', null, null, function(event) {
 			editor.submitOutputGrid();
+		});
+		
+		// clear grid button click event
+		this.clearGridTilesButton.on('click', null, null, function(event) {
+			editor.submitResetGridTiles();
 		});
 	},
 	
@@ -268,6 +275,15 @@ var Editor = {
 	},
 	
 	/**
+	 * Action attached to clear button
+	 * @author Ian Coleman <ian@sweetcarolinagames.com>
+	 */
+	submitResetGridTiles: function(button) {
+		if(confirm("Reset grid?"))
+			this.resetGridTiles();
+	},
+	
+	/**
 	 * @author Ian Coleman
 	 */
 	outputGrid: function() {
@@ -331,11 +347,12 @@ var Editor = {
 		this.minVerticalTile = yIndex;
 	},
 	
-	resetGrid: function() {
+	resetGridTiles: function() {
 		var editorTiles = $(".editor-tile");
 		editorTiles.removeClass();
 		editorTiles.addClass("editor-tile editor-tile-undefined");
 		
+		this.clearGrid();
 	}
 };
 

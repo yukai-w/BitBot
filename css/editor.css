@@ -43,7 +43,13 @@
 
 #editor-gen-grid-btn-container {
 	position: absolute;
-	width: 30px;
+	width: 100%;
+}
+
+#editor-clear-grid-btn-container {
+	position: absolute;
+	width: 100%;
+	margin-top: 20px;
 }
 
 #printout-container {
