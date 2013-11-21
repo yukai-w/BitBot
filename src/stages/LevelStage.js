@@ -5,7 +5,6 @@ function LevelStage() {
 
 	/* Fx files */
 	var powerupSound = new Howl({urls : ['./assets/sounds/fx/powerup.mp3']});
-	var errorSound = new Howl({urls : ['./assets/sounds/fx/error.mp3']});
 
 	/* Music files */
 	var gameOverMusic = new Howl({urls : ['./assets/sounds/music/gameover.mp3']});
@@ -34,9 +33,9 @@ function LevelStage() {
 		world : this
 	});
 
+	this.robots = [];
 	this.robots = this.enemies;
-	this.robots[this.robots.length] = this.player;
-	
+	this.robots.push(this.player);
 	
 	this.hud = new HUD(this.player);
 
@@ -47,6 +46,12 @@ function LevelStage() {
 
 	this.update = function() {
 		this.activeLevel.update();
+		var number_of_robots = this.robots.length, robot = null;
+		for (var robot_idx = 0; robot_idx < number_of_robots; robot_idx++) {
+			robot = this.robots[robot_idx];
+			robot.updateInternalWorldRepresentation(this);
+		}
+		
 		jaws.update(this.robots);
 
 		//create freeze frames
@@ -135,7 +140,7 @@ function LevelStage() {
 						robot.setMode('executing');
 						robot.actionQueue.clear();
 						if (robot.isPlayerControlled) {
-							errorSound.play();
+							robot.errorSfx.play();
 						}
 
 						//TODO: Apply penalty
@@ -160,7 +165,7 @@ function LevelStage() {
 				r1.setMode('executing');
 				r1.actionQueue.clear();
 				if (r1.isPlayerControlled) {
-					errorSound.play();
+					r1.errorSfx.play();
 				}
 
 				var prev_position = r2.previousPositionStack.pop();
@@ -171,20 +176,20 @@ function LevelStage() {
 				r2.setMode('executing');
 				r2.actionQueue.clear();
 				if (r2.isPlayerControlled) {
-					errorSound.play();
+					r2.errorSfx.play();
 				}
 			});
 		}
 
-		//if you collide against batteries, take the battery value and add it to your Robot
+		//if you collided against a battery, use it 
+		//(get the battery value and add it to your Robot)
 		if (this.player.isInPlay()) {
 			var collided_batteries = jaws.collideOneWithMany(this.player, this.batteries);
 			var number_of_batteries = collided_batteries.length, battery = null;
 			for (var battery_idx = 0; battery_idx < number_of_batteries; battery_idx++) {
 				var battery = collided_batteries[battery_idx];
-				console.log(battery);
-				console.log(goog.array.remove(this.batteries, battery));
-				this.player.batteryLevel += battery.level;
+				goog.array.remove(this.batteries, battery);
+				this.player.batteryLevel += battery.use();
 			}
 		}
 

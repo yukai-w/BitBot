@@ -2,11 +2,11 @@
 
 ## Team
   
-* [Rogelio E. Cardona-Rivera](https://twitter.com/recardona), Ph.D. Student in AI in Games.
+* [Rogelio E. Cardona-Rivera](http://twitter.com/recardona), Ph.D. Student in AI in Games.
 * [José D. Vélez](http://twitter.com/danivive), Pixel artist. Songwriter. Comicbook nerd.
-* [Allison G. Martínez-Arocho](http://twitter.com/vamoavel), Student with a passion for sewing, coding, and all things in between.
 * [Ian Coleman](http://twitter.com/iancoleman), M.S. Student and Professional Web Developer. 
 
 ## Live
 
-[Click here](http://recardona.github.io/game-off-2013) for a live version of the game.
+[Click here](http://recardona.github.io/game-off-2013) for a live version of the game 
+(if not more than 10 minutes have passed since the last commit, wait for the latest version).
