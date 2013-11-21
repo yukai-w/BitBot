@@ -103,7 +103,7 @@ function Robot(configuration_options) {
 	//1 seconds
 	this.millisecondsSpentExecuting = 0.0;
 	var executing_watchdog_timer = 0.0;
-	var watchdog_timer_threshold = 3300.0;
+	var watchdog_timer_threshold = 3000.0;
 	//9.5 seconds
 
 	/* Game input attributes */
@@ -252,6 +252,7 @@ function Robot(configuration_options) {
 
 				//but if there are no more actions, then you're done.
 				else {
+					console.log(executing_watchdog_timer);
 					this.setMode('idle');
 				}
 
@@ -318,22 +319,30 @@ function Robot(configuration_options) {
 	}
 	
 	/**
-	 * Respawns this Robot by moving it to it's starting position, clearing
-	 * its queue of remaining actions, and beginning the respawn sequence.
+	 * Respawns this Robot by setting it to respawn mode, and wiping its memory.
 	 */
 	this.respawn = function() {
 		this.setMode('respawning');
-		this.targetPosition = undefined;
-		this.actionQueue.clear();
-		goog.array.clear(this.previousPositionStack);
+		this.wipeMemory();
 	}
 	
+	/**
+	 * Resets this Robot by setting it to idle, and wiping its memory.
+	 */
 	this.reset = function() {
 		this.setMode('idle');
+		this.wipeMemory();
+		this.errorSfx.play();
+	}
+	
+	/**
+	 * Wipes this Robot's memory by clearing its target position, its
+	 * action queue, and its previous position stack. 
+	 */
+	this.wipeMemory = function() {
 		this.targetPosition = undefined;
 		this.actionQueue.clear();
 		goog.array.clear(this.previousPositionStack);
-		this.errorSfx.play();
 	}
 	
 	/**
