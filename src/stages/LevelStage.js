@@ -5,7 +5,6 @@ function LevelStage() {
 
 	/* Fx files */
 	var powerupSound = new Howl({urls : ['./assets/sounds/fx/powerup.mp3']});
-	var errorSound = new Howl({urls : ['./assets/sounds/fx/error.mp3']});
 
 	/* Music files */
 	var gameOverMusic = new Howl({urls : ['./assets/sounds/music/gameover.mp3']});
@@ -141,7 +140,7 @@ function LevelStage() {
 						robot.setMode('executing');
 						robot.actionQueue.clear();
 						if (robot.isPlayerControlled) {
-							errorSound.play();
+							robot.errorSfx.play();
 						}
 
 						//TODO: Apply penalty
@@ -166,7 +165,7 @@ function LevelStage() {
 				r1.setMode('executing');
 				r1.actionQueue.clear();
 				if (r1.isPlayerControlled) {
-					errorSound.play();
+					r1.errorSfx.play();
 				}
 
 				var prev_position = r2.previousPositionStack.pop();
@@ -177,7 +176,7 @@ function LevelStage() {
 				r2.setMode('executing');
 				r2.actionQueue.clear();
 				if (r2.isPlayerControlled) {
-					errorSound.play();
+					r2.errorSfx.play();
 				}
 			});
 		}
@@ -188,8 +187,7 @@ function LevelStage() {
 			var number_of_batteries = collided_batteries.length, battery = null;
 			for (var battery_idx = 0; battery_idx < number_of_batteries; battery_idx++) {
 				var battery = collided_batteries[battery_idx];
-				console.log(battery);
-				console.log(goog.array.remove(this.batteries, battery));
+				goog.array.remove(this.batteries, battery);
 				this.player.batteryLevel += battery.level;
 			}
 		}

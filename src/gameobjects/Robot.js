@@ -14,7 +14,8 @@ function Robot(configuration_options) {
 	this.internalWorldRepresentation = configuration_options.world || undefined;
 
 	/* Drawing attributes */
-	var robot_step_distance = Tile.default_size.width; //32px
+	var robot_step_distance = Tile.default_size.width;
+	//32px
 	this.drawing_vert_offset = 10;
 
 	/* Sound attributes */
@@ -28,6 +29,10 @@ function Robot(configuration_options) {
 		urls : ['./assets/sounds/fx/respawn.mp3']
 	});
 
+	this.errorSfx = new Howl({
+		urls : ['./assets/sounds/fx/error.mp3']
+	});
+
 	/* Sprite and Animation attributes */
 	var animation = new jaws.Animation({
 		sprite_sheet : Robot.types[this.type].sprite_sheet,
@@ -35,6 +40,7 @@ function Robot(configuration_options) {
 		loop : true,
 		orientation : 'right'
 	});
+
 	this.walkUpFrame = animation.frames[0];
 	this.walkDownFrame = animation.frames[1];
 	this.idleAnimation = animation.slice(2, 5);
@@ -84,6 +90,7 @@ function Robot(configuration_options) {
 	this.isFalling = false;
 	//true if we just fell off the game level
 	this.isRespawning = false;
+	this.canRespawn = true;
 
 	this.isIdle = true;
 	this.actionQueue = new goog.structs.Queue();
@@ -95,31 +102,48 @@ function Robot(configuration_options) {
 	var planning_millisecond_threshold = 1000.0;
 	//1 seconds
 	this.millisecondsSpentExecuting = 0.0;
-	var executing_millisecond_delay = 500.0;
-	//.5 seconds
+	var executing_watchdog_timer = 0.0;
+	var watchdog_timer_threshold = 3300.0;
+	//9.5 seconds
 
 	/* Game input attributes */
 	// Prevent the browser from catching the following keys:
 	jaws.preventDefaultKeys(["up", "down", "left", "right"]);
+	this.spawnPointSprite = new jaws.Sprite({
+		x : pos.x,
+		y : (pos.y + this.drawing_vert_offset),
+		anchor : "center_bottom",
+		scale : 0.85,
+		alpha : 0
+	});
+	this.spawnPointSprite.setImage(this.idleAnimation.frames[0]);
 
 	this.update = function() {
+
+		//if any robot is invading your spawn point sprite, do not respawn
+		var other_robots_in_the_world = this.internalWorldRepresentation.player;
+		var blocking_robots = jaws.collideOneWithOne(this.spawnPointSprite, other_robots_in_the_world);
+		this.canRespawn = !blocking_robots ? true : false;
+
 		if (this.isRespawning) {
-			if (this.internalWorldRepresentation) {
-				this.sprite.setImage(this.spawnAnimation.next());
-				this.sprite.moveTo(this.startingPosition.x, this.startingPosition.y);
-				this.orientation = this.spawnAnimation.currentFrame();
-	
-				if (this.spawnAnimation.index == 1 && this.isPlayerControlled) {
-					this.respawningSfx.play();
-				}
-	
-				if (this.spawnAnimation.index == (this.spawnAnimation.frames.length - 1)) {
-					this.previousPositionStack.push(this.startingPosition);
-					this.setMode('idle');
-				}
+			this.sprite.setImage(this.spawnAnimation.next());
+			this.sprite.moveTo(this.startingPosition.x, this.startingPosition.y);
+			this.orientation = this.spawnAnimation.currentFrame();
+
+			if (this.spawnAnimation.index == 1 && this.isPlayerControlled) {
+				this.respawningSfx.play();
 			}
+
+			if (this.spawnAnimation.index == (this.spawnAnimation.frames.length - 1)) {
+				this.previousPositionStack.push(this.startingPosition);
+				this.setMode('idle');
+			}
+
 		} else if (!this.isFalling) {
 			if (this.isIdle) {
+
+				executing_watchdog_timer = 0.0;
+
 				//if we're idle, and the executing sfx was playing, stop it
 				if (this.executingSfx.pos() > 0) {
 					this.executingSfx.stop();
@@ -166,6 +190,12 @@ function Robot(configuration_options) {
 
 			//must be in execution
 			else {
+				executing_watchdog_timer += jaws.game_loop.tick_duration;
+				if (executing_watchdog_timer >= watchdog_timer_threshold) {
+					//that means we've gotten into a weird state :( - RESET!
+					this.reset();
+				}
+
 				//if we have a target, move to it.
 				if (this.targetPosition != undefined) {
 					var tx = this.targetPosition.x - this.sprite.x;
@@ -252,13 +282,20 @@ function Robot(configuration_options) {
 
 			//once we're off the screen, respawn
 			else {
-				this.respawn();
+
+				//check if you're able to respawn
+				if (this.canRespawn) {
+					this.respawn();
+				}
 			}
 		}
 
 		this.batteryLevel -= battery_decay;
 		bound_player_attributes(this);
 		this.moveToMyPosition(this.shadowSprite);
+		if (this.isPlayerControlled) {
+			console.log(this.getMode());
+		}
 	}
 
 	this.draw = function() {
@@ -268,16 +305,18 @@ function Robot(configuration_options) {
 			this.shadowSprite.draw();
 			this.sprite.draw();
 		}
+
+		this.spawnPointSprite.draw();
 	}
 
 	this.rect = function() {
 		return this.sprite.rect().resizeTo(this.width / 2, this.height / 2);
 	}
-	
+
 	this.updateInternalWorldRepresentation = function(world_update) {
 		this.internalWorldRepresentation = world_update;
 	}
-
+	
 	/**
 	 * Respawns this Robot by moving it to it's starting position, clearing
 	 * its queue of remaining actions, and beginning the respawn sequence.
@@ -288,7 +327,15 @@ function Robot(configuration_options) {
 		this.actionQueue.clear();
 		goog.array.clear(this.previousPositionStack);
 	}
-
+	
+	this.reset = function() {
+		this.setMode('idle');
+		this.targetPosition = undefined;
+		this.actionQueue.clear();
+		goog.array.clear(this.previousPositionStack);
+		this.errorSfx.play();
+	}
+	
 	/**
 	 * Moves the paramter jaws.Sprite to my position.
 	 * @param sprite a jaws.Sprite.
@@ -297,11 +344,10 @@ function Robot(configuration_options) {
 		sprite.x = this.sprite.x;
 		sprite.y = this.sprite.y;
 	}
-	
 	/**
 	 * Sets this Robot to the parameter mode.
 	 * @param mode a String which represents the mode to switch into.
-	 * (Acceptable values are 'planning', 'executing', 'idle', and 'falling';
+	 * (Acceptable values are 'planning', 'executing', 'idle', 'respawning' and 'falling';
 	 * defaults to 'idle' if mode is unrecognized.)
 	 */
 	this.setMode = function(mode) {
@@ -337,14 +383,30 @@ function Robot(configuration_options) {
 			this.isRespawning = false;
 		}
 	}
-	
+	/**
+	 * Gets this Robots current mode.
+	 * Returns 'planning', 'executing', 'idle', 'respawning' or 'falling';
+	 */
+	this.getMode = function() {
+
+		if (this.isPlanning) {
+			return 'planning';
+		} else if (this.isExecuting) {
+			return 'executing';
+		} else if (this.isFalling) {
+			return 'falling';
+		} else if (this.isRespawning) {
+			return 'respawning';
+		} else {
+			return 'idle'
+		}
+	}
 	/**
 	 * Determines whether this robot is in play.
 	 */
 	this.isInPlay = function() {
 		return !(this.isFalling || this.isRespawning);
 	}
-	
 	/**
 	 * Sets this Robot's target given the action to execute.
 	 * @param action the action to execute ('left','right','up', or 'down')
@@ -366,7 +428,6 @@ function Robot(configuration_options) {
 			this.targetPosition.y += robot_step_distance;
 		}
 	}
-	
 	/**
 	 * Auxiliary function to handle AI input.  Very limited right now.
 	 * @param player_AI the Robot whom you'd like to apply AI moves.
