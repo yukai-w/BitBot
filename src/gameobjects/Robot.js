@@ -129,39 +129,16 @@ function Robot(configuration_options) {
 	jaws.preventDefaultKeys(["up", "down", "left", "right"]);
 	
 	this.update = function() {
-
+		
 		//if any robot is invading your spawn point sprite, do not respawn
 		var other_robots_in_the_world = this.internalWorldRepresentation.player;
 		var blocking_robots = jaws.collideOneWithOne(this.spawnPointSprite, other_robots_in_the_world);
 		this.canRespawn = !blocking_robots ? true : false;
 		
-		if (this.isRebooting) {
-			executing_watchdog_timer = 0.0;
-			
-			this.sprite.setImage(this.rebootAnimation.next());
-			this.orientation = this.rebootAnimation.currentFrame();
-			
-			if(this.rebootAnimation.index == 1 && this.isPlayerControlled) {
-				this.rebootSfx.play()
-			}
-				
-			if(this.rebootAnimation.atLastFrame()) {
-				this.setMode('idle');
-			}
-		} else if (this.isRespawning) {
-			this.sprite.setImage(this.spawnAnimation.next());
-			this.sprite.moveTo(this.startingPosition.x, this.startingPosition.y);
-			this.orientation = this.spawnAnimation.currentFrame();
-
-			if (this.spawnAnimation.index == 1 && this.isPlayerControlled) {
-				this.respawningSfx.play();
-			}
-
-			if (this.spawnAnimation.index == (this.spawnAnimation.frames.length - 1)) {
-				this.previousPositionStack.push(this.startingPosition);
-				this.setMode('idle');
-			}
-
+		if(this.isRespawning) {
+			this.respawn();
+		} else if(this.isRebooting) {
+			this.reboot();
 		} else if (!this.isFalling) {
 			if (this.isIdle) {
 				executing_watchdog_timer = 0.0;
@@ -216,7 +193,7 @@ function Robot(configuration_options) {
 				if (executing_watchdog_timer >= watchdog_timer_threshold) {
 					//that means we've gotten into a weird state :( - RESET!
 					executing_watchdog_timer = 0.0;
-					this.reboot();
+					this.beginReboot();
 				}
 
 				//if we have a target, move to it.
@@ -308,7 +285,7 @@ function Robot(configuration_options) {
 
 				//check if you're able to respawn
 				if (this.canRespawn) {
-					this.respawn();
+					this.beginRespawn();
 				}
 			}
 		}
@@ -341,24 +318,64 @@ function Robot(configuration_options) {
 	}
 	
 	/**
-	 * Respawns this Robot by setting it to respawn mode, and wiping its memory.
+	 * Begins the respawn process by wiping this Robot's memory and setting it
+	 * to 'respawning' mode.
 	 */
-	this.respawn = function() {
-		this.setMode('respawning');
+	this.beginRespawn = function() {
 		this.wipeMemory();
+		this.setMode('respawning');
 	}
 	
 	/**
-	 * Resets this Robot by setting it to rebooting, and wiping its memory.
+	 * Respawns this Robot by moving it to its spawn point, and animating its entrance.
+	 * This Robot's watchdog timer is reset, and if this Robot is the player, it will
+	 * also play a sound.  When finished, this method sets this Robot to 'idle' mode.
 	 */
-	this.reboot = function() {
-		this.setMode('rebooting');
-		this.wipeMemory();
-		
-		if(this.rebootSfx.pos() == 0) {
-			this.rebootSfx.play()	
+	this.respawn = function() {
+		executing_watchdog_timer = 0.0;
+		this.sprite.setImage(this.spawnAnimation.next());
+		this.sprite.moveTo(this.startingPosition.x, this.startingPosition.y);
+		this.orientation = this.spawnAnimation.currentFrame();
+
+		if (this.spawnAnimation.index == 1 && this.isPlayerControlled) {
+			this.respawningSfx.play();
+		}
+
+		if (this.spawnAnimation.index == (this.spawnAnimation.frames.length - 1)) {
+			this.previousPositionStack.push(this.startingPosition);
+			this.setMode('idle');
 		}
 	}
+	
+	/**
+	 * Begins the reboot process by wiping this Robot's memory and setting it
+	 * to 'rebooting' mode.
+	 */
+	this.beginReboot = function() {
+		this.setMode('rebooting');
+		this.wipeMemory();
+	}
+	
+	
+	/**
+	 * Reboots this Robot by resetting its watchdog timer, and animating the reboot.
+	 * If this Robot is the player, it will also play a sound.  When finished, this
+	 * method sets this Robot to 'idle' mode.
+	 */
+	this.reboot = function() {
+		executing_watchdog_timer = 0.0;
+		this.sprite.setImage(this.rebootAnimation.next());
+		this.orientation = this.rebootAnimation.currentFrame();
+			
+		if(this.rebootAnimation.index == 1 && this.isPlayerControlled) {
+			this.rebootSfx.play()
+		}
+				
+		if(this.rebootAnimation.atLastFrame()) {
+			this.setMode('idle');
+		}
+	}
+	
 	
 	/**
 	 * Wipes this Robot's memory by clearing its target position, its
