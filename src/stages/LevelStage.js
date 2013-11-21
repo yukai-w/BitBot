@@ -146,7 +146,7 @@ function LevelStage() {
 						//TODO: Apply penalty
 					} else if (tile.type == 'goal_tile' && robot.isPlayerControlled) {
 						//you win!
-						jaws.switchGameState(MenuState);
+						//jaws.switchGameState(MenuState);
 					}
 				}
 			}

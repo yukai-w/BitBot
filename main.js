@@ -38,14 +38,19 @@ function init() {
 	jaws.assets.add("./assets/art/BatteryIndicator.png");
 	
 	
-	////Music
+	////Sounds
+	
+	//Music
 	jaws.assets.add("./assets/sounds/music/metonymy.mp3");
 	jaws.assets.add("./assets/sounds/music/gameover.mp3");
+	
+	//Fx
 	jaws.assets.add("./assets/sounds/fx/error.mp3");
 	jaws.assets.add("./assets/sounds/fx/fall.mp3");
 	jaws.assets.add("./assets/sounds/fx/powerup.mp3");
 	jaws.assets.add("./assets/sounds/fx/respawn.mp3");
 	jaws.assets.add("./assets/sounds/fx/move.mp3");
+	jaws.assets.add("./assets/sounds/fx/reboot.mp3");
 	
 	
 	jaws.start(MenuState);

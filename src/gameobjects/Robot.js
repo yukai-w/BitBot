@@ -28,9 +28,11 @@ function Robot(configuration_options) {
 	this.respawningSfx = new Howl({
 		urls : ['./assets/sounds/fx/respawn.mp3']
 	});
-
 	this.errorSfx = new Howl({
 		urls : ['./assets/sounds/fx/error.mp3']
+	});
+	this.rebootSfx = new Howl({
+		urls : ['./assets/sounds/fx/reboot.mp3'],
 	});
 
 	/* Sprite and Animation attributes */
@@ -47,6 +49,9 @@ function Robot(configuration_options) {
 	this.walkLeftFrame = animation.frames[5];
 	this.walkRightFrame = animation.frames[6];
 	this.spawnAnimation = animation.slice(7, 32);
+	this.rebootAnimation = animation.slice(0, 7);
+	
+	
 
 	this.sprite = new jaws.Sprite({
 		x : pos.x,
@@ -104,6 +109,7 @@ function Robot(configuration_options) {
 	this.isExecuting = false;
 	this.isFalling = false; //true if we just fell off the game level
 	this.isRespawning = false;
+	this.isRebooting = false; //true if we encountered a weird state
 	this.canRespawn = true;
 
 	this.isIdle = true;
@@ -128,8 +134,21 @@ function Robot(configuration_options) {
 		var other_robots_in_the_world = this.internalWorldRepresentation.player;
 		var blocking_robots = jaws.collideOneWithOne(this.spawnPointSprite, other_robots_in_the_world);
 		this.canRespawn = !blocking_robots ? true : false;
-
-		if (this.isRespawning) {
+		
+		if (this.isRebooting) {
+			executing_watchdog_timer = 0.0;
+			
+			this.sprite.setImage(this.rebootAnimation.next());
+			this.orientation = this.rebootAnimation.currentFrame();
+			
+			if(this.rebootAnimation.index == 1 && this.isPlayerControlled) {
+				this.rebootSfx.play()
+			}
+				
+			if(this.rebootAnimation.atLastFrame()) {
+				this.setMode('idle');
+			}
+		} else if (this.isRespawning) {
 			this.sprite.setImage(this.spawnAnimation.next());
 			this.sprite.moveTo(this.startingPosition.x, this.startingPosition.y);
 			this.orientation = this.spawnAnimation.currentFrame();
@@ -145,7 +164,6 @@ function Robot(configuration_options) {
 
 		} else if (!this.isFalling) {
 			if (this.isIdle) {
-
 				executing_watchdog_timer = 0.0;
 
 				//if we're idle, and the executing sfx was playing, stop it
@@ -197,7 +215,8 @@ function Robot(configuration_options) {
 				executing_watchdog_timer += jaws.game_loop.tick_duration;
 				if (executing_watchdog_timer >= watchdog_timer_threshold) {
 					//that means we've gotten into a weird state :( - RESET!
-					this.reset();
+					executing_watchdog_timer = 0.0;
+					this.reboot();
 				}
 
 				//if we have a target, move to it.
@@ -330,12 +349,15 @@ function Robot(configuration_options) {
 	}
 	
 	/**
-	 * Resets this Robot by setting it to idle, and wiping its memory.
+	 * Resets this Robot by setting it to rebooting, and wiping its memory.
 	 */
-	this.reset = function() {
-		this.setMode('idle');
+	this.reboot = function() {
+		this.setMode('rebooting');
 		this.wipeMemory();
-		this.errorSfx.play();
+		
+		if(this.rebootSfx.pos() == 0) {
+			this.rebootSfx.play()	
+		}
 	}
 	
 	/**
@@ -370,30 +392,42 @@ function Robot(configuration_options) {
 			this.isExecuting = false;
 			this.isFalling = false;
 			this.isRespawning = false;
+			this.isRebooting = false;
 		} else if (mode == 'executing') {
 			this.isIdle = false;
 			this.isPlanning = false;
 			this.isExecuting = true;
 			this.isFalling = false;
 			this.isRespawning = false;
+			this.isRebooting = false;
 		} else if (mode == 'falling') {
 			this.isIdle = false;
 			this.isPlanning = false;
 			this.isExecuting = false;
 			this.isFalling = true;
 			this.isRespawning = false;
+			this.isRebooting = false;
 		} else if (mode == 'respawning') {
 			this.isIdle = false;
 			this.isPlanning = false;
 			this.isExecuting = false;
 			this.isFalling = false;
 			this.isRespawning = true;
+			this.isRebooting = false;
+		} else if (mode == 'rebooting') {
+			this.isIdle = false;
+			this.isPlanning = false;
+			this.isExecuting = false;
+			this.isFalling = false;
+			this.isRespawning = false;
+			this.isRebooting = true;
 		} else {
 			this.isIdle = true;
 			this.isPlanning = false;
 			this.isExecuting = false;
 			this.isFalling = false;
 			this.isRespawning = false;
+			this.isRebooting = false;
 		}
 	}
 	
@@ -411,6 +445,8 @@ function Robot(configuration_options) {
 			return 'falling';
 		} else if (this.isRespawning) {
 			return 'respawning';
+		} else if (this.isRespawning) {
+			return 'rebooting';
 		} else {
 			return 'idle'
 		}
