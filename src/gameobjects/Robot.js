@@ -169,73 +169,7 @@ function Robot(configuration_options) {
 			
 			//must be in execution
 			else {
-				
-				executing_watchdog_timer += jaws.game_loop.tick_duration;
-				if (executing_watchdog_timer >= watchdog_timer_threshold) {
-					//that means we've gotten into a weird state :( - RESET!
-					executing_watchdog_timer = 0.0;
-					this.beginReboot();
-				}
-
-				//if we have a target, move to it.
-				if (this.targetPosition != undefined) {
-					var tx = this.targetPosition.x - this.sprite.x;
-					var ty = this.targetPosition.y - this.sprite.y;
-					var distance_to_target = Math.sqrt((tx * tx) + (ty * ty));
-
-					this.velocityX = (tx / distance_to_target) * this.speed;
-					this.velocityY = (ty / distance_to_target) * this.speed;
-
-					if (ty < 0) {
-						this.sprite.setImage(this.walkUpFrame);
-						this.orientation = this.walkUpFrame;
-					}
-
-					if (ty > 0) {
-						this.sprite.setImage(this.walkDownFrame);
-						this.orientation = this.walkDownFrame;
-					}
-
-					if (tx < 0 && distance_to_target > 1) {
-						this.sprite.setImage(this.walkLeftFrame);
-						this.orientation = this.walkLeftFrame;
-					}
-
-					if (tx > 0 && distance_to_target > 1) {
-						this.sprite.setImage(this.walkRightFrame);
-						this.orientation = this.walkRightFrame;
-					}
-
-					if (distance_to_target > 1) {
-						this.sprite.x += this.velocityX;
-						this.sprite.y += this.velocityY;
-					} else {
-						this.sprite.x = this.targetPosition.x;
-						this.sprite.y = this.targetPosition.y;
-						this.targetPosition = undefined;
-					}
-				}
-
-				//otherwise, try to find a new target.
-				else if (! this.actionQueue.isEmpty()) {
-					this.previousPosition = {
-						x : this.sprite.x,
-						y : this.sprite.y
-					};
-					this.previousPositionStack.push({
-						x : this.sprite.x,
-						y : this.sprite.y
-					});
-					var action = this.actionQueue.dequeue();
-					this.findActionTarget(action);
-					this.batteryLevel -= battery_movement_cost;
-				}
-
-				//but if there are no more actions, then you're done.
-				else {
-					this.setMode('idle');
-				}
-
+				this.execute();
 			}
 		}
 
@@ -372,6 +306,81 @@ function Robot(configuration_options) {
 				this.millisecondsSpentPlanning = 0.0;
 			}
 		}		
+	}
+	
+	/**
+	 * Carries out the execution process for the robot.  If the robot has a target to
+	 * move to, it does so.  Otherwise, it tries to calculate a target from its
+	 * action queue.  If no actions remain, this method sets the Robot to 'idle'
+	 * Also, if we execute for too long, the Robot has a failsafe, which reboots it.
+	 */
+	this.execute = function() {
+		
+		executing_watchdog_timer += jaws.game_loop.tick_duration;
+		if (executing_watchdog_timer >= watchdog_timer_threshold) {
+			//that means we've gotten into a weird state :( - RESET!
+			executing_watchdog_timer = 0.0;
+			this.beginReboot();
+		}
+
+		//if we have a target, move to it.
+		if (this.targetPosition != undefined) {
+			var tx = this.targetPosition.x - this.sprite.x;
+			var ty = this.targetPosition.y - this.sprite.y;
+			var distance_to_target = Math.sqrt((tx * tx) + (ty * ty));
+
+			this.velocityX = (tx / distance_to_target) * this.speed;
+			this.velocityY = (ty / distance_to_target) * this.speed;
+
+			if (ty < 0) {
+				this.sprite.setImage(this.walkUpFrame);
+				this.orientation = this.walkUpFrame;
+			}
+
+			if (ty > 0) {
+				this.sprite.setImage(this.walkDownFrame);
+				this.orientation = this.walkDownFrame;
+			}
+
+			if (tx < 0 && distance_to_target > 1) {
+				this.sprite.setImage(this.walkLeftFrame);
+				this.orientation = this.walkLeftFrame;
+			}
+
+			if (tx > 0 && distance_to_target > 1) {
+				this.sprite.setImage(this.walkRightFrame);
+				this.orientation = this.walkRightFrame;
+			}
+
+			if (distance_to_target > 1) {
+				this.sprite.x += this.velocityX;
+				this.sprite.y += this.velocityY;
+			} else {
+				this.sprite.x = this.targetPosition.x;
+				this.sprite.y = this.targetPosition.y;
+				this.targetPosition = undefined;
+			}
+		}
+
+		//otherwise, try to find a new target.
+		else if (! this.actionQueue.isEmpty()) {
+			this.previousPosition = {
+				x : this.sprite.x,
+				y : this.sprite.y
+			};
+			this.previousPositionStack.push({
+				x : this.sprite.x,
+				y : this.sprite.y
+			});
+			var action = this.actionQueue.dequeue();
+			this.findActionTarget(action);
+			this.batteryLevel -= battery_movement_cost;
+		}
+
+		//but if there are no more actions, then you're done.
+		else {
+			this.setMode('idle');
+		}
 	}
 	
 	/**
