@@ -86,7 +86,6 @@ var Editor = {
 		
 		$(document).keyup(function(event) {
 			editor.keyModifier = undefined;
-			console.log("key modifier undefined");
 		});
 	},
 	
@@ -173,23 +172,30 @@ var Editor = {
 	 * @param int type
 	 */
 	setTileType: function(tile, type) {
-		// remove file type style
-		tile.removeClass('[class*=" editor-tile-"]');
-				
-		// remove previously set 'editor-tile-<type>' class
-//		$('[class*=" editor-tile-"]').removeClass(function(i, c) {
-//			return c.match(/editor-tile-[a-zA-Z]+/g).join(" ");
-//		});
+		// reset css class -- @TODO: figure out way to selectively remove type class
+		tile.removeClass();
+		tile.addClass("editor-tile");
 		
+		// decrement count of tiles being removed/overwritten
+		if(type !== tile.attr("type")) {
+			if(tile.attr("type") === "start")
+				this.startCount--;
+			if(tile.attr("type") === "goal")
+				this.goalCount--;
+		}
+		
+		// add new type class
 		switch(type) {
 		case this.tileTypes.FLAT:
 			tile.addClass("editor-tile-flat");
+			tile.attr("type", "flat");
 			break;
 		case this.tileTypes.START:
 			if(this.startCount + 1 > this.startLimit) {
 				this.showAlert("start tile limit reached");
 			} else {
 				tile.addClass("editor-tile-start");
+				tile.attr("type", "start");
 				this.startCount++;
 			}
 			break;
@@ -198,21 +204,25 @@ var Editor = {
 				this.showAlert("goal tile limit reached");
 			} else {
 				tile.addClass("editor-tile-goal");
+				tile.attr("type", "goal");
 				this.goalCount++;
 			}
 			break;
 		case this.tileTypes.RAISED:
 			tile.addClass("editor-tile-raised");
+			tile.attr("type", "raised");
 			break;
 		case this.tileTypes.UNDEFINED:
 		default:
 			tile.addClass("editor-tile-undefined");
+			tile.attr("type", "undefined");
 			break;
 		}
 	},
 	
 	/**
 	 * Updates tile info based on input events
+	 * @author Ian Coleman <ian@sweetcarolinagames.com>
 	 */
 	updateTile: function(tile) {
 		var editor = this;
@@ -220,8 +230,6 @@ var Editor = {
 		var tileType = undefined;
 		var rowIndex = parseInt(tile.attr('y'));
 		var columnIndex = parseInt(tile.attr('x'));
-		
-		if(this.val)
 		
 		if(editor.keyModifier === 'r') {					
 			tileType = editor.tileTypes.RAISED;					
