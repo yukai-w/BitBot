@@ -4,8 +4,9 @@
 }
 
 #editor-grid-container {
-	position: relative;
+	position: absolute;
 	width: 900px;
+	left: 200px
 }
 
 .editor-tile {
@@ -42,14 +43,18 @@
 
 #editor-gen-grid-btn-container {
 	position: absolute;
-	width: 30px;
-	right: 10px;
+	width: 100%;
+}
+
+#editor-clear-grid-btn-container {
+	position: absolute;
+	width: 100%;
+	margin-top: 20px;
 }
 
 #printout-container {
 	position: absolute;
 	width: 100px;
-	right: 10px;
 	top: 40px;
 }
 
