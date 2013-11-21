@@ -14,8 +14,8 @@ function Robot(configuration_options) {
 	this.internalWorldRepresentation = configuration_options.world || undefined;
 
 	/* Drawing attributes */
-	var robot_step_distance = Tile.default_size.width;
 	//32px
+	var robot_step_distance = Tile.default_size.width;
 	this.drawing_vert_offset = 10;
 
 	/* Sound attributes */
@@ -54,6 +54,8 @@ function Robot(configuration_options) {
 		anchor : "center_bottom",
 		scale : 0.85
 	});
+	
+	//the shadow sprite is just for aesthetic effect
 	this.shadowSprite = new jaws.Sprite({
 		x : pos.x,
 		y : (pos.y + this.drawing_vert_offset),
@@ -61,6 +63,19 @@ function Robot(configuration_options) {
 		scale : 0.65,
 		image : "./assets/art/Shadow.png"
 	});
+	
+	//the spawn point sprite is invisible, and we use it
+	//for collision detection over the spawn point - if
+	//it collides with something, it means the spawn point
+	//is currently occupied (ergo we can't respawn yet)
+	this.spawnPointSprite = new jaws.Sprite({
+		x : pos.x,
+		y : (pos.y + this.drawing_vert_offset),
+		anchor : "center_bottom",
+		scale : 0.85,
+		alpha : 0
+	});
+	this.spawnPointSprite.setImage(this.idleAnimation.frames[0]);
 
 	/* This is only useful for when making a deep copy of this Robot */
 	this.sprite.setImage(this.orientation);
@@ -87,8 +102,7 @@ function Robot(configuration_options) {
 	this.isPlayerControlled = (this.type == 'player_controlled' ? true : false);
 	this.isPlanning = false;
 	this.isExecuting = false;
-	this.isFalling = false;
-	//true if we just fell off the game level
+	this.isFalling = false; //true if we just fell off the game level
 	this.isRespawning = false;
 	this.canRespawn = true;
 
@@ -96,28 +110,18 @@ function Robot(configuration_options) {
 	this.actionQueue = new goog.structs.Queue();
 	this.previousPositionStack = [];
 	this.actionQueueSizeMax = 12;
-	//max 12 actions queued
 
 	this.millisecondsSpentPlanning = 0.0;
 	var planning_millisecond_threshold = 1000.0;
-	//1 seconds
 	this.millisecondsSpentExecuting = 0.0;
 	var executing_watchdog_timer = 0.0;
 	var watchdog_timer_threshold = 3000.0;
-	//9.5 seconds
+	
 
 	/* Game input attributes */
 	// Prevent the browser from catching the following keys:
 	jaws.preventDefaultKeys(["up", "down", "left", "right"]);
-	this.spawnPointSprite = new jaws.Sprite({
-		x : pos.x,
-		y : (pos.y + this.drawing_vert_offset),
-		anchor : "center_bottom",
-		scale : 0.85,
-		alpha : 0
-	});
-	this.spawnPointSprite.setImage(this.idleAnimation.frames[0]);
-
+	
 	this.update = function() {
 
 		//if any robot is invading your spawn point sprite, do not respawn
@@ -314,6 +318,9 @@ function Robot(configuration_options) {
 		return this.sprite.rect().resizeTo(this.width / 2, this.height / 2);
 	}
 
+	/**
+	 * Updates this Robot's knowledge of the world.
+	 */
 	this.updateInternalWorldRepresentation = function(world_update) {
 		this.internalWorldRepresentation = world_update;
 	}
@@ -353,6 +360,7 @@ function Robot(configuration_options) {
 		sprite.x = this.sprite.x;
 		sprite.y = this.sprite.y;
 	}
+	
 	/**
 	 * Sets this Robot to the parameter mode.
 	 * @param mode a String which represents the mode to switch into.
@@ -392,6 +400,7 @@ function Robot(configuration_options) {
 			this.isRespawning = false;
 		}
 	}
+	
 	/**
 	 * Gets this Robots current mode.
 	 * Returns 'planning', 'executing', 'idle', 'respawning' or 'falling';
@@ -410,12 +419,14 @@ function Robot(configuration_options) {
 			return 'idle'
 		}
 	}
+	
 	/**
 	 * Determines whether this robot is in play.
 	 */
 	this.isInPlay = function() {
 		return !(this.isFalling || this.isRespawning);
 	}
+	
 	/**
 	 * Sets this Robot's target given the action to execute.
 	 * @param action the action to execute ('left','right','up', or 'down')
@@ -437,6 +448,7 @@ function Robot(configuration_options) {
 			this.targetPosition.y += robot_step_distance;
 		}
 	}
+	
 	/**
 	 * Auxiliary function to handle AI input.  Very limited right now.
 	 * @param player_AI the Robot whom you'd like to apply AI moves.
@@ -511,11 +523,4 @@ Robot.types = {
 			undefined : undefined
 		}
 	}
-};
-
-Robot.opposite_actions = {
-	'left' : 'right',
-	'right' : 'left',
-	'up' : 'down',
-	'down' : 'up'
 };
