@@ -111,7 +111,7 @@ function LevelStage() {
 			var x_pos = robot.sprite.x;
 			var y_pos = robot.sprite.y;
 			var tiles_at_robot_pos = this.activeLevel.tileMap.at(x_pos, y_pos);
-
+			
 			if (tiles_at_robot_pos != undefined) {
 
 				//if the robot updates and moves to an empty space...
@@ -144,8 +144,9 @@ function LevelStage() {
 						}
 
 						//TODO: Apply penalty
-					} else if (tile.type == 'goal_tile') {
-						//TODO: you win!
+					} else if (tile.type == 'goal_tile' && robot.isPlayerControlled) {
+						//you win!
+						jaws.switchGameState(MenuState);
 					}
 				}
 			}
