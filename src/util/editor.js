@@ -284,6 +284,7 @@ var Editor = {
 	},
 	
 	/**
+	 * Outputs grid info on page as a 2D array 
 	 * @author Ian Coleman
 	 */
 	outputGrid: function() {
@@ -297,56 +298,18 @@ var Editor = {
 		editor.printoutContainer.append("]");
 	},
 	
+	/**
+	 * Display notification window
+	 * @param string msg -- text of notification
+	 */
 	showAlert: function(msg) {
 		$("#alert").html(msg).fadeIn(500).delay(3000).fadeOut(500);
 	},
 	
-	validateTilePlacement: function(tile) {
-		var tileX = tile.attr('x'); 
-		var tileY = tile.attr('y');
-		
-		// check horizontal dimension
-		if (tileX < this.minHorizontalTile && (this.maxHorizontalTile - tileX) <= this.maxGameplayWidth) {
-			this.updateMinHorizontalTile(tileX);
-		}
-		else if (tileX > this.maxHorizontalTile && (tileX - this.minHorizontalTile) <= this.maxGameplayWidth) {
-			this.updateMaxHorizontalTile(tileX);
-		} else {
-			return false;
-		}
-		// check vertical dimension		
-		if (tileY < this.minVerticalTile && (this.maxVerticalTile - tileY) <= this.maxGameplayHeight) {
-			this.updateMinVerticalTile(tileY);
-		}
-		else if (tileY < this.maxVerticalTile && (tileY - this.minVerticalTile) <= this.maxGameplayHeight) {
-			this.updateMaxVerticalTile(tileY);
-		} else {
-			return false;
-		}
-		return true;
-		
-	},
-	
-//	validateDimensions: function(width, height) {
-//		return (width <= this.maxGameplayWidth && height <= this.maxGameplayHeight);
-//	},
-	
-	updateMaxHorizontalTile: function(xIndex) {
-		this.maxHorizontalTile = xIndex;		
-	}, 
-	
-	updateMinHorizontalTile: function(xIndex) {
-		this.minHorizontalTile = xIndex;
-	},
-	
-	updateMaxVerticalTile: function(yIndex) {
-		this.maxVerticalTile = yIndex;
-	},
-	
-	updateMinVerticalTile: function(yIndex) {
-		this.minVerticalTile = yIndex;
-	},
-	
+	/**
+	 * Removes type info from grid array and resets all tile css
+	 * classes to undefined 
+	 */
 	resetGridTiles: function() {
 		var editorTiles = $(".editor-tile");
 		editorTiles.removeClass();
