@@ -20,7 +20,7 @@ function MenuState() {
 	var title_loop_animation = new jaws.Animation({
 		sprite_sheet : "./assets/art/BitBotTitleLoop-SpriteSheet.png",
 		frame_size : [288, 288],
-		frame_duration : 100, //ms
+		frame_duration : 300, //ms
 		loop : true,
 		orientation : 'right'
 	});
@@ -77,13 +77,18 @@ function MenuState() {
 		jaws.context.clearRect(0, 0, jaws.width, jaws.height)
 		
 		this.sprite.draw();
+		
+		jaws.context.fillStyle = 'Black';
+		jaws.context.rect(175, jaws.height/1.5, 225, 150);
+		jaws.context.fill();
+      	
 		for (var i = 0; items[i]; i++) {
 
 			jaws.context.font = "60pt VT323";
 			jaws.context.lineWidth = 25
-			jaws.context.fillStyle = (i == index) ? "Red" : "Black"
+			jaws.context.fillStyle = (i == index) ? "White" : "Gray"
 			jaws.context.strokeStyle = "rgba(200,200,200,0.0)"
-			jaws.context.fillText(items[i], 200, jaws.height / 1.3 + i * (75))
+			jaws.context.fillText(items[i], 205, jaws.height / 1.3 + i * (75))
 		}
 	}
 }
