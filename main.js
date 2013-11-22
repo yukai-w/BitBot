@@ -3,6 +3,9 @@ function init() {
 	////Art
 	
 	//Background
+	jaws.assets.add("./assets/art/BitBotTitleIntro-SpriteSheet.png");
+	jaws.assets.add("./assets/art/BitBotTitleLoop-SpriteSheet.png");
+	
 	jaws.assets.add("./assets/art/LevelBackground01.png");
 	jaws.assets.add("./assets/art/LevelBackground02.png");
 	jaws.assets.add("./assets/art/LevelBackground03.png");
