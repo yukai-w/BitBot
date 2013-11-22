@@ -153,3 +153,42 @@ function drawing_order_compare(item1, item2) {
 }
 
 
+/**
+ * Helper function to write multiline text on the screen.
+ * See: http://www.html5canvastutorials.com/tutorials/html5-canvas-wrap-text-tutorial/
+ * @param {Object} context the HTML context
+ * @param {Object} text the text to write
+ * @param {Object} x the starting x coordinate
+ * @param {Object} y the starting y coordinate
+ * @param {Object} maxWidth the max width of the text to write
+ * @param {Object} lineHeight the height of each line to write
+ */
+function wrap_text(context, text, x, y, maxWidth, lineHeight) {
+    var cars = text.split("\n");
+
+    for (var ii = 0; ii < cars.length; ii++) {
+
+        var line = "";
+        var words = cars[ii].split(" ");
+
+        for (var n = 0; n < words.length; n++) {
+            var testLine = line + words[n] + " ";
+            var metrics = context.measureText(testLine);
+            var testWidth = metrics.width;
+
+            if (testWidth > maxWidth) {
+                context.fillText(line, x, y);
+                line = words[n] + " ";
+                y += lineHeight;
+            }
+            else {
+                line = testLine;
+            }
+        }
+
+        context.fillText(line, x, y);
+        y += lineHeight;
+    }
+}
+
+
