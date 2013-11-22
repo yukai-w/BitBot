@@ -39,11 +39,11 @@ function MenuState() {
 		jaws.context.clearRect(0, 0, jaws.width, jaws.height)
 		for (var i = 0; items[i]; i++) {
 
-			jaws.context.font = "120pt VT323";
+			jaws.context.font = "60pt VT323";
 			jaws.context.lineWidth = 25
 			jaws.context.fillStyle = (i == index) ? "Red" : "Black"
 			jaws.context.strokeStyle = "rgba(200,200,200,0.0)"
-			jaws.context.fillText(items[i], 30, jaws.height / 2.5 + i * (200))
+			jaws.context.fillText(items[i], 200, jaws.height / 1.3 + i * (75))
 		}
 	}
 }
