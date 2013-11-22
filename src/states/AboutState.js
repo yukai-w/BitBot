@@ -30,8 +30,7 @@ function AboutState() {
 		}
 	};
 	
-	var about = [];
-	
+	var about = "BitBot is an HTML5/JS game built as part of the 2013 Github Game Jam.";
 
 	this.setup = function() {
 		
@@ -45,10 +44,12 @@ function AboutState() {
 	this.draw = function() {
 		
 		this.backgroundOverlaySprite.draw();
+		jaws.context.font = "20pt VT323";
 		jaws.context.fillStyle = "White";
+		
+		wrap_text(jaws.context, about, 30, jaws.height/4, jaws.width-30, 20);
       	
 		for (var i = 0; team[i]; i++) {
-			jaws.context.font = "20pt VT323";
 			jaws.context.lineWidth = 20;
 			jaws.context.strokeStyle = "rgba(200,200,200,0.0)";
 			jaws.context.fillText(team[i].name, 35, (jaws.height/1.6)+i*110);
