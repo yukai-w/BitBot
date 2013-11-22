@@ -41,16 +41,26 @@ function LevelStage() {
 	});
 
 	this.update = function() {
+		
+		//Update the world
 		this.activeLevel.update();
 		
+		//Broadcast the updated world to the robots
 		var that = this;
 		$.each(this.robots, function(robot_idx, robot) {
 			robot.updateInternalWorldRepresentation(that);
 		});
 		
+		//Update the robots
 		jaws.update(this.robots);
 		
-		this.updateFreezeFrames();
+		if(this.player.isPlanning) {
+			if(this.freezeFramesAreEmpty()) {
+				this.initFreezeFrames();
+			}
+		} else {
+			this.clearFreezeFrames();
+		}
 
 
 		//clear the auxiliary robot arrays
@@ -180,53 +190,64 @@ function LevelStage() {
 		jaws.draw(this.batteries);
 		this.hud.draw();
 	}
-	
-	this.updateFreezeFrames = function() {
-		//create freeze frames
-		if (this.player.isPlanning) {
-			if (this.robotsFreezeFrameInPlay.length == 0 && this.robotsFreezeFrameOutOfPlay.length == 0) 
-			{
-				var that = this;
-				$.each(this.robots, function(robot_idx, robot){
-					
-					var pos = {
-						x : robot.sprite.x,
-						y : robot.sprite.y - robot.drawing_vert_offset
-					};
-					
-					
-					if(robot.isFalling) {
-						var out_of_play_robot = new Robot({
-							position : pos,
-							type : robot.type,
-							direction : robot.directionCode,
-							orientation : robot.orientation,
-							world : that
-						});
-						
-						that.robotsFreezeFrameOutOfPlay.push(out_of_play_robot);
-					} else {
-						var in_play_robot = new Robot({
-							position : pos,
-							type : robot.type,
-							direction : robot.directionCode,
-							orientation : robot.orientation,
-							world : this
-						});
-						
-						that.robotsFreezeFrameInPlay.push(in_play_robot);
-					}
 
+	/**
+	 * Initializes the freeze frames used when the player is planning.
+	 * Freeze frames are displayed instead of the game's robots, for
+	 * purposes of game mechanics: while the player is planning, the 
+	 * representation they will reason with will be outdated.
+	 */	
+	this.initFreezeFrames = function() {
+		var that = this;
+		$.each(this.robots, function(robot_idx, robot) {
+			
+			var pos = {
+				x : robot.sprite.x,
+				y : robot.sprite.y - robot.drawing_vert_offset
+			};
+			
+			if(robot.isFalling) {
+				var out_of_play_robot = new Robot({
+					position : pos,
+					type : robot.type,
+					direction : robot.directionCode,
+					orientation : robot.orientation,
+					world : that
 				});
-			}
-		} else {
-			if (this.robotsFreezeFrameInPlay.length != 0) {
-				goog.array.clear(this.robotsFreezeFrameInPlay);
+				
+				that.robotsFreezeFrameOutOfPlay.push(out_of_play_robot);
+			} else {
+				var in_play_robot = new Robot({
+					position : pos,
+					type : robot.type,
+					direction : robot.directionCode,
+					orientation : robot.orientation,
+					world : this
+				});
+				
+				that.robotsFreezeFrameInPlay.push(in_play_robot);
 			}
 
-			if (this.robotsFreezeFrameOutOfPlay.length != 0) {
-				goog.array.clear(this.robotsFreezeFrameOutOfPlay);
-			}
+		});
+	}
+	
+	/**
+	 * Returns true if the freeze frames are empty.
+	 */
+	this.freezeFramesAreEmpty = function() {
+		return (this.robotsFreezeFrameInPlay.length == 0 && this.robotsFreezeFrameOutOfPlay.length == 0);
+	}
+	
+	/**
+	 * Clears the freeze frames.
+	 */
+	this.clearFreezeFrames = function() {
+		if (this.robotsFreezeFrameInPlay.length != 0) {
+			goog.array.clear(this.robotsFreezeFrameInPlay);
+		}
+
+		if (this.robotsFreezeFrameOutOfPlay.length != 0) {
+			goog.array.clear(this.robotsFreezeFrameOutOfPlay);
 		}
 	}
 	
