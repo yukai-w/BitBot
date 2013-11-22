@@ -4,7 +4,7 @@
 function LevelStage() {
 	
 	/* Game logic attributes */
-	this.playerWon = false;
+	this.hasBeenBeaten = false;
 
 	/* Music files */
 	var gameOverMusic = new Howl({urls : ['./assets/sounds/music/gameover.mp3']});
@@ -41,6 +41,10 @@ function LevelStage() {
 	jaws.on_keydown("esc", function() {
 		jaws.switchGameState(MenuState);
 	});
+	
+	this.setup = function() {
+		//do intro level code
+	}
 
 	this.update = function() {
 		
@@ -97,13 +101,9 @@ function LevelStage() {
 						//tile, then revert the move and apply a penalty
 						robot_in_play.doCollideProtocol();
 
-					} else if (tile.type == 'goal_tile' && robot_in_play.isPlayerControlled && (robot_in_play.isIdle || robot_in_play.isOff)) {
+					} else if (tile.type == 'goal_tile' && robot_in_play.isPlayerControlled && robot_in_play.isIdle) {
 						
-						if(!robot_in_play.isOff) {
-							robot_in_play.setMode('exiting');
-						} else {
-							jaws.switchGameState(MenuState);	
-						}
+						robot_in_play.setMode('exiting');
 					}
 				}
 			}
@@ -130,6 +130,11 @@ function LevelStage() {
 
 		//sort robots in drawing order - closer ones go first
 		goog.array.stableSort(this.robots, drawing_order_compare);
+		
+		//if the player's off at the end, we've beaten the level!
+		if(this.player.isOff) {
+			this.hasBeenBeaten = true;
+		}
 	}
 
 	this.draw = function() {
@@ -147,6 +152,35 @@ function LevelStage() {
 		jaws.draw(this.batteries);
 		this.hud.draw();
 	}
+
+	/**
+	 * This function is meant to be called once when the LevelStage has concluded, 
+	 * and a new LevelStage will be loaded.  All code cleanup should be done here.
+	 */
+	this.destroy = function() {
+		goog.array.clear(this.robots);
+		goog.array.clear(this.robotsInPlay);
+		goog.array.clear(this.robotsOutOfPlay);
+		goog.array.clear(this.foregroundFreezeFrame);
+		goog.array.clear(this.backgroundFreezeFrame);
+		goog.array.clear(this.enemies);
+		goog.array.clear(this.batteries);
+		
+		delete this.robots;
+		delete this.robotsInPlay;
+		delete this.robotsOutOfPlay;
+		delete this.foregroundFreezeFrame;
+		delete this.backgroundFreezeFrame;
+		delete this.enemies;
+		delete this.activeLevel;
+		delete this.player;
+		delete this.hud;
+		
+		metonymyMusic.stop();
+		gameOverMusic.stop();
+	}
+
+	
 
 	/**
 	 * Initializes the freeze frames used when the player is planning.

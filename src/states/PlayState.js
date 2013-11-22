@@ -29,13 +29,13 @@ function PlayState() {
 	this.update = function() {
 	
 		background_sprite.setImage(background_animation.next());
-		this.currentStage.update();
 		
-		//if (! this.currentStage.hasBeenBeaten) {
-		// this.currentStage.update();
-		//} else {
-		// 	load the new stage		
-		// }
+		if (! this.currentStage.hasBeenBeaten) {
+			this.currentStage.update();
+		} else {
+			this.currentStage.destroy();
+			this.currentStage = new LevelStage();		
+		}
 		
 		
 		
