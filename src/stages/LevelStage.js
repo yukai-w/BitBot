@@ -49,44 +49,9 @@ function LevelStage() {
 		});
 		
 		jaws.update(this.robots);
+		
+		this.updateFreezeFrames();
 
-		//create freeze frames
-		if (this.player.isPlanning) {
-			if (this.robotsFreezeFrameInPlay.length == 0 && this.robotsFreezeFrameOutOfPlay.length == 0) {
-				var number_of_robots = this.robots.length, robot = null;
-				for (var robot_idx = 0; robot_idx < number_of_robots; robot_idx++) {
-					robot = this.robots[robot_idx];
-					pos = {x : robot.sprite.x, y : robot.sprite.y - robot.drawing_vert_offset};
-
-					if (robot.isFalling) {
-						this.robotsFreezeFrameOutOfPlay.push(new Robot({
-							position : pos,
-							type : robot.type,
-							direction : robot.directionCode,
-							orientation : robot.orientation,
-							world : this
-						}));
-
-					} else {
-						this.robotsFreezeFrameInPlay.push(new Robot({
-							position : pos,
-							type : robot.type,
-							direction : robot.directionCode,
-							orientation : robot.orientation,
-							world : this
-						}));
-					}
-				}
-			}
-		} else {
-			if (this.robotsFreezeFrameInPlay.length != 0) {
-				goog.array.clear(this.robotsFreezeFrameInPlay);
-			}
-
-			if (this.robotsFreezeFrameOutOfPlay.length != 0) {
-				goog.array.clear(this.robotsFreezeFrameOutOfPlay);
-			}
-		}
 
 		//clear the auxiliary robot arrays
 		this.robotsInPlay = [];
@@ -215,6 +180,47 @@ function LevelStage() {
 		jaws.draw(this.batteries);
 		this.hud.draw();
 	}
+	
+	this.updateFreezeFrames = function() {
+		//create freeze frames
+		if (this.player.isPlanning) {
+			if (this.robotsFreezeFrameInPlay.length == 0 && this.robotsFreezeFrameOutOfPlay.length == 0) {
+				var number_of_robots = this.robots.length, robot = null;
+				for (var robot_idx = 0; robot_idx < number_of_robots; robot_idx++) {
+					robot = this.robots[robot_idx];
+					pos = {x : robot.sprite.x, y : robot.sprite.y - robot.drawing_vert_offset};
+
+					if (robot.isFalling) {
+						this.robotsFreezeFrameOutOfPlay.push(new Robot({
+							position : pos,
+							type : robot.type,
+							direction : robot.directionCode,
+							orientation : robot.orientation,
+							world : this
+						}));
+
+					} else {
+						this.robotsFreezeFrameInPlay.push(new Robot({
+							position : pos,
+							type : robot.type,
+							direction : robot.directionCode,
+							orientation : robot.orientation,
+							world : this
+						}));
+					}
+				}
+			}
+		} else {
+			if (this.robotsFreezeFrameInPlay.length != 0) {
+				goog.array.clear(this.robotsFreezeFrameInPlay);
+			}
+
+			if (this.robotsFreezeFrameOutOfPlay.length != 0) {
+				goog.array.clear(this.robotsFreezeFrameOutOfPlay);
+			}
+		}
+	}
+	
 	function setup_sample_level() {
 
 		var sample_level = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 3, 0, 0, 0], [0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 1, 1, 1, 4, 1, 1, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 2, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
