@@ -35,7 +35,7 @@ function MenuState() {
 	
 	var index = 0;
 	var items = ["Start", "About"]
-
+	
 	this.setup = function() {
 		
 		jaws.on_keydown(["down", "s"], function() {
@@ -60,7 +60,7 @@ function MenuState() {
 			} else {
 				jaws.switchGameState(AboutState, {
 					fps : 60
-				})
+				});
 			}
 		})
 	}

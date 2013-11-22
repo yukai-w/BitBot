@@ -29,6 +29,10 @@ function init() {
 	jaws.assets.add("./assets/art/GrayBitBot-SpriteSheet.png");
 	jaws.assets.add("./assets/art/Shadow.png");
 	
+	//Other Sprites
+	jaws.assets.add("./assets/art/Jose.png");
+	jaws.assets.add("./assets/art/Rogelio.png");
+	
 	
 	//HUD
 	jaws.assets.add("./assets/art/CommandPrompt.png");

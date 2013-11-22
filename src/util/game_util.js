@@ -164,6 +164,7 @@ function drawing_order_compare(item1, item2) {
  * @param {Object} lineHeight the height of each line to write
  */
 function wrap_text(context, text, x, y, maxWidth, lineHeight) {
+    
     var cars = text.split("\n");
 
     for (var ii = 0; ii < cars.length; ii++) {
