@@ -144,9 +144,17 @@ function LevelStage() {
 						}
 
 						//TODO: Apply penalty
-					} else if (tile.type == 'goal_tile' && robot.isPlayerControlled) {
-						//you win!
-						//jaws.switchGameState(MenuState);
+					} else if (tile.type == 'goal_tile' && robot.isPlayerControlled && (robot.isIdle || robot.isOff)) {
+						
+						if(!robot.isOff) {
+							robot.setMode('exiting');
+						} else {
+							jaws.switchGameState(MenuState);	
+						}
+						
+						
+						
+						
 					}
 				}
 			}

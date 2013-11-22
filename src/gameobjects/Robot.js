@@ -53,12 +53,11 @@ function Robot(configuration_options) {
 		frames : [this.walkLeftFrame, this.walkUpFrame, this.walkRightFrame, this.walkDownFrame],
 		index : 0,
 		loop : true
-	}); 
+	});
+	this.exitAnimation = animation.slice(7, 32);
+	this.exitAnimation.frame_direction = -1; 
 	
 	
-	
-	
-
 	this.sprite = new jaws.Sprite({
 		x : pos.x,
 		y : (pos.y + this.drawing_vert_offset),
@@ -116,6 +115,8 @@ function Robot(configuration_options) {
 	this.isFalling = false; //true if we just fell off the game level
 	this.isRespawning = false;
 	this.isRebooting = false; //true if we encountered a weird state
+	this.isExiting = false; //true if we just finished the level
+	this.isOff = false; //true if we're done with the level
 	this.canRespawn = true;
 
 	this.isIdle = true;
@@ -145,6 +146,10 @@ function Robot(configuration_options) {
 			this.plan();
 		} else if(this.isExecuting) {
 			this.execute();
+		} else if(this.isExiting) {
+			this.exit();
+		} else if(this.isOff) {
+			//do nothing!  
 		} else { //this is idle
 			this.standby();
 		}
@@ -155,7 +160,7 @@ function Robot(configuration_options) {
 	}
 
 	this.draw = function() {
-		if (this.isFalling || this.isRespawning) {
+		if (this.isFalling || this.isRespawning || this.isExiting || this.isOff) {
 			this.sprite.draw();
 		} else {
 			this.shadowSprite.draw();
@@ -348,10 +353,10 @@ function Robot(configuration_options) {
 		}
 		
 		//check if you have been there too long!
-		executing_watchdog_timer += jaws.game_loop.tick_duration;
-		if (executing_watchdog_timer >= watchdog_timer_threshold) {
+		this.executingWatchdogTimer += jaws.game_loop.tick_duration;
+		if (this.executingWatchdogTimer >= executing_timer_threshold) {
 			//that means we've gotten into a weird state :( - RESET!
-			executing_watchdog_timer = 0.0;
+			this.executingWatchdogTimer = 0.0;
 			this.beginReboot();
 		}
 	}
@@ -422,6 +427,28 @@ function Robot(configuration_options) {
 	}
 	
 	/**
+	 * Called when the Robot should exit the level.  Animates the exit sequence,
+	 * and plays a sound effect.
+	 */
+	this.exit = function() {
+		
+		this.executingWatchdogTimer = 0.0;
+		this.sprite.setImage(this.exitAnimation.next());
+		this.orientation = this.exitAnimation.currentFrame();
+		if (this.executingSfx.pos() > 0) {
+			this.executingSfx.stop();
+		}
+
+		if (this.exitAnimation.atLastFrame() && this.isPlayerControlled) {
+			this.respawningSfx.play();
+		}
+
+		if (this.exitAnimation.atFirstFrame()) {
+			this.setMode('off');
+		}
+	}
+	
+	/**
 	 * Wipes this Robot's memory by clearing its target position, its
 	 * action queue, and its previous position stack. 
 	 */
@@ -454,6 +481,8 @@ function Robot(configuration_options) {
 			this.isFalling = false;
 			this.isRespawning = false;
 			this.isRebooting = false;
+			this.isExiting = false;
+			this.isOff = false;
 		} else if (mode == 'executing') {
 			this.isIdle = false;
 			this.isPlanning = false;
@@ -461,6 +490,8 @@ function Robot(configuration_options) {
 			this.isFalling = false;
 			this.isRespawning = false;
 			this.isRebooting = false;
+			this.isExiting = false;
+			this.isOff = false;
 		} else if (mode == 'falling') {
 			this.isIdle = false;
 			this.isPlanning = false;
@@ -468,6 +499,8 @@ function Robot(configuration_options) {
 			this.isFalling = true;
 			this.isRespawning = false;
 			this.isRebooting = false;
+			this.isExiting = false;
+			this.isOff = false;
 		} else if (mode == 'respawning') {
 			this.isIdle = false;
 			this.isPlanning = false;
@@ -475,6 +508,8 @@ function Robot(configuration_options) {
 			this.isFalling = false;
 			this.isRespawning = true;
 			this.isRebooting = false;
+			this.isExiting = false;
+			this.isOff = false;
 		} else if (mode == 'rebooting') {
 			this.isIdle = false;
 			this.isPlanning = false;
@@ -482,6 +517,26 @@ function Robot(configuration_options) {
 			this.isFalling = false;
 			this.isRespawning = false;
 			this.isRebooting = true;
+			this.isExiting = false;
+			this.isOff = false;
+		} else if (mode == 'exiting') {
+			this.isIdle = false;
+			this.isPlanning = false;
+			this.isExecuting = false;
+			this.isFalling = false;
+			this.isRespawning = false;
+			this.isRebooting = false;
+			this.isExiting = true;
+			this.isOff = false;
+		} else if(mode == 'off') {
+			this.isIdle = false;
+			this.isPlanning = false;
+			this.isExecuting = false;
+			this.isFalling = false;
+			this.isRespawning = false;
+			this.isRebooting = false;
+			this.isExiting = false;
+			this.isOff = true;
 		} else {
 			this.isIdle = true;
 			this.isPlanning = false;
@@ -489,6 +544,8 @@ function Robot(configuration_options) {
 			this.isFalling = false;
 			this.isRespawning = false;
 			this.isRebooting = false;
+			this.isExiting = false;
+			this.isOff = false;
 		}
 	}
 	
@@ -508,6 +565,10 @@ function Robot(configuration_options) {
 			return 'respawning';
 		} else if (this.isRebooting) {
 			return 'rebooting';
+		} else if (this.isExiting) {
+			return 'exiting';
+		} else if (this.isOff) {
+			return 'off';
 		} else {
 			return 'idle'
 		}
