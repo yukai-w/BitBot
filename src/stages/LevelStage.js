@@ -30,7 +30,6 @@ function LevelStage() {
 		world : this
 	});
 
-	this.robots = [];
 	this.robots = this.enemies;
 	this.robots.push(this.player);
 	
@@ -43,11 +42,11 @@ function LevelStage() {
 
 	this.update = function() {
 		this.activeLevel.update();
-		var number_of_robots = this.robots.length, robot = null;
-		for (var robot_idx = 0; robot_idx < number_of_robots; robot_idx++) {
-			robot = this.robots[robot_idx];
-			robot.updateInternalWorldRepresentation(this);
-		}
+		
+		var that = this;
+		$.each(this.robots, function(robot_idx, robot) {
+			robot.updateInternalWorldRepresentation(that);
+		});
 		
 		jaws.update(this.robots);
 
