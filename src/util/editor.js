@@ -46,10 +46,10 @@ var Editor = {
 	// tile type enum
 	tileTypes:  {
 		UNDEFINED: 0,
-		FLAT: 1,
-		START: 3,
-		GOAL: 4,
-		RAISED: 8,
+		REGULAR: 1,
+		START: 2,
+		GOAL: 3,
+		OBSTACLE: 4,
 		BATTERY: 9,
 		ROBOT_PLAYER: 10,
 		ROBOT_DREYFUSS: 11
@@ -196,7 +196,7 @@ var Editor = {
 		
 		// add new type class
 		switch(type) {
-		case this.tileTypes.FLAT:
+		case this.tileTypes.REGULAR:
 			tile.addClass("editor-tile-flat");
 			tile.attr("type", "flat");
 			break;
@@ -218,7 +218,7 @@ var Editor = {
 				this.goalCount++;
 			}
 			break;
-		case this.tileTypes.RAISED:
+		case this.tileTypes.REGULAR:
 			tile.addClass("editor-tile-raised");
 			tile.attr("type", "raised");
 			break;
@@ -242,7 +242,7 @@ var Editor = {
 		var columnIndex = parseInt(tile.attr('x'));
 		
 		if(editor.keyModifier === 'r') {					
-			tileType = editor.tileTypes.RAISED;					
+			tileType = editor.tileTypes.REGULAR;					
 		}
 		else if(editor.keyModifier === 's') {					
 			tileType = editor.tileTypes.START;					
@@ -251,7 +251,7 @@ var Editor = {
 			tileType = editor.tileTypes.GOAL;					
 		}
 		else if(editor.keyModifier === 'f') {
-			tileType = editor.tileTypes.FLAT;
+			tileType = editor.tileTypes.REGULAR;
 		}
 		else if(editor.keyModifier === undefined) {
 			tileType = editor.tileTypes.UNDEFINED;
