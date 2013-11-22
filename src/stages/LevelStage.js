@@ -100,8 +100,8 @@ function LevelStage() {
 
 					} else if (tile.type == 'goal_tile' && robot_in_play.isPlayerControlled && (robot_in_play.isIdle || robot_in_play.isOff)) {
 						
-						if(!robot.isOff) {
-							robot.setMode('exiting');
+						if(!robot_in_play.isOff) {
+							robot_in_play.setMode('exiting');
 						} else {
 							jaws.switchGameState(MenuState);	
 						}
@@ -223,7 +223,7 @@ function LevelStage() {
 		var that = this;
 		
 		$.each(this.robots, function(robot_idx, robot) {
-			if(robot.isInPlay() || this.isRespawning || this.isRebooting) {
+			if(robot.isInPlay() || this.isRespawning || this.isRebooting || this.isExiting) {
 				that.robotsInPlay.push(robot);
 			} else {
 				that.robotsOutOfPlay.push(robot);
