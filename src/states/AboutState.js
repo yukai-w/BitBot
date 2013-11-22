@@ -26,7 +26,7 @@ function AboutState() {
 		rogelio_sprite = new jaws.Sprite({x : 100, y : jaws.height*2.1/10, image : "./assets/art/Rogelio.png", scale : 3.5});
 	
 		jose_info = {name : 'Jos\xE9 D. V\xE9lez', role : 'Game Designer, Artist', twitter : '@danivive', site : 'http://jdvelez.tumblr.com'};
-		jose_sprite = new jaws.Sprite({x : 365, y : jaws.height*4/10, image : "./assets/art/Jose.png", scale : 0.56});
+		jose_sprite = new jaws.Sprite({x : 365, y : jaws.height*4/10, image : "./assets/art/Jose.png", scale : 3.5});
 	
 		ian_info = {name : 'Ian Coleman', role : 'Level Editor, Programmer', twitter : '@iancoleman', site : 'http://www.ianpcoleman.com'};
 	
