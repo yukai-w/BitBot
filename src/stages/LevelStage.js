@@ -17,7 +17,6 @@ function LevelStage() {
 
 	/* Level initialization */
 	this.robotsInPlay = [];
-	this.robotsThatAreRespawning = [];
 	this.robotsOutOfPlay = [];
 	this.foregroundFreezeFrame = [];
 	this.backgroundFreezeFrame = [];
@@ -46,11 +45,13 @@ function LevelStage() {
 
 	this.update = function() {
 		
+		//Store a ref. for use in inner functions
+		var that = this;
+		
 		//Update the world
 		this.activeLevel.update();
 		
 		//Broadcast the updated world to the robots
-		var that = this;
 		$.each(this.robots, function(robot_idx, robot) {
 			robot.updateInternalWorldRepresentation(that);
 		});
@@ -69,16 +70,14 @@ function LevelStage() {
 		
 		//Update the auxiliary robot arrays
 		this.updateAuxiliaryRobotArrays();
-
-		var number_of_robots = this.robotsInPlay.length, robot = null;
-		for (var robot_idx = 0; robot_idx < number_of_robots; robot_idx++) {
-			robot = this.robotsInPlay[robot_idx];
-			var x_pos = robot.sprite.x;
-			var y_pos = robot.sprite.y;
-			var tiles_at_robot_pos = this.activeLevel.tileMap.at(x_pos, y_pos);
+		
+		$.each(this.robotsInPlay, function(robot_idx, robot_in_play) {
+			
+			var x_pos = robot_in_play.sprite.x;
+			var y_pos = robot_in_play.sprite.y;
+			var tiles_at_robot_pos = that.activeLevel.tileMap.at(x_pos, y_pos);
 			
 			if (tiles_at_robot_pos != undefined) {
-
 				//if the robot updates and moves to an empty space...
 				if (tiles_at_robot_pos.length == 0) {
 
@@ -86,30 +85,30 @@ function LevelStage() {
 					//brief instant that she is finding a new tile to target -
 					//needed so that the player actually animates to move over
 					//the hole, and then falls.
-					if (robot.targetPosition == undefined) {
-						robot.setMode('falling');
-						//...have the robot fall
+					if (robot_in_play.targetPosition == undefined) {
+						robot_in_play.setMode('falling'); //...have the robot fall
 					}
+					
 				} else {
-					var tile = tiles_at_robot_pos[0];
-					//guaranteed to be of length 1
-
+					var tile = tiles_at_robot_pos[0]; //guaranteed to be of length 1
+					
 					if (tile.type == 'obstacle_tile') {
 						//if the robot moves to a place where there is an obstacle
 						//tile, then revert the move and apply a penalty
 
-						robot.targetPosition = {
-							x : robot.previousPosition.x,
-							y : robot.previousPosition.y
+						robot_in_play.targetPosition = {
+							x : robot_in_play.previousPosition.x,
+							y : robot_in_play.previousPosition.y
 						};
-						robot.setMode('executing');
-						robot.actionQueue.clear();
-						if (robot.isPlayerControlled) {
-							robot.errorSfx.play();
+						robot_in_play.setMode('executing');
+						robot_in_play.actionQueue.clear();
+						if (robot_in_play.isPlayerControlled) {
+							robot_in_play.errorSfx.play();
 						}
 
 						//TODO: Apply penalty
-					} else if (tile.type == 'goal_tile' && robot.isPlayerControlled && (robot.isIdle || robot.isOff)) {
+						
+					} else if (tile.type == 'goal_tile' && robot_in_play.isPlayerControlled && (robot_in_play.isIdle || robot_in_play.isOff)) {
 						
 						if(!robot.isOff) {
 							robot.setMode('exiting');
@@ -119,7 +118,7 @@ function LevelStage() {
 					}
 				}
 			}
-		}
+		});
 
 		if (this.robotsInPlay.length > 1) {
 
