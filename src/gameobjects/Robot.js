@@ -123,11 +123,10 @@ function Robot(configuration_options) {
 	this.previousPositionStack = [];
 	this.actionQueueSizeMax = 12;
 
-	this.millisecondsSpentPlanning = 0.0;
-	var planning_millisecond_threshold = 1000.0;
-	this.millisecondsSpentExecuting = 0.0;
-	var executing_watchdog_timer = 0.0;
-	var watchdog_timer_threshold = 3000.0;
+	this.planningWatchdogTimer = 0.0;
+	var planning_timer_threshold = 1000.0;
+	this.executingWatchdogTimer = 0.0;
+	var executing_timer_threshold = 3000.0;
 	
 
 	/* Game input attributes */
@@ -135,11 +134,6 @@ function Robot(configuration_options) {
 	jaws.preventDefaultKeys(["up", "down", "left", "right"]);
 	
 	this.update = function() {
-		
-		//if any robot is invading your spawn point sprite, do not respawn
-		var other_robots_in_the_world = this.internalWorldRepresentation.player;
-		var blocking_robots = jaws.collideOneWithOne(this.spawnPointSprite, other_robots_in_the_world);
-		this.canRespawn = !blocking_robots ? true : false;
 		
 		if(this.isRespawning) {
 			this.respawn();
@@ -197,7 +191,7 @@ function Robot(configuration_options) {
 	 * also play a sound.  When finished, this method sets this Robot to 'idle' mode.
 	 */
 	this.respawn = function() {
-		executing_watchdog_timer = 0.0;
+		this.executingWatchdogTimer = 0.0;
 		this.sprite.setImage(this.spawnAnimation.next());
 		this.sprite.moveTo(this.startingPosition.x, this.startingPosition.y);
 		this.orientation = this.spawnAnimation.currentFrame();
@@ -227,7 +221,7 @@ function Robot(configuration_options) {
 	 * method sets this Robot to 'idle' mode.
 	 */
 	this.reboot = function() {
-		executing_watchdog_timer = 0.0;
+		this.executingWatchdogTimer = 0.0;
 		this.sprite.setImage(this.rebootAnimation.next());
 		this.orientation = this.rebootAnimation.currentFrame();
 		
@@ -258,7 +252,7 @@ function Robot(configuration_options) {
 		var robot_must_begin_executing = false;
 		
 		//  ...you only have x seconds to keep inputting commands, and...
-		if (this.millisecondsSpentPlanning > planning_millisecond_threshold) {
+		if (this.planningWatchdogTimer > planning_timer_threshold) {
 			robot_must_begin_executing = true;
 		}
 		
@@ -270,18 +264,18 @@ function Robot(configuration_options) {
 		if (robot_must_begin_executing) {
 			
 			this.setMode('executing');
-			this.millisecondsSpentPlanning = 0.0;
+			this.planningWatchdogTimer = 0.0;
 			
 			if (this.isPlayerControlled) {
 				this.executingSfx.play();
 			}
 			
 		} else {
-			this.millisecondsSpentPlanning += jaws.game_loop.tick_duration;
+			this.planningWatchdogTimer += jaws.game_loop.tick_duration;
 
 			//when you're planning, and you input commands, the planning timer resets
 			if (handle_player_input(this)) {
-				this.millisecondsSpentPlanning = 0.0;
+				this.planningWatchdogTimer = 0.0;
 			}
 		}		
 	}
@@ -366,7 +360,7 @@ function Robot(configuration_options) {
 	 * Handles standing by in the Robot's 'idle' state.
 	 */
 	this.standby = function() {
-		executing_watchdog_timer = 0.0;
+		this.executingWatchdogTimer = 0.0;
 
 		//if we're idle, and the executing sfx was playing, stop it
 		if (this.executingSfx.pos() > 0) {
@@ -414,6 +408,11 @@ function Robot(configuration_options) {
 			this.sprite.y += 9.8;
 			this.sprite.x += 0.1; //x is increased to avoid playing the falling sound forever
 		} else {
+			
+			//if any robot is invading your spawn point sprite, do not respawn
+			var other_robots_in_the_world = this.internalWorldRepresentation.player;
+			var blocking_robots = jaws.collideOneWithOne(this.spawnPointSprite, other_robots_in_the_world);
+			this.canRespawn = !blocking_robots ? true : false;
 
 			//check if you're able to respawn (no one is blocking your spawn point)
 			if (this.canRespawn) {
