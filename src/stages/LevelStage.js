@@ -184,31 +184,40 @@ function LevelStage() {
 	this.updateFreezeFrames = function() {
 		//create freeze frames
 		if (this.player.isPlanning) {
-			if (this.robotsFreezeFrameInPlay.length == 0 && this.robotsFreezeFrameOutOfPlay.length == 0) {
-				var number_of_robots = this.robots.length, robot = null;
-				for (var robot_idx = 0; robot_idx < number_of_robots; robot_idx++) {
-					robot = this.robots[robot_idx];
-					pos = {x : robot.sprite.x, y : robot.sprite.y - robot.drawing_vert_offset};
-
-					if (robot.isFalling) {
-						this.robotsFreezeFrameOutOfPlay.push(new Robot({
+			if (this.robotsFreezeFrameInPlay.length == 0 && this.robotsFreezeFrameOutOfPlay.length == 0) 
+			{
+				var that = this;
+				$.each(this.robots, function(robot_idx, robot){
+					
+					var pos = {
+						x : robot.sprite.x,
+						y : robot.sprite.y - robot.drawing_vert_offset
+					};
+					
+					
+					if(robot.isFalling) {
+						var out_of_play_robot = new Robot({
 							position : pos,
 							type : robot.type,
 							direction : robot.directionCode,
 							orientation : robot.orientation,
-							world : this
-						}));
-
+							world : that
+						});
+						
+						that.robotsFreezeFrameOutOfPlay.push(out_of_play_robot);
 					} else {
-						this.robotsFreezeFrameInPlay.push(new Robot({
+						var in_play_robot = new Robot({
 							position : pos,
 							type : robot.type,
 							direction : robot.directionCode,
 							orientation : robot.orientation,
 							world : this
-						}));
+						});
+						
+						that.robotsFreezeFrameInPlay.push(in_play_robot);
 					}
-				}
+
+				});
 			}
 		} else {
 			if (this.robotsFreezeFrameInPlay.length != 0) {
