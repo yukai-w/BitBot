@@ -49,7 +49,10 @@ var Editor = {
 		FLAT: 1,
 		START: 3,
 		GOAL: 4,
-		RAISED: 8
+		RAISED: 8,
+		BATTERY: 9,
+		ROBOT_PLAYER: 10,
+		ROBOT_DREYFUSS: 11
 	},
 
 	/**
