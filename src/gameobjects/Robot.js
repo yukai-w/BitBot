@@ -470,82 +470,35 @@ function Robot(configuration_options) {
 	/**
 	 * Sets this Robot to the parameter mode.
 	 * @param mode a String which represents the mode to switch into.
-	 * (Acceptable values are 'planning', 'executing', 'idle', 'respawning' and 'falling';
-	 * defaults to 'idle' if mode is unrecognized.)
+	 * (defaults to 'idle' if mode is unrecognized.)
 	 */
 	this.setMode = function(mode) {
+		
+		this.isIdle = false;
+		this.isPlanning = false;
+		this.isExecuting = false;
+		this.isFalling = false;
+		this.isRespawning = false;
+		this.isRebooting = false;
+		this.isExiting = false;
+		this.isOff = false;
+		
 		if (mode == 'planning') {
-			this.isIdle = false;
 			this.isPlanning = true;
-			this.isExecuting = false;
-			this.isFalling = false;
-			this.isRespawning = false;
-			this.isRebooting = false;
-			this.isExiting = false;
-			this.isOff = false;
 		} else if (mode == 'executing') {
-			this.isIdle = false;
-			this.isPlanning = false;
 			this.isExecuting = true;
-			this.isFalling = false;
-			this.isRespawning = false;
-			this.isRebooting = false;
-			this.isExiting = false;
-			this.isOff = false;
 		} else if (mode == 'falling') {
-			this.isIdle = false;
-			this.isPlanning = false;
-			this.isExecuting = false;
 			this.isFalling = true;
-			this.isRespawning = false;
-			this.isRebooting = false;
-			this.isExiting = false;
-			this.isOff = false;
 		} else if (mode == 'respawning') {
-			this.isIdle = false;
-			this.isPlanning = false;
-			this.isExecuting = false;
-			this.isFalling = false;
 			this.isRespawning = true;
-			this.isRebooting = false;
-			this.isExiting = false;
-			this.isOff = false;
 		} else if (mode == 'rebooting') {
-			this.isIdle = false;
-			this.isPlanning = false;
-			this.isExecuting = false;
-			this.isFalling = false;
-			this.isRespawning = false;
 			this.isRebooting = true;
-			this.isExiting = false;
-			this.isOff = false;
 		} else if (mode == 'exiting') {
-			this.isIdle = false;
-			this.isPlanning = false;
-			this.isExecuting = false;
-			this.isFalling = false;
-			this.isRespawning = false;
-			this.isRebooting = false;
 			this.isExiting = true;
-			this.isOff = false;
 		} else if(mode == 'off') {
-			this.isIdle = false;
-			this.isPlanning = false;
-			this.isExecuting = false;
-			this.isFalling = false;
-			this.isRespawning = false;
-			this.isRebooting = false;
-			this.isExiting = false;
 			this.isOff = true;
 		} else {
 			this.isIdle = true;
-			this.isPlanning = false;
-			this.isExecuting = false;
-			this.isFalling = false;
-			this.isRespawning = false;
-			this.isRebooting = false;
-			this.isExiting = false;
-			this.isOff = false;
 		}
 	}
 	
