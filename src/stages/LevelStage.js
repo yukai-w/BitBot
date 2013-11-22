@@ -96,15 +96,7 @@ function LevelStage() {
 						//if the robot moves to a place where there is an obstacle
 						//tile, then revert the move and apply a penalty
 
-						robot_in_play.targetPosition = {
-							x : robot_in_play.previousPosition.x,
-							y : robot_in_play.previousPosition.y
-						};
-						robot_in_play.setMode('executing');
-						robot_in_play.actionQueue.clear();
-						if (robot_in_play.isPlayerControlled) {
-							robot_in_play.errorSfx.play();
-						}
+						robot_in_play.doCollideProtocol();
 
 						//TODO: Apply penalty
 						
