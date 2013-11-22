@@ -578,7 +578,7 @@ function Robot(configuration_options) {
 	 * Determines whether this robot is in play.
 	 */
 	this.isInPlay = function() {
-		return !(this.isFalling || this.isRespawning);
+		return (this.isPlanning || this.isExecuting || this.isIdle);
 	}
 	
 	/**

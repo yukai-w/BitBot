@@ -17,9 +17,13 @@ function LevelStage() {
 
 	/* Level initialization */
 	this.robotsInPlay = [];
+	this.robotsThatAreRespawning = [];
 	this.robotsOutOfPlay = [];
-	this.robotsFreezeFrameInPlay = [];
-	this.robotsFreezeFrameOutOfPlay = [];	
+	this.foregroundFreezeFrame = [];
+	this.backgroundFreezeFrame = [];
+	
+	
+		
 	this.activeLevel = new Level(setup_sample_level());
 	var level_elements = LevelStage.extractLevelElementInformation(setup_sample_elements(), this.activeLevel);
 	this.enemies = level_elements.robots;
@@ -54,6 +58,7 @@ function LevelStage() {
 		//Update the robots
 		jaws.update(this.robots);
 		
+		//Update the freeze frames
 		if(this.player.isPlanning) {
 			if(this.freezeFramesAreEmpty()) {
 				this.initFreezeFrames();
@@ -61,20 +66,9 @@ function LevelStage() {
 		} else {
 			this.clearFreezeFrames();
 		}
-
-
-		//clear the auxiliary robot arrays
-		this.robotsInPlay = [];
-		this.robotsOutOfPlay = [];
-		var number_of_robots = this.robots.length, robot = null;
-		for (var robot_idx = 0; robot_idx < number_of_robots; robot_idx++) {
-			robot = this.robots[robot_idx];
-			if (robot.isFalling) {//if it's falling, it's out of play
-				this.robotsOutOfPlay.push(robot);
-			} else {
-				this.robotsInPlay.push(robot);
-			}
-		}
+		
+		//Update the auxiliary robot arrays
+		this.updateAuxiliaryRobotArrays();
 
 		var number_of_robots = this.robotsInPlay.length, robot = null;
 		for (var robot_idx = 0; robot_idx < number_of_robots; robot_idx++) {
@@ -180,11 +174,12 @@ function LevelStage() {
 		if (!this.player.isPlanning) {
 			jaws.draw(this.robotsOutOfPlay);
 			this.activeLevel.draw();
+			jaws.draw(this.robotsThatAreRespawning);
 			jaws.draw(this.robotsInPlay);
 		} else {
-			jaws.draw(this.robotsFreezeFrameOutOfPlay);
+			jaws.draw(this.backgroundFreezeFrame);
 			this.activeLevel.draw();
-			jaws.draw(this.robotsFreezeFrameInPlay);
+			jaws.draw(this.foregroundFreezeFrame);
 		}
 
 		jaws.draw(this.batteries);
@@ -215,7 +210,7 @@ function LevelStage() {
 					world : that
 				});
 				
-				that.robotsFreezeFrameOutOfPlay.push(out_of_play_robot);
+				that.backgroundFreezeFrame.push(out_of_play_robot);
 			} else {
 				var in_play_robot = new Robot({
 					position : pos,
@@ -225,7 +220,7 @@ function LevelStage() {
 					world : this
 				});
 				
-				that.robotsFreezeFrameInPlay.push(in_play_robot);
+				that.foregroundFreezeFrame.push(in_play_robot);
 			}
 
 		});
@@ -235,20 +230,45 @@ function LevelStage() {
 	 * Returns true if the freeze frames are empty.
 	 */
 	this.freezeFramesAreEmpty = function() {
-		return (this.robotsFreezeFrameInPlay.length == 0 && this.robotsFreezeFrameOutOfPlay.length == 0);
+		return (this.foregroundFreezeFrame.length == 0 && this.backgroundFreezeFrame.length == 0);
 	}
 	
 	/**
 	 * Clears the freeze frames.
 	 */
 	this.clearFreezeFrames = function() {
-		if (this.robotsFreezeFrameInPlay.length != 0) {
-			goog.array.clear(this.robotsFreezeFrameInPlay);
+		if (this.foregroundFreezeFrame.length != 0) {
+			goog.array.clear(this.foregroundFreezeFrame);
 		}
 
-		if (this.robotsFreezeFrameOutOfPlay.length != 0) {
-			goog.array.clear(this.robotsFreezeFrameOutOfPlay);
+		if (this.backgroundFreezeFrame.length != 0) {
+			goog.array.clear(this.backgroundFreezeFrame);
 		}
+	}
+	
+	/**
+	 * Updates the auxiliary robot arrays: 
+	 * this.robotsInPlay - which references robots in play (idle, planning, or executing)
+	 * this.robotsThatAreRespawning - which references robots that are respawning
+	 * this.robotsOutOfPlay - which references robots out of play (falling, rebooting, exiting, or off)
+	 */
+	this.updateAuxiliaryRobotArrays = function() {
+
+		this.robotsInPlay = [];
+		this.robotsThatAreRespawning = [];
+		this.robotsOutOfPlay = [];
+		
+		var that = this;
+		
+		$.each(this.robots, function(robot_idx, robot) {
+			if(robot.isInPlay()) {
+				that.robotsInPlay.push(robot);
+			} else if(robot.isRespawning) {
+				that.robotsThatAreRespawning.push(robot);
+			} else {
+				that.robotsOutOfPlay.push(robot);
+			}
+		});
 	}
 	
 	function setup_sample_level() {
