@@ -173,6 +173,8 @@ var Editor = {
 		this.clearGridTilesButton.on('click', null, null, function(event) {
 			editor.submitResetGridTiles();
 		});
+		
+		$("#editor-bit-bot-container").draggable();
 	},
 	
 	/**
