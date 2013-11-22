@@ -556,6 +556,11 @@ function Robot(configuration_options) {
 		}
 	}
 	
+	/**
+	 * Executes this Robot's collide protocol: Try pop the
+	 * previous position if it exists, and move to it, otherwise, 
+	 * move down.  Clear your action queue.
+	 */
 	this.doCollideProtocol = function() {
 		var prev_position = this.previousPositionStack.pop();
 		this.targetPosition = prev_position || {
@@ -569,6 +574,8 @@ function Robot(configuration_options) {
 		if(this.isPlayerControlled) {
 			this.errorSfx.play();
 		}
+		
+		//TODO: Apply penalty
 	}
 	
 	/**

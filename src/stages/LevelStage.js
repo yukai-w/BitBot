@@ -71,6 +71,7 @@ function LevelStage() {
 		//Update the auxiliary robot arrays
 		this.updateAuxiliaryRobotArrays();
 		
+		//For each of the robots in play,
 		$.each(this.robotsInPlay, function(robot_idx, robot_in_play) {
 			
 			var x_pos = robot_in_play.sprite.x;
@@ -95,11 +96,8 @@ function LevelStage() {
 					if (tile.type == 'obstacle_tile') {
 						//if the robot moves to a place where there is an obstacle
 						//tile, then revert the move and apply a penalty
-
 						robot_in_play.doCollideProtocol();
 
-						//TODO: Apply penalty
-						
 					} else if (tile.type == 'goal_tile' && robot_in_play.isPlayerControlled && (robot_in_play.isIdle || robot_in_play.isOff)) {
 						
 						if(!robot.isOff) {
@@ -113,25 +111,20 @@ function LevelStage() {
 		});
 
 		if (this.robotsInPlay.length > 1) {
-
-			//if the player updates and moves to a place where there is an enemy robot,
-			//then revert the move and apply a penalty
+			//if a robot moves to a place where there another robot, revert the move and apply a penalty
 			jaws.collideManyWithMany(this.robotsInPlay, this.robotsInPlay, function(r1, r2) {
 				r1.doCollideProtocol();
 				r2.doCollideProtocol();
 			});
 		}
 
-		//if you collided against a battery, use it 
-		//(get the battery value and add it to your Robot)
+		//if you collided against a battery, use it (get the battery value and add it to your Robot)
 		if (this.player.isInPlay()) {
 			var collided_batteries = jaws.collideOneWithMany(this.player, this.batteries);
-			var number_of_batteries = collided_batteries.length, battery = null;
-			for (var battery_idx = 0; battery_idx < number_of_batteries; battery_idx++) {
-				var battery = collided_batteries[battery_idx];
-				goog.array.remove(this.batteries, battery);
-				this.player.batteryLevel += battery.use();
-			}
+			$.each(collided_batteries, function(battery_idx, battery) {
+				goog.array.remove(that.batteries, battery);
+				that.player.batteryLevel += battery.use();
+			});
 		}
 
 		this.hud.update();
