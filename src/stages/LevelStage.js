@@ -3,9 +3,6 @@
  */
 function LevelStage() {
 
-	/* Fx files */
-	var powerupSound = new Howl({urls : ['./assets/sounds/fx/powerup.mp3']});
-
 	/* Music files */
 	var gameOverMusic = new Howl({urls : ['./assets/sounds/music/gameover.mp3']});
 	var metonymyMusic = new Howl({
@@ -151,10 +148,6 @@ function LevelStage() {
 						} else {
 							jaws.switchGameState(MenuState);	
 						}
-						
-						
-						
-						
 					}
 				}
 			}
