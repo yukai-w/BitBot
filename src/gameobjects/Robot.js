@@ -556,6 +556,21 @@ function Robot(configuration_options) {
 		}
 	}
 	
+	this.doCollideProtocol = function() {
+		var prev_position = this.previousPositionStack.pop();
+		this.targetPosition = prev_position || {
+			x : this.previousPosition.x,
+			y : this.previousPosition.y + robot_step_distance
+		};
+		
+		this.setMode('executing');
+		this.actionQueue.clear();
+		
+		if(this.isPlayerControlled) {
+			this.errorSfx.play();
+		}
+	}
+	
 	/**
 	 * Auxiliary function to handle AI input.  Very limited right now.
 	 * @param player_AI the Robot whom you'd like to apply AI moves.
