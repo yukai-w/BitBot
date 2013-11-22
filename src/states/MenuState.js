@@ -33,12 +33,11 @@ function MenuState() {
 		this.sprite.setImage(title_loop_animation.frames[0]);
 	}
 	
-	var index = 0
+	var index = 0;
 	var items = ["Start", "About"]
 
 	this.setup = function() {
 		
-		index = 0
 		jaws.on_keydown(["down", "s"], function() {
 			index++;
 			if (index >= items.length) {
@@ -56,6 +55,10 @@ function MenuState() {
 		jaws.on_keydown(["enter", "space"], function() {
 			if (items[index] == "Start") {
 				jaws.switchGameState(PlayState, {
+					fps : 60
+				});
+			} else {
+				jaws.switchGameState(AboutState, {
 					fps : 60
 				})
 			}

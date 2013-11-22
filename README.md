@@ -4,6 +4,9 @@
   
 * [Rogelio E. Cardona-Rivera](http://twitter.com/recardona), Ph.D. Student in AI in Games.
 * [José D. Vélez](http://twitter.com/danivive), Pixel artist. Songwriter. Comicbook nerd.
+
+### Special Thanks
+
 * [Ian Coleman](http://twitter.com/iancoleman), M.S. Student and Professional Web Developer. 
 
 ## Live
