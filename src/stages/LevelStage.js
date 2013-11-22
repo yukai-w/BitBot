@@ -154,7 +154,6 @@ function LevelStage() {
 		if (!this.player.isPlanning) {
 			jaws.draw(this.robotsOutOfPlay);
 			this.activeLevel.draw();
-			jaws.draw(this.robotsThatAreRespawning);
 			jaws.draw(this.robotsInPlay);
 		} else {
 			jaws.draw(this.backgroundFreezeFrame);
@@ -235,16 +234,13 @@ function LevelStage() {
 	this.updateAuxiliaryRobotArrays = function() {
 
 		this.robotsInPlay = [];
-		this.robotsThatAreRespawning = [];
 		this.robotsOutOfPlay = [];
 		
 		var that = this;
 		
 		$.each(this.robots, function(robot_idx, robot) {
-			if(robot.isInPlay()) {
+			if(robot.isInPlay() || this.isRespawning || this.isRebooting) {
 				that.robotsInPlay.push(robot);
-			} else if(robot.isRespawning) {
-				that.robotsThatAreRespawning.push(robot);
 			} else {
 				that.robotsOutOfPlay.push(robot);
 			}
