@@ -297,7 +297,7 @@ var Editor = {
 	submitOutputGrid: function(button) {		
 		this.outputGrid();
 		this.outputGameObjectGrid();
-		this.showAlert("outputting grid");
+		// this.showAlert("outputting grid");
 	},
 	
 	/**
