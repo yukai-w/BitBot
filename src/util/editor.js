@@ -54,7 +54,8 @@ var Editor = {
 		ROBOT_DREYFUSS_DOWN: 6,
 		ROBOT_DREYFUSS_RIGHT: 7,
 		ROBOT_DREYFUSS_UP: 8,
-		BATTERY: 9		
+		BATTERY: 9,
+		ROBOT_PLAYER: 10	
 	},
 
 	/**
