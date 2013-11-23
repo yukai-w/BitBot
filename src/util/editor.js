@@ -196,10 +196,25 @@ var Editor = {
 			accept: "#editor-bit-bot-container, #editor-enemy-bot-container, #editor-battery-container",
 			hoverClass: "editor-tile-drop-hover",
 			drop: function(event, ui) {
-				editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '10');
 				// snap object to tile
 				ui.draggable.css({top: $(this).offset().top, left: $(this).offset().left});
-				// console.log("(" + $(this).position.top + ", " + $(this).position.left);				
+				
+				// add player bot to game object grid
+				if(ui.draggable.attr('id') === "editor-bit-bot-container") {
+					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '10');
+				} 
+				// add enemy bot to game object grid
+				else if(ui.draggable.attr('id') === "editor-enemy-bot-container") {
+					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '5');
+				} 
+				// add battery to game object grid	
+				else if(ui.draggable.attr('id') === "editor-battery-container") {
+					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '9');
+				}
+				
+				
+				
+							
 			}
 		});
 	},
