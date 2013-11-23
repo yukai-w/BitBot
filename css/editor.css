@@ -52,10 +52,19 @@
 	margin-top: 20px;
 }
 
-#printout-container {
+#editor-grid-printout-container, #editor-gameobject-grid-printout-container {
 	position: absolute;
-	width: 100px;
-	top: 40px;
+	width: 150px;
+	top: 500px;
+	
+}
+
+#editor-grid-printout-container  {
+	left: 300px;
+}
+
+#editor-gameobject-grid-printout-container {
+	left: 475px;
 }
 
 #alert {

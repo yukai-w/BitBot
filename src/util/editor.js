@@ -69,7 +69,8 @@ var Editor = {
 		this.width = widthTileCount;
 		this.height = heightTileCount;
 		this.editorContainer = $("#editor-container");
-		this.printoutContainer = $("#printout-container");
+		this.gridPrintoutContainer = $("#editor-grid-printout-container");
+		this.gameObjectGridPrintoutContainer = $("#editor-gameobject-grid-printout-container");
 		this.generateGridButton = $("#editor-gen-grid-btn");
 		this.clearGridTilesButton = $("#editor-clear-grid-btn");
 		$("#alert").hide();
@@ -109,6 +110,8 @@ var Editor = {
 			for(var j=0; j < this.width; j++) {
 				this.grid[i][j] = 0;
 				this.gameObjectGrid[i][j] = 0;
+				this.outputGrid();
+				this.outputGameObjectGrid();
 			}
 		}
 	},
@@ -344,13 +347,14 @@ var Editor = {
 	 */
 	outputGrid: function() {
 		var editor = this;
-		editor.printoutContainer.empty();	
+		editor.gridPrintoutContainer.empty();
+			
 		
-		editor.printoutContainer.append("[");
+		editor.gridPrintoutContainer.append("[");
 		$.each(this.grid, function(index, row) {
-			editor.printoutContainer.append("<span class='editor-output-row'>[" + row.toString() + "]" + ((index < $(this).length-1) ? "," : "") + "<span><br />");			
+			editor.gridPrintoutContainer.append("<span class='editor-output-row'>[" + row.toString() + "]" + ((index < $(this).length-1) ? "," : "") + "<span><br />");			
 		});
-		editor.printoutContainer.append("]");
+		editor.gridPrintoutContainer.append("]");
 	},
 	
 	/**
@@ -359,13 +363,13 @@ var Editor = {
 	 */
 	outputGameObjectGrid: function() {
 		var editor = this;
-		// editor.printoutContainer.empty();	
+		editor.gameObjectGridPrintoutContainer.empty();	
 		
-		editor.printoutContainer.append("[");
+		editor.gameObjectGridPrintoutContainer.append("[");
 		$.each(this.gameObjectGrid, function(index, row) {
-			editor.printoutContainer.append("<span class='editor-output-row'>[" + row.toString() + "]" + ((index < $(this).length-1) ? "," : "") + "<span><br />");			
+			editor.gameObjectGridPrintoutContainer.append("<span class='editor-output-row'>[" + row.toString() + "]" + ((index < $(this).length-1) ? "," : "") + "<span><br />");			
 		});
-		editor.printoutContainer.append("]");
+		editor.gameObjectGridPrintoutContainer.append("]");
 	},
 	
 	/**
