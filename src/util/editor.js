@@ -46,10 +46,13 @@ var Editor = {
 	// tile type enum
 	tileTypes:  {
 		UNDEFINED: 0,
-		FLAT: 1,
-		START: 3,
-		GOAL: 4,
-		RAISED: 8
+		REGULAR: 1,
+		START: 2,
+		GOAL: 3,
+		OBSTACLE: 4,
+		BATTERY: 9,
+		ROBOT_PLAYER: 10,
+		ROBOT_DREYFUSS: 11
 	},
 
 	/**
@@ -193,7 +196,7 @@ var Editor = {
 		
 		// add new type class
 		switch(type) {
-		case this.tileTypes.FLAT:
+		case this.tileTypes.REGULAR:
 			tile.addClass("editor-tile-flat");
 			tile.attr("type", "flat");
 			break;
@@ -215,7 +218,7 @@ var Editor = {
 				this.goalCount++;
 			}
 			break;
-		case this.tileTypes.RAISED:
+		case this.tileTypes.REGULAR:
 			tile.addClass("editor-tile-raised");
 			tile.attr("type", "raised");
 			break;
@@ -239,7 +242,7 @@ var Editor = {
 		var columnIndex = parseInt(tile.attr('x'));
 		
 		if(editor.keyModifier === 'r') {					
-			tileType = editor.tileTypes.RAISED;					
+			tileType = editor.tileTypes.REGULAR;					
 		}
 		else if(editor.keyModifier === 's') {					
 			tileType = editor.tileTypes.START;					
@@ -248,7 +251,7 @@ var Editor = {
 			tileType = editor.tileTypes.GOAL;					
 		}
 		else if(editor.keyModifier === 'f') {
-			tileType = editor.tileTypes.FLAT;
+			tileType = editor.tileTypes.REGULAR;
 		}
 		else if(editor.keyModifier === undefined) {
 			tileType = editor.tileTypes.UNDEFINED;
@@ -284,6 +287,7 @@ var Editor = {
 	},
 	
 	/**
+	 * Outputs grid info on page as a 2D array 
 	 * @author Ian Coleman
 	 */
 	outputGrid: function() {
@@ -297,56 +301,18 @@ var Editor = {
 		editor.printoutContainer.append("]");
 	},
 	
+	/**
+	 * Display notification window
+	 * @param string msg -- text of notification
+	 */
 	showAlert: function(msg) {
 		$("#alert").html(msg).fadeIn(500).delay(3000).fadeOut(500);
 	},
 	
-	validateTilePlacement: function(tile) {
-		var tileX = tile.attr('x'); 
-		var tileY = tile.attr('y');
-		
-		// check horizontal dimension
-		if (tileX < this.minHorizontalTile && (this.maxHorizontalTile - tileX) <= this.maxGameplayWidth) {
-			this.updateMinHorizontalTile(tileX);
-		}
-		else if (tileX > this.maxHorizontalTile && (tileX - this.minHorizontalTile) <= this.maxGameplayWidth) {
-			this.updateMaxHorizontalTile(tileX);
-		} else {
-			return false;
-		}
-		// check vertical dimension		
-		if (tileY < this.minVerticalTile && (this.maxVerticalTile - tileY) <= this.maxGameplayHeight) {
-			this.updateMinVerticalTile(tileY);
-		}
-		else if (tileY < this.maxVerticalTile && (tileY - this.minVerticalTile) <= this.maxGameplayHeight) {
-			this.updateMaxVerticalTile(tileY);
-		} else {
-			return false;
-		}
-		return true;
-		
-	},
-	
-//	validateDimensions: function(width, height) {
-//		return (width <= this.maxGameplayWidth && height <= this.maxGameplayHeight);
-//	},
-	
-	updateMaxHorizontalTile: function(xIndex) {
-		this.maxHorizontalTile = xIndex;		
-	}, 
-	
-	updateMinHorizontalTile: function(xIndex) {
-		this.minHorizontalTile = xIndex;
-	},
-	
-	updateMaxVerticalTile: function(yIndex) {
-		this.maxVerticalTile = yIndex;
-	},
-	
-	updateMinVerticalTile: function(yIndex) {
-		this.minVerticalTile = yIndex;
-	},
-	
+	/**
+	 * Removes type info from grid array and resets all tile css
+	 * classes to undefined 
+	 */
 	resetGridTiles: function() {
 		var editorTiles = $(".editor-tile");
 		editorTiles.removeClass();
