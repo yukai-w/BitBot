@@ -78,6 +78,12 @@
 	z-index: 1;
 }
 
+#editor-enemy-bot-container {
+	position: absolute;
+	top: 120px;
+	z-index: 1;
+}
+
 .editor-tile-drop-hover {
 	background-color: #00f300;
 }
