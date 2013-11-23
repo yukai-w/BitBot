@@ -181,8 +181,9 @@ var Editor = {
 		});
 		
 		$("#editor-bit-bot-container").draggable();
+		$("#editor-enemy-bot-container").draggable();
 		$(".editor-tile").droppable( {
-			accept: "#editor-bit-bot-container, #editor-dreyfuss-bot-container",
+			accept: "#editor-bit-bot-container, #editor-enemy-bot-container",
 			hoverClass: "editor-tile-drop-hover",
 			drop: function(event, ui) {
 				editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '10');
