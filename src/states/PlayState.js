@@ -23,6 +23,7 @@ function PlayState() {
 
 		/* Level setup */
 		this.currentStage = new LevelStage();
+		this.currentStage.setup();
 		
 	}
 
@@ -34,7 +35,8 @@ function PlayState() {
 			this.currentStage.update();
 		} else {
 			this.currentStage.destroy();
-			this.currentStage = new LevelStage();		
+			this.currentStage = new LevelStage();	
+			this.currentStage.setup();	
 		}
 		
 		

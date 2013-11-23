@@ -30,7 +30,8 @@ function LevelStage() {
 		world : this
 	});
 	this.hud = new HUD(this.player);
-	this.dialogueManager = new Dialogue();
+	this.introDialogueSequence = new DialogueSequence();
+	this.outroDialogueSequence = new DialogueSequence();
 	
 	
 	this.robots = this.enemies;
@@ -46,6 +47,10 @@ function LevelStage() {
 	});
 	
 	this.setup = function() {
+		//cueue up the narrative
+		this.introDialogueSequence.enqueueDialogueBeat('Master Controller','STARTING.');
+		this.introDialogueSequence.enqueueDialogueBeat('Master Controller','WELCOME TO THE TRAINING PROGRAM.');
+		this.introDialogueSequence.start();
 		
 	}
 
@@ -55,10 +60,8 @@ function LevelStage() {
 			this.updateGameplayLoop();
 		} else {
 			
-			this.dialogueManager.newDialogueBeat('Master Controller','Grumpy wizards make toxic brew for the evil Queen and Jack.  Master Controller Grumpy wizards make toxic brew for the evil Queen and Jack.',false);
-			
-			this.dialogueManager.update();
-			if(this.dialogueManager.isDone) {
+			this.introDialogueSequence.update();
+			if(this.introDialogueSequence.isFinished) {
 				this.playerCanPlay = true;
 			}
 		}
@@ -81,7 +84,7 @@ function LevelStage() {
 			jaws.draw(this.batteries);
 			this.hud.draw(); 
 		} else {
-			this.dialogueManager.draw();
+			this.introDialogueSequence.draw();
 		}
 
 	}
