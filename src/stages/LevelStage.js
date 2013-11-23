@@ -4,6 +4,7 @@
 function LevelStage() {
 	
 	/* Game logic attributes */
+	this.playerCanPlay = false;
 	this.hasBeenBeaten = false;
 
 	/* Music files */
@@ -29,6 +30,8 @@ function LevelStage() {
 		world : this
 	});
 	this.hud = new HUD(this.player);
+	this.dialogueManager = new Dialogue();
+	
 	
 	this.robots = this.enemies;
 	this.robots.push(this.player);
@@ -43,11 +46,75 @@ function LevelStage() {
 	});
 	
 	this.setup = function() {
-		//do intro level code
+		
 	}
 
 	this.update = function() {
 		
+		if(this.playerCanPlay) {
+			this.updateGameplayLoop();
+		} else {
+			
+			this.dialogueManager.newDialogueBeat('Master Controller','Grumpy wizards make toxic brew for the evil Queen and Jack.  Master Controller Grumpy wizards make toxic brew for the evil Queen and Jack.',false);
+			
+			this.dialogueManager.update();
+			if(this.dialogueManager.isDone) {
+				this.playerCanPlay = true;
+			}
+		}
+	}
+
+	this.draw = function() {
+
+		if(this.playerCanPlay) {
+
+			if (!this.player.isPlanning) {
+				jaws.draw(this.robotsOutOfPlay);
+				this.activeLevel.draw();
+				jaws.draw(this.robotsInPlay);
+			} else {
+				jaws.draw(this.backgroundFreezeFrame);
+				this.activeLevel.draw();
+				jaws.draw(this.foregroundFreezeFrame);
+			}
+
+			jaws.draw(this.batteries);
+			this.hud.draw(); 
+		} else {
+			this.dialogueManager.draw();
+		}
+
+	}
+
+	/**
+	 * This function is meant to be called once when the LevelStage has concluded, 
+	 * and a new LevelStage will be loaded.  All code cleanup should be done here.
+	 */
+	this.destroy = function() {
+		goog.array.clear(this.robots);
+		goog.array.clear(this.robotsInPlay);
+		goog.array.clear(this.robotsOutOfPlay);
+		goog.array.clear(this.foregroundFreezeFrame);
+		goog.array.clear(this.backgroundFreezeFrame);
+		goog.array.clear(this.enemies);
+		goog.array.clear(this.batteries);
+		
+		delete this.robots;
+		delete this.robotsInPlay;
+		delete this.robotsOutOfPlay;
+		delete this.foregroundFreezeFrame;
+		delete this.backgroundFreezeFrame;
+		delete this.enemies;
+		delete this.activeLevel;
+		delete this.player;
+		delete this.hud;
+		
+		metonymyMusic.stop();
+		gameOverMusic.stop();
+	}
+
+
+	this.updateGameplayLoop = function() {
 		//Store a ref. for use in inner functions
 		var that = this;
 		
@@ -126,60 +193,17 @@ function LevelStage() {
 			});
 		}
 
+		//update the heads up display
 		this.hud.update();
 
 		//sort robots in drawing order - closer ones go first
 		goog.array.stableSort(this.robots, drawing_order_compare);
 		
-		//if the player's off at the end, we've beaten the level!
+		//if the player is off at the end, we've beaten the level!
 		if(this.player.isOff) {
 			this.hasBeenBeaten = true;
 		}
 	}
-
-	this.draw = function() {
-
-		if (!this.player.isPlanning) {
-			jaws.draw(this.robotsOutOfPlay);
-			this.activeLevel.draw();
-			jaws.draw(this.robotsInPlay);
-		} else {
-			jaws.draw(this.backgroundFreezeFrame);
-			this.activeLevel.draw();
-			jaws.draw(this.foregroundFreezeFrame);
-		}
-
-		jaws.draw(this.batteries);
-		this.hud.draw();
-	}
-
-	/**
-	 * This function is meant to be called once when the LevelStage has concluded, 
-	 * and a new LevelStage will be loaded.  All code cleanup should be done here.
-	 */
-	this.destroy = function() {
-		goog.array.clear(this.robots);
-		goog.array.clear(this.robotsInPlay);
-		goog.array.clear(this.robotsOutOfPlay);
-		goog.array.clear(this.foregroundFreezeFrame);
-		goog.array.clear(this.backgroundFreezeFrame);
-		goog.array.clear(this.enemies);
-		goog.array.clear(this.batteries);
-		
-		delete this.robots;
-		delete this.robotsInPlay;
-		delete this.robotsOutOfPlay;
-		delete this.foregroundFreezeFrame;
-		delete this.backgroundFreezeFrame;
-		delete this.enemies;
-		delete this.activeLevel;
-		delete this.player;
-		delete this.hud;
-		
-		metonymyMusic.stop();
-		gameOverMusic.stop();
-	}
-
 	
 
 	/**

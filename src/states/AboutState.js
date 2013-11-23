@@ -30,7 +30,7 @@ function AboutState() {
 	
 		ian_info = {name : 'Ian Coleman', role : 'Level Editor, Programmer', twitter : '@iancoleman', site : 'http://www.ianpcoleman.com'};
 	
-		about_string = "BitBot is an HTML5/JS game built as part of the 2013 Github Game Jam.";
+		about_string = "BitBot is an HTML5/JS game built as part of the 2013 Github Game Jam. This is only a test of this.";
 		team_heading = "BitBot was built by: ";
 		contributor_heading = "Special Thanks to: ";
 		
@@ -47,7 +47,7 @@ function AboutState() {
 
 		title_screen_frame.draw();		
 		background_overlay.draw();
-		jaws.context.font = "20pt VT323";
+		jaws.context.font = "18pt VT323";
 		
 				
 		jaws.context.fillStyle = "White";
