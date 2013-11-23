@@ -180,13 +180,26 @@ var Editor = {
 			editor.submitResetGridTiles();
 		});
 		
-		$("#editor-bit-bot-container").draggable();
-		$("#editor-enemy-bot-container").draggable();
+		// draggables
+		$("#editor-bit-bot-container").draggable({
+			revert: 'invalid'
+		});
+		$("#editor-enemy-bot-container").draggable({
+			revert: 'invalid'
+		});
+		$("#editor-battery-container").draggable({
+			revert: 'invalid'
+		});
+		
+		// droppables
 		$(".editor-tile").droppable( {
-			accept: "#editor-bit-bot-container, #editor-enemy-bot-container",
+			accept: "#editor-bit-bot-container, #editor-enemy-bot-container, #editor-battery-container",
 			hoverClass: "editor-tile-drop-hover",
 			drop: function(event, ui) {
 				editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '10');
+				// snap object to tile
+				ui.draggable.css({top: $(this).offset().top, left: $(this).offset().left});
+				// console.log("(" + $(this).position.top + ", " + $(this).position.left);				
 			}
 		});
 	},
