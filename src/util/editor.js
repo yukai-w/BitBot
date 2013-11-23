@@ -26,6 +26,7 @@ var Editor = {
 	height: 0, // counted in number of tiles
 	tileHeightPx: 40,
 	grid: [],
+	gameObjectGrid: [],
 	mouseDown: false,
 	editorContainer: null,
 	printoutContainer: null,
@@ -104,8 +105,10 @@ var Editor = {
 	clearGrid: function() {
 		for(var i=0; i < this.height; i++) {
 			this.grid[i] = new Array(this.width);
+			this.gameObjectGrid[i] = new Array(this.width);
 			for(var j=0; j < this.width; j++) {
 				this.grid[i][j] = 0;
+				this.gameObjectGrid[i][j] = 0;
 			}
 		}
 	},
@@ -181,8 +184,8 @@ var Editor = {
 		$(".editor-tile").droppable( {
 			accept: "#editor-bit-bot-container, #editor-dreyfuss-bot-container",
 			hoverClass: "editor-tile-drop-hover",
-			drop: function() {
-				console.log("dropped!");
+			drop: function(event, ui) {
+				editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '10');
 			}
 		});
 	},
@@ -281,11 +284,19 @@ var Editor = {
 	},
 	
 	/**
+	 * Sets @param value of grid containing game object codes at index [@param x, @param y]
+	 */
+	updateGameObjectGrid: function(x, y, value) {
+		this.gameObjectGrid[y][x] = value;
+	},
+	
+	/**
 	 * Handler for button that outputs grid definition
 	 * @author Ian Coleman
 	 */
 	submitOutputGrid: function(button) {		
 		this.outputGrid();
+		this.outputGameObjectGrid();
 		this.showAlert("outputting grid");
 	},
 	
@@ -308,6 +319,21 @@ var Editor = {
 		
 		editor.printoutContainer.append("[");
 		$.each(this.grid, function(index, row) {
+			editor.printoutContainer.append("<span class='editor-output-row'>[" + row.toString() + "]" + ((index < $(this).length-1) ? "," : "") + "<span><br />");			
+		});
+		editor.printoutContainer.append("]");
+	},
+	
+	/**
+	 * Outputs game object grid info on page as a 2D array 
+	 * @author Ian Coleman
+	 */
+	outputGameObjectGrid: function() {
+		var editor = this;
+		// editor.printoutContainer.empty();	
+		
+		editor.printoutContainer.append("[");
+		$.each(this.gameObjectGrid, function(index, row) {
 			editor.printoutContainer.append("<span class='editor-output-row'>[" + row.toString() + "]" + ((index < $(this).length-1) ? "," : "") + "<span><br />");			
 		});
 		editor.printoutContainer.append("]");
