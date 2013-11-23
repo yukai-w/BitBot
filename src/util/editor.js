@@ -175,6 +175,13 @@ var Editor = {
 		});
 		
 		$("#editor-bit-bot-container").draggable();
+		$(".editor-tile").droppable( {
+			accept: "#editor-bit-bot-container, #editor-dreyfuss-bot-container",
+			hoverClass: "editor-tile-drop-hover",
+			drop: function() {
+				console.log("dropped!");
+			}
+		});
 	},
 	
 	/**
