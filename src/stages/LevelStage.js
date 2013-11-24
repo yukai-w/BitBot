@@ -19,8 +19,28 @@ function LevelStage() {
 
 	}).play('loop');
 
-	/* Level initialization */		
-	this.activeLevel = new Level(setup_sample_level());
+	/* Level initialization */
+	var level_data;
+	var element_data;
+	var intro_dialogue;
+	var outro_dialogue;
+	
+	$.getJSON('http://127.0.0.1:8020/game-off-2013/assets/levels/level1.json', function(data) {
+    	console.log(data);
+    	level_data = data.level_data;
+    	console.log(level_data);
+		element_data = data.element_data;
+		intro_dialogue = data.intro_dialogue;
+		outro_dialogue = data.outro_dialogue;
+	});
+
+	
+	
+	
+	
+	console.log(level_data);
+	
+	this.activeLevel = new Level(level_data);
 	var level_elements = LevelStage.extractLevelElementInformation(setup_sample_elements(), this.activeLevel);
 	this.enemies = level_elements.robots;
 	this.batteries = level_elements.batteries;
