@@ -10,7 +10,6 @@ Subject: Re: BOT Training Program
 I'm working on it. Expect to start soon. Will let you know. -- R
 
 
-
 >   From: L. L. Dreyfus \<ceo@mechanicalintelligence.com\>  
 >   To: R. W. Friedman \<chiefscientist@mechanicalintelligence.com\>  
 >   Subject: BOT Training Program
@@ -50,9 +49,11 @@ when you execute, the world might look different!
 
 ### About
 
-BITBOT is an HTML5/JS game built primarily using the jaws.js library.  It's
+BITBOT is an HTML5/JS game built primarily using the [jaws.js][1] library.  It's
 procedurally rhetorical in that it aims to show what it's like to be a bot that
-follows the Robotic Paradigm of [Sensing-Planning-Acting](http://en.wikipedia.org/wiki/Robotic_paradigms#Hierarchical.2FDeliberative_Paradigm).
+follows the Robotic Paradigm of [Sensing-Planning-Acting][5]
+
+[5]: <http://en.wikipedia.org/wiki/Robotic_paradigms#Hierarchical.2FDeliberative_Paradigm>.
 
 Referenced Open Source Projects
 -------------------------------
