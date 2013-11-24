@@ -22,7 +22,7 @@ function PlayState() {
 	this.setup = function() {
 
 		/* Level setup */
-		this.currentStage = new LevelStage();
+		this.currentStage = new NarrativeStage();
 		this.currentStage.setup();
 		
 	}
