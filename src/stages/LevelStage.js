@@ -4,6 +4,7 @@
 function LevelStage() {
 	
 	/* Game logic attributes */
+	this.playerCanPlay = false;
 	this.hasBeenBeaten = false;
 
 	/* Music files */
@@ -11,15 +12,33 @@ function LevelStage() {
 	var metonymyMusic = new Howl({
 		urls : ['./assets/sounds/music/metonymy.mp3'],
 		loop : true,
-		volume : 0.1,
+		volume : 0.25,
 		sprite : {
 			loop : [0, 30000]
 		}
 
 	}).play('loop');
 
-	/* Level initialization */		
-	this.activeLevel = new Level(setup_sample_level());
+	/* Level initialization */
+	var level_data;
+	var element_data;
+	var intro_dialogue;
+	var outro_dialogue;
+	
+	/* Synchronous data loading!*/
+	$.ajax({
+		url : 'http://127.0.0.1:8020/game-off-2013/assets/levels/level1.json',
+		async : false,
+		dataType : 'json',
+		success : function(data) {
+			level_data = data.level_data;
+			element_data = data.element_data;
+			intro_dialogue = data.intro_dialogue;
+			outro_dialogue = data.outro_dialogue;
+		}
+	}); 
+
+	this.activeLevel = new Level(level_data);
 	var level_elements = LevelStage.extractLevelElementInformation(setup_sample_elements(), this.activeLevel);
 	this.enemies = level_elements.robots;
 	this.batteries = level_elements.batteries;
@@ -29,6 +48,9 @@ function LevelStage() {
 		world : this
 	});
 	this.hud = new HUD(this.player);
+	this.introDialogueSequence = new DialogueSequence();
+	this.outroDialogueSequence = new DialogueSequence();
+	
 	
 	this.robots = this.enemies;
 	this.robots.push(this.player);
@@ -43,11 +65,77 @@ function LevelStage() {
 	});
 	
 	this.setup = function() {
-		//do intro level code
+		//cueue up the narrative
+		this.introDialogueSequence.enqueueDialogueBeat('???','STARTING.');
+		this.introDialogueSequence.enqueueDialogueBeat('Master Controller','WELCOME TO THE TRAINING PROGRAM.');
+		this.introDialogueSequence.enqueueDialogueBeat('Master Controller','CONTINUE TESTING.');
+		this.introDialogueSequence.start();
 	}
 
 	this.update = function() {
 		
+		if(this.playerCanPlay) {
+			this.updateGameplayLoop();
+		} else {
+			
+			this.introDialogueSequence.update();
+			if(this.introDialogueSequence.isFinished) {
+				this.playerCanPlay = true;
+			}
+		}
+	}
+
+	this.draw = function() {
+
+		if(this.playerCanPlay) {
+
+			if (!this.player.isPlanning) {
+				jaws.draw(this.robotsOutOfPlay);
+				this.activeLevel.draw();
+				jaws.draw(this.robotsInPlay);
+			} else {
+				jaws.draw(this.backgroundFreezeFrame);
+				this.activeLevel.draw();
+				jaws.draw(this.foregroundFreezeFrame);
+			}
+
+			jaws.draw(this.batteries);
+			this.hud.draw(); 
+		} else {
+			this.introDialogueSequence.draw();
+		}
+
+	}
+
+	/**
+	 * This function is meant to be called once when the LevelStage has concluded, 
+	 * and a new LevelStage will be loaded.  All code cleanup should be done here.
+	 */
+	this.destroy = function() {
+		goog.array.clear(this.robots);
+		goog.array.clear(this.robotsInPlay);
+		goog.array.clear(this.robotsOutOfPlay);
+		goog.array.clear(this.foregroundFreezeFrame);
+		goog.array.clear(this.backgroundFreezeFrame);
+		goog.array.clear(this.enemies);
+		goog.array.clear(this.batteries);
+		
+		delete this.robots;
+		delete this.robotsInPlay;
+		delete this.robotsOutOfPlay;
+		delete this.foregroundFreezeFrame;
+		delete this.backgroundFreezeFrame;
+		delete this.enemies;
+		delete this.activeLevel;
+		delete this.player;
+		delete this.hud;
+		
+		metonymyMusic.stop();
+		gameOverMusic.stop();
+	}
+
+
+	this.updateGameplayLoop = function() {
 		//Store a ref. for use in inner functions
 		var that = this;
 		
@@ -126,60 +214,17 @@ function LevelStage() {
 			});
 		}
 
+		//update the heads up display
 		this.hud.update();
 
 		//sort robots in drawing order - closer ones go first
 		goog.array.stableSort(this.robots, drawing_order_compare);
 		
-		//if the player's off at the end, we've beaten the level!
+		//if the player is off at the end, we've beaten the level!
 		if(this.player.isOff) {
 			this.hasBeenBeaten = true;
 		}
 	}
-
-	this.draw = function() {
-
-		if (!this.player.isPlanning) {
-			jaws.draw(this.robotsOutOfPlay);
-			this.activeLevel.draw();
-			jaws.draw(this.robotsInPlay);
-		} else {
-			jaws.draw(this.backgroundFreezeFrame);
-			this.activeLevel.draw();
-			jaws.draw(this.foregroundFreezeFrame);
-		}
-
-		jaws.draw(this.batteries);
-		this.hud.draw();
-	}
-
-	/**
-	 * This function is meant to be called once when the LevelStage has concluded, 
-	 * and a new LevelStage will be loaded.  All code cleanup should be done here.
-	 */
-	this.destroy = function() {
-		goog.array.clear(this.robots);
-		goog.array.clear(this.robotsInPlay);
-		goog.array.clear(this.robotsOutOfPlay);
-		goog.array.clear(this.foregroundFreezeFrame);
-		goog.array.clear(this.backgroundFreezeFrame);
-		goog.array.clear(this.enemies);
-		goog.array.clear(this.batteries);
-		
-		delete this.robots;
-		delete this.robotsInPlay;
-		delete this.robotsOutOfPlay;
-		delete this.foregroundFreezeFrame;
-		delete this.backgroundFreezeFrame;
-		delete this.enemies;
-		delete this.activeLevel;
-		delete this.player;
-		delete this.hud;
-		
-		metonymyMusic.stop();
-		gameOverMusic.stop();
-	}
-
 	
 
 	/**
@@ -268,9 +313,6 @@ function LevelStage() {
 
 		var sample_level = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0], 
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0],
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0], 
@@ -283,7 +325,11 @@ function LevelStage() {
 							[0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
+							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+							];
 
 		return sample_level;
 	}
@@ -291,9 +337,6 @@ function LevelStage() {
 	function setup_sample_elements() {
 
 		var sample_elems = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
@@ -307,7 +350,11 @@ function LevelStage() {
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
 							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]];
+							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+							[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+							];
 
 		return sample_elems;
 	}

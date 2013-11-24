@@ -35,6 +35,9 @@ function init() {
 	
 	
 	//HUD
+	jaws.assets.add("./assets/art/DialogueBox.png");
+	jaws.assets.add("./assets/art/DialogueBoxNextArrow.png");
+	jaws.assets.add("./assets/art/PortraitMasterController.png");
 	jaws.assets.add("./assets/art/CommandPrompt.png");
 	jaws.assets.add("./assets/art/ArrowDown.png");
 	jaws.assets.add("./assets/art/ArrowLeft.png");
@@ -52,12 +55,14 @@ function init() {
 	jaws.assets.add("./assets/sounds/music/gameover.mp3");
 	
 	//Fx
+	jaws.assets.add("./assets/sounds/fx/success.mp3");
 	jaws.assets.add("./assets/sounds/fx/error.mp3");
 	jaws.assets.add("./assets/sounds/fx/fall.mp3");
 	jaws.assets.add("./assets/sounds/fx/powerup.mp3");
 	jaws.assets.add("./assets/sounds/fx/respawn.mp3");
 	jaws.assets.add("./assets/sounds/fx/move.mp3");
 	jaws.assets.add("./assets/sounds/fx/reboot.mp3");
+	jaws.assets.add("./assets/sounds/fx/next.mp3");
 	
 	
 	jaws.start(MenuState);
