@@ -55,6 +55,7 @@ function init() {
 	jaws.assets.add("./assets/sounds/music/gameover.mp3");
 	
 	//Fx
+	jaws.assets.add("./assets/sounds/fx/success.mp3");
 	jaws.assets.add("./assets/sounds/fx/error.mp3");
 	jaws.assets.add("./assets/sounds/fx/fall.mp3");
 	jaws.assets.add("./assets/sounds/fx/powerup.mp3");
