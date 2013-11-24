@@ -4,9 +4,11 @@
 function LevelStage() {
 	
 	/* Game logic attributes */
-	this.playerCanPlay = false;
-	this.hasBeenBeaten = false;
-
+	this.isInIntro = true;
+	this.isPlaying = false;
+	this.isInOutro = false;
+	this.isDone = false;
+	
 	/* Music files */
 	var gameOverMusic = new Howl({urls : ['./assets/sounds/music/gameover.mp3']});
 	var metonymyMusic = new Howl({
@@ -25,7 +27,7 @@ function LevelStage() {
 	var intro_dialogue;
 	var outro_dialogue;
 	
-	/* Synchronous data loading!*/
+	/* Synchronous data loading! */
 	$.ajax({
 		url : 'http://127.0.0.1:8020/game-off-2013/assets/levels/level1.json',
 		async : false,
@@ -51,7 +53,7 @@ function LevelStage() {
 	this.introDialogueSequence = new DialogueSequence();
 	this.outroDialogueSequence = new DialogueSequence();
 	
-	
+	/* Auxiliary arrays for drawing/collision detection. */
 	this.robots = this.enemies;
 	this.robots.push(this.player);
 	this.robotsInPlay = [];
@@ -73,25 +75,42 @@ function LevelStage() {
 			});
 		});
 		
+		$.each(outro_dialogue, function(index, dialogue_beat) {
+			$.each(dialogue_beat, function(speaker, text) {
+				that.outroDialogueSequence.enqueueDialogueBeat(speaker,text);
+			});
+		});
+		
 		this.introDialogueSequence.start();
+		this.outroDialogueSequence.start();
 	}
 
 	this.update = function() {
 		
-		if(this.playerCanPlay) {
-			this.updateGameplayLoop();
-		} else {
-			
+		if(this.isInIntro) {
 			this.introDialogueSequence.update();
 			if(this.introDialogueSequence.isFinished) {
-				this.playerCanPlay = true;
+				this.setMode('playing');
 			}
+		} else if(this.isPlaying) {
+			this.updateGameplayLoop();
+		} else if(this.isInOutro) {
+			this.outroDialogueSequence.update();
+			if(this.outroDialogueSequence.isFinished) {
+				this.setMode('done');
+			}
+		} else {
+			
 		}
 	}
 
 	this.draw = function() {
-
-		if(this.playerCanPlay) {
+		
+		if(this.isInIntro) {
+			this.introDialogueSequence.draw();
+		} else if(this.isInOutro) {
+			this.outroDialogueSequence.draw();
+		} else if(this.isPlaying) {
 
 			if (!this.player.isPlanning) {
 				jaws.draw(this.robotsOutOfPlay);
@@ -106,7 +125,7 @@ function LevelStage() {
 			jaws.draw(this.batteries);
 			this.hud.draw(); 
 		} else {
-			this.introDialogueSequence.draw();
+			
 		}
 
 	}
@@ -137,7 +156,23 @@ function LevelStage() {
 		metonymyMusic.stop();
 		gameOverMusic.stop();
 	}
-
+	
+	this.setMode = function(mode) {
+		this.isInIntro = false;
+		this.isPlaying = false;
+		this.isInOutro = false;
+		this.isDone = false;
+		
+		if(mode == "intro") {
+			this.isInIntro = true;
+		} else if(mode == "playing") {
+			this.isPlaying = true;
+		} else if(mode == "outro") {
+			this.isInOutro = true;
+		} else { //done
+			this.isDone = true;
+		}
+	}
 
 	this.updateGameplayLoop = function() {
 		//Store a ref. for use in inner functions
@@ -226,7 +261,7 @@ function LevelStage() {
 		
 		//if the player is off at the end, we've beaten the level!
 		if(this.player.isOff) {
-			this.hasBeenBeaten = true;
+			this.setMode('outro');
 		}
 	}
 	

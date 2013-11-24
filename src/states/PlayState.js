@@ -31,16 +31,15 @@ function PlayState() {
 	
 		background_sprite.setImage(background_animation.next());
 		
-		if (! this.currentStage.hasBeenBeaten) {
-			this.currentStage.update();
-		} else {
+		if(! this.currentStage.isDone) {
+	
+			this.currentStage.update();	
+				
+		} else {//this.currentStage.isDone
 			this.currentStage.destroy();
-			this.currentStage = new LevelStage();	
-			this.currentStage.setup();	
+			this.currentStage = new LevelStage();
+			this.currentStage.setup();
 		}
-		
-		
-		
 		
 		fps.innerHTML = jaws.game_loop.fps;
 	}
