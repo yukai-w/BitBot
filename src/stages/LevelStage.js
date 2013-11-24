@@ -38,8 +38,6 @@ function LevelStage() {
 		}
 	}); 
 
-	console.log(level_data);
-	
 	this.activeLevel = new Level(level_data);
 	var level_elements = LevelStage.extractLevelElementInformation(setup_sample_elements(), this.activeLevel);
 	this.enemies = level_elements.robots;

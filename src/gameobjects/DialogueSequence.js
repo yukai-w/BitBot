@@ -37,6 +37,8 @@ function DialogueSequence() {
 	var current_text = undefined;
 	var current_speaker = undefined;
 	
+	jaws.preventDefaultKeys(["enter", "space", "esc"]);
+	
 	this.start = function() {
 		this.nextSfx.play();
 		if(! this.dialogueSequence.isEmpty()) {
@@ -52,19 +54,18 @@ function DialogueSequence() {
 	this.update = function() {
 		var that = this;
 		
-		jaws.on_keydown(["enter", "space", "esc"], function() {
-		
+		if (jaws.pressedWithoutRepeat(["enter", "space", "esc"])) {
 			that.nextSfx.play();
-			if(! that.dialogueSequence.isEmpty()) {
+			if (! that.dialogueSequence.isEmpty()) {
 				var beat = that.dialogueSequence.dequeue();
 				current_text = beat.text;
 				current_speaker = beat.speaker;
 				that.speakerSprite.setImage(beat.portrait_img_string);
-				
+
 			} else {
 				that.isFinished = true;
 			}
-		});
+		}
 	}
 
 	this.draw = function() {
