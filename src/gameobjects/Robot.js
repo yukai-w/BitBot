@@ -3,6 +3,13 @@
  */
 function Robot(configuration_options) {
 
+	/* Game Design Attributes */
+	var battery_movement_cost = 0.1;
+	var battery_idle_decay = 0.01;
+	var battery_collide_penalty = 5.0;
+	var battery_respawn_penalty = 5.0;
+
+
 	/* Configuration Attributes */
 	var pos = configuration_options.position || {
 		x : 0,
@@ -109,9 +116,6 @@ function Robot(configuration_options) {
 	this.targetPostion = undefined;
 
 	this.batteryLevel = 100.0;
-	var battery_movement_cost = 5.0;
-	var battery_decay = 0.1;
-
 	this.isPlayerControlled = (this.type == 'player_controlled' ? true : false);
 	this.isPlanning = false;
 	this.isExecuting = false;
@@ -157,7 +161,7 @@ function Robot(configuration_options) {
 			this.standby();
 		}
 		
-		this.batteryLevel -= battery_decay;
+		
 		bound_player_attributes(this);
 		this.moveToMyPosition(this.shadowSprite);
 	}
@@ -206,6 +210,7 @@ function Robot(configuration_options) {
 
 		if (this.spawnAnimation.index == 1 && this.isPlayerControlled) {
 			this.respawningSfx.play();
+			this.batteryLevel -= battery_respawn_penalty;
 		}
 
 		if (this.spawnAnimation.atLastFrame()) {
@@ -390,6 +395,8 @@ function Robot(configuration_options) {
 			handle_AI_input(this);
 			this.setMode('executing');
 		}
+		
+		this.batteryLevel -= battery_idle_decay;
 	}
 	
 	/**
@@ -579,7 +586,7 @@ function Robot(configuration_options) {
 			this.errorSfx.play();
 		}
 		
-		//TODO: Apply penalty
+		this.batteryLevel -= battery_collide_penalty;
 	}
 	
 	/**
