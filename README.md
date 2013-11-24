@@ -9,9 +9,9 @@ Subject: Re: BOT Training Program
 
 I'm working on it. Expect to start soon. Will let you know. -- R
 
-\>   From: L. L. Dreyfus \<ceo@mechanicalintelligence.com\>  
-\>   To: R. W. Friedman \<chiefscientist@mechanicalintelligence.com\>  
-\>   Subject: BOT Training Program
+>   From: L. L. Dreyfus \<ceo@mechanicalintelligence.com\>  
+>   To: R. W. Friedman \<chiefscientist@mechanicalintelligence.com\>  
+>   Subject: BOT Training Program
 
 >   Dr. Friedman,
 
