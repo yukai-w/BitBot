@@ -9,10 +9,9 @@ Subject: Re: BOT Training Program
 
 I'm working on it. Expect to start soon. Will let you know. -- R
 
-
->   From: L. L. Dreyfus \<ceo@mechanicalintelligence.com\>  
->   To: R. W. Friedman \<chiefscientist@mechanicalintelligence.com\>  
->   Subject: BOT Training Program
+\>   From: L. L. Dreyfus \<ceo@mechanicalintelligence.com\>  
+\>   To: R. W. Friedman \<chiefscientist@mechanicalintelligence.com\>  
+\>   Subject: BOT Training Program
 
 >   Dr. Friedman,
 
@@ -49,11 +48,17 @@ when you execute, the world might look different!
 
 ### About
 
+![Creative Commons License](http://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png)
+
 BITBOT is an HTML5/JS game built primarily using the [jaws.js][1] library.  It's
 procedurally rhetorical in that it aims to show what it's like to be a bot that
-follows the Robotic Paradigm of [Sensing-Planning-Acting][5]
+follows the Robotic Paradigm of [Sensing-Planning-Acting][5].  BITBOT is
+licensed under a [Creative Commons Attribution-NonCommercial-NoDerivs 3.0
+Unported License][6]
 
 [5]: <http://en.wikipedia.org/wiki/Robotic_paradigms#Hierarchical.2FDeliberative_Paradigm>.
+
+[6]: <http://creativecommons.org/licenses/by-nc-nd/3.0/deed.en_US>
 
 Referenced Open Source Projects
 -------------------------------
@@ -74,25 +79,29 @@ Referenced Open Source Projects
 
 [4]: <http://jquery.com/>
 
-Team  
-------
+Team
+----
 
-- [Rogelio E. Cardona-Rivera](http://twitter.com/recardona), Ph.D. Student in AI in Games.
+-   [Rogelio E. Cardona-Rivera](<http://twitter.com/recardona>), Ph.D. Student
+    in AI in Games.
 
-- [José D. Vélez](http://twitter.com/danivive), Pixel artist. Songwriter. Comicbook nerd.
+-   [José D. Vélez](<http://twitter.com/danivive>), Pixel artist. Songwriter.
+    Comicbook nerd.
 
 
 
 ### Special Thanks
 
-- [Ian Coleman](http://twitter.com/iancoleman), M.S. Student and Professional Web Developer.
+-   [Ian Coleman](<http://twitter.com/iancoleman>), M.S. Student and
+    Professional Web Developer.
 
 
 
 Live
 ----
 
-[Click here](http://recardona.github.io/game-off-2013) for a live version of the game (if not more than 10 minutes have passed since the last commit, wait for the
-latest version).
+[Click here](<http://recardona.github.io/game-off-2013>) for a live version of
+the game (if not more than 10 minutes have passed since the last commit, wait
+for the latest version).
 
 
