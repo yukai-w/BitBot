@@ -42,14 +42,12 @@ function Level(level_data) {
 		// this.cellWidth and this.cellHeight are modified by -1 so that when drawn, the border lines overlap, as opposed to
 		// lying side by side (if they are side by side, they create a "bolded line" effect)
 		
-		var pathfinding_information = extract_pathfinding_information(level_data);
 		
 		return {
 			level_tiles : level_tiles,
 			tile_map : tile_map,
 			start_tile : level_information.start_tile,
 			goal_tile : level_information.goal_tile,
-			pathfinding_information : pathfinding_information
 		};
 	}
 	
