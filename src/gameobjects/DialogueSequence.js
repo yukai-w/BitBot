@@ -45,7 +45,10 @@ function DialogueSequence() {
 			var beat = this.dialogueSequence.dequeue();
 			current_text = beat.text;
 			current_speaker = beat.speaker;
-			this.speakerSprite.setImage(beat.portrait_img_string);
+			if(current_speaker != '???') {
+				this.speakerSprite.setImage(beat.portrait_img_string);
+			}
+			
 		} else {
 			that.isFinished = true;
 		}
@@ -54,13 +57,16 @@ function DialogueSequence() {
 	this.update = function() {
 		var that = this;
 		
-		if (jaws.pressedWithoutRepeat(["enter", "space", "esc"])) {
+		if (jaws.pressedWithoutRepeat(["space", "esc"])) {
 			that.nextSfx.play();
 			if (! that.dialogueSequence.isEmpty()) {
 				var beat = that.dialogueSequence.dequeue();
 				current_text = beat.text;
 				current_speaker = beat.speaker;
-				that.speakerSprite.setImage(beat.portrait_img_string);
+				
+				if(current_speaker != '???') {
+					that.speakerSprite.setImage(beat.portrait_img_string);	
+				}
 
 			} else {
 				that.isFinished = true;
@@ -72,13 +78,21 @@ function DialogueSequence() {
 		
 		this.boxSprite.draw();
 		this.nextArrowSprite.draw();
-		this.speakerSprite.draw();
+		
+		if(current_speaker != '???') {
+			this.speakerSprite.draw();
+		} else {
+			jaws.context.font = "30pt VT323";
+			jaws.context.fillStyle = "Black";
+			wrap_text(jaws.context, "?", 24, 560, 152, 15);
+		}
 		
 		jaws.context.font = "14pt VT323";
 		jaws.context.fillStyle = "Black";
 		wrap_text(jaws.context, current_speaker, 8, 520, 152, 15);
 		
 		jaws.context.font = "16pt VT323";
+		jaws.context.fillStyle = "Black";
 		wrap_text(jaws.context, current_text, 72, 545, jaws.width-72, 20);
 		
 	}
@@ -99,5 +113,6 @@ function DialogueSequence() {
 }
 
 DialogueSequence.speaker_portraits = {
-	'Master Controller' : "./assets/art/PortraitMasterController.png"
+	'Master Controller' : "./assets/art/PortraitMasterController.png",
+	'???' : undefined
 };

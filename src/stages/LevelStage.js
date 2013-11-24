@@ -66,10 +66,10 @@ function LevelStage() {
 	
 	this.setup = function() {
 		//cueue up the narrative
-		this.introDialogueSequence.enqueueDialogueBeat('Master Controller','STARTING.');
+		this.introDialogueSequence.enqueueDialogueBeat('???','STARTING.');
 		this.introDialogueSequence.enqueueDialogueBeat('Master Controller','WELCOME TO THE TRAINING PROGRAM.');
+		this.introDialogueSequence.enqueueDialogueBeat('Master Controller','CONTINUE TESTING.');
 		this.introDialogueSequence.start();
-		
 	}
 
 	this.update = function() {
