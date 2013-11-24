@@ -65,10 +65,14 @@ function LevelStage() {
 	});
 	
 	this.setup = function() {
-		//cueue up the narrative
-		this.introDialogueSequence.enqueueDialogueBeat('???','STARTING.');
-		this.introDialogueSequence.enqueueDialogueBeat('Master Controller','WELCOME TO THE TRAINING PROGRAM.');
-		this.introDialogueSequence.enqueueDialogueBeat('Master Controller','CONTINUE TESTING.');
+		//queue up the narrative
+		var that = this;
+		$.each(intro_dialogue, function(index, dialogue_beat) {
+			$.each(dialogue_beat, function(speaker, text) {
+				that.introDialogueSequence.enqueueDialogueBeat(speaker,text);
+			});
+		});
+		
 		this.introDialogueSequence.start();
 	}
 

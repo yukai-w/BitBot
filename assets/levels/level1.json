@@ -41,16 +41,16 @@
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       ],
       
-  "intro_dialogue": {
-    "0" : {"Master Controller" : "Welcome to the BITBOT Training Program."},
-    "1" : {"Master Controller" : "I am the Master Controller.  I am in charge of this program."},
-    "2" : {"Master Controller" : "You are a Bot-in-Training Bot. This program is meant to test your functionality."},
-    "3" : {"Master Controller" : "We will begin the Training Program with a series of callibration tests."},
-    "4" : {"Master Controller" : "Please navigate from your (RED) start location to the (GREEN) goal location."}
-  },
+  "intro_dialogue": [
+      {"Master Controller" : "Welcome to the BITBOT Training Program."},
+      {"Master Controller" : "I am the Master Controller.  I am in charge of this program."},
+      {"Master Controller" : "You are a Bot-in-Training Bot. This program is meant to test your functionality."},
+      {"Master Controller" : "We will begin the Training Program with a series of callibration tests."},
+      {"Master Controller" : "Please navigate from your (RED) start location to the (GREEN) goal location."}
+      ],
   
-  "outro_dialogue": {
-    "0" : {"Master Controller" : "Satisfactory."},
-    "1" : {"Master Controller" : "Prepare for the next round of tests."}
-  }
+  "outro_dialogue": [
+      {"Master Controller" : "Satisfactory."},
+      {"Master Controller" : "Prepare for the next round of tests."}
+      ]
 }
