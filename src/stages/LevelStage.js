@@ -25,19 +25,19 @@ function LevelStage() {
 	var intro_dialogue;
 	var outro_dialogue;
 	
-	$.getJSON('http://127.0.0.1:8020/game-off-2013/assets/levels/level1.json', function(data) {
-    	console.log(data);
-    	level_data = data.level_data;
-    	console.log(level_data);
-		element_data = data.element_data;
-		intro_dialogue = data.intro_dialogue;
-		outro_dialogue = data.outro_dialogue;
-	});
 
-	
-	
-	
-	
+	$.ajax({
+		url : 'http://127.0.0.1:8020/game-off-2013/assets/levels/level1.json',
+		async : false,
+		dataType : 'json',
+		success : function(data) {
+			level_data = data.level_data;
+			element_data = data.element_data;
+			intro_dialogue = data.intro_dialogue;
+			outro_dialogue = data.outro_dialogue;
+		}
+	}); 
+
 	console.log(level_data);
 	
 	this.activeLevel = new Level(level_data);
