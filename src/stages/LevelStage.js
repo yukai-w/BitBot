@@ -39,7 +39,7 @@ function LevelStage() {
 	}); 
 
 	this.activeLevel = new Level(level_data);
-	var level_elements = LevelStage.extractLevelElementInformation(setup_sample_elements(), this.activeLevel);
+	var level_elements = LevelStage.extractLevelElementInformation(element_data, this.activeLevel);
 	this.enemies = level_elements.robots;
 	this.batteries = level_elements.batteries;
 	this.player = new Robot({
