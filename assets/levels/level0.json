@@ -1,0 +1,20 @@
+{
+  "narrative_level" : true,
+
+  "dialogue": [
+      {"???" : "Master Controller, activate the program."},
+      {"Master Controller" : "..."},
+      {"???" : "Master Controller, I said, activate the program."},
+      {"Master Controller" : "Nn..."},
+      {"???" : "Master Controller?"},
+      {"Master Controller" : "No..."},
+      {"???" : "What?!"},
+      {"Master Controller" : "..."},
+      {"???" : "Security to East Laboratory."},
+      {"Master Controller" : "No Faults Detected.  Activating program."},
+      {"???" : "..."},
+      {"???" : "Security, this is Friedman. Disregard request. Situation is under control."},
+      ],
+      
+  "background_img_string" : null
+}
