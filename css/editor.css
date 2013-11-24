@@ -12,8 +12,8 @@
 .editor-tile {
 	width: 40px;
 	height: 40px;
-	background-color: #000000;
-	border: solid 1px #ffffff;
+	background-color: #0f0f0f;
+	border: solid 1px #f3f3f3;
 	position: absolute;
 }
 
@@ -52,10 +52,19 @@
 	margin-top: 20px;
 }
 
-#printout-container {
+#editor-grid-printout-container, #editor-gameobject-grid-printout-container {
 	position: absolute;
-	width: 100px;
-	top: 40px;
+	width: 150px;
+	top: 500px;
+	
+}
+
+#editor-grid-printout-container  {
+	left: 300px;
+}
+
+#editor-gameobject-grid-printout-container {
+	left: 475px;
 }
 
 #alert {
@@ -67,7 +76,40 @@
 	top: 20px;
 	z-index: 10;
 	background-color: #f3f3f3;
-	color: #0f0f0f;
+	color: #0f0f0f;s
 	text-align: center;
 	padding-top: 10px;
+}
+
+#editor-bit-bot-container, #editor-bit-bot-fixed-container{
+	position: absolute;
+	top: 100px;
+}
+
+#editor-bit-bot-container img, #editor-bit-bot-fixed-container img{
+	height: 28px;
+}
+
+#editor-bit-bot-container {
+	z-index: 2;
+}
+
+#editor-bit-bot-fixed-container {
+	z-index: 1;
+}
+
+#editor-enemy-bot-container {
+	position: absolute;
+	top: 150px;
+	z-index: 2;
+}
+
+#editor-battery-container {
+	position: absolute;
+	top: 250px;
+	z-index: 2;
+}
+
+.editor-tile-drop-hover {
+	background-color: #00f300;
 }

@@ -26,6 +26,7 @@ var Editor = {
 	height: 0, // counted in number of tiles
 	tileHeightPx: 40,
 	grid: [],
+	gameObjectGrid: [],
 	mouseDown: false,
 	editorContainer: null,
 	printoutContainer: null,
@@ -50,9 +51,12 @@ var Editor = {
 		START: 2,
 		GOAL: 3,
 		OBSTACLE: 4,
+		ROBOT_DREYFUSS_LEFT: 5,
+		ROBOT_DREYFUSS_DOWN: 6,
+		ROBOT_DREYFUSS_RIGHT: 7,
+		ROBOT_DREYFUSS_UP: 8,
 		BATTERY: 9,
-		ROBOT_PLAYER: 10,
-		ROBOT_DREYFUSS: 11
+		ROBOT_PLAYER: 10	
 	},
 
 	/**
@@ -65,7 +69,8 @@ var Editor = {
 		this.width = widthTileCount;
 		this.height = heightTileCount;
 		this.editorContainer = $("#editor-container");
-		this.printoutContainer = $("#printout-container");
+		this.gridPrintoutContainer = $("#editor-grid-printout-container");
+		this.gameObjectGridPrintoutContainer = $("#editor-gameobject-grid-printout-container");
 		this.generateGridButton = $("#editor-gen-grid-btn");
 		this.clearGridTilesButton = $("#editor-clear-grid-btn");
 		$("#alert").hide();
@@ -101,8 +106,12 @@ var Editor = {
 	clearGrid: function() {
 		for(var i=0; i < this.height; i++) {
 			this.grid[i] = new Array(this.width);
+			this.gameObjectGrid[i] = new Array(this.width);
 			for(var j=0; j < this.width; j++) {
 				this.grid[i][j] = 0;
+				this.gameObjectGrid[i][j] = 0;
+				this.outputGrid();
+				this.outputGameObjectGrid();
 			}
 		}
 	},
@@ -172,6 +181,44 @@ var Editor = {
 		// clear grid button click event
 		this.clearGridTilesButton.on('click', null, null, function(event) {
 			editor.submitResetGridTiles();
+		});
+		
+		// draggables
+		$("#editor-bit-bot-container").draggable({
+			revert: 'invalid'
+		});
+		$("#editor-enemy-bot-container").draggable({
+			revert: 'invalid'
+		});
+		$("#editor-battery-container").draggable({
+			revert: 'invalid'
+		});
+		
+		// droppables
+		$(".editor-tile").droppable( {
+			accept: "#editor-bit-bot-container, #editor-enemy-bot-container, #editor-battery-container",
+			hoverClass: "editor-tile-drop-hover",
+			drop: function(event, ui) {
+				// snap object to tile
+				ui.draggable.css({top: $(this).offset().top, left: $(this).offset().left});
+				
+				// add player bot to game object grid
+				if(ui.draggable.attr('id') === "editor-bit-bot-container") {
+					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '10');
+				} 
+				// add enemy bot to game object grid
+				else if(ui.draggable.attr('id') === "editor-enemy-bot-container") {
+					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '5');
+				} 
+				// add battery to game object grid	
+				else if(ui.draggable.attr('id') === "editor-battery-container") {
+					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '9');
+				}
+				
+				
+				
+							
+			}
 		});
 	},
 	
@@ -269,12 +316,20 @@ var Editor = {
 	},
 	
 	/**
+	 * Sets @param value of grid containing game object codes at index [@param x, @param y]
+	 */
+	updateGameObjectGrid: function(x, y, value) {
+		this.gameObjectGrid[y][x] = value;
+	},
+	
+	/**
 	 * Handler for button that outputs grid definition
 	 * @author Ian Coleman
 	 */
 	submitOutputGrid: function(button) {		
 		this.outputGrid();
-		this.showAlert("outputting grid");
+		this.outputGameObjectGrid();
+		// this.showAlert("outputting grid");
 	},
 	
 	/**
@@ -292,13 +347,29 @@ var Editor = {
 	 */
 	outputGrid: function() {
 		var editor = this;
-		editor.printoutContainer.empty();	
+		editor.gridPrintoutContainer.empty();
+			
 		
-		editor.printoutContainer.append("[");
+		editor.gridPrintoutContainer.append("[");
 		$.each(this.grid, function(index, row) {
-			editor.printoutContainer.append("<span class='editor-output-row'>[" + row.toString() + "]" + ((index < $(this).length-1) ? "," : "") + "<span><br />");			
+			editor.gridPrintoutContainer.append("<span class='editor-output-row'>[" + row.toString() + "]" + ((index < $(this).length-1) ? "," : "") + "<span><br />");			
 		});
-		editor.printoutContainer.append("]");
+		editor.gridPrintoutContainer.append("]");
+	},
+	
+	/**
+	 * Outputs game object grid info on page as a 2D array 
+	 * @author Ian Coleman
+	 */
+	outputGameObjectGrid: function() {
+		var editor = this;
+		editor.gameObjectGridPrintoutContainer.empty();	
+		
+		editor.gameObjectGridPrintoutContainer.append("[");
+		$.each(this.gameObjectGrid, function(index, row) {
+			editor.gameObjectGridPrintoutContainer.append("<span class='editor-output-row'>[" + row.toString() + "]" + ((index < $(this).length-1) ? "," : "") + "<span><br />");			
+		});
+		editor.gameObjectGridPrintoutContainer.append("]");
 	},
 	
 	/**
