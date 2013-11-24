@@ -12,7 +12,7 @@ function LevelStage() {
 	var metonymyMusic = new Howl({
 		urls : ['./assets/sounds/music/metonymy.mp3'],
 		loop : true,
-		volume : 0.1,
+		volume : 0.25,
 		sprite : {
 			loop : [0, 30000]
 		}
@@ -25,7 +25,7 @@ function LevelStage() {
 	var intro_dialogue;
 	var outro_dialogue;
 	
-
+	/* Synchronous data loading!*/
 	$.ajax({
 		url : 'http://127.0.0.1:8020/game-off-2013/assets/levels/level1.json',
 		async : false,
