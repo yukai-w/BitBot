@@ -9,7 +9,7 @@ function MenuState() {
 	
 	/* Cookie loading */
 	this.userHasBeenHereBefore = $.cookie('userHasBeenHereBefore');
-	
+	this.userMaxLevelCompleted = $.cookie('userMaxLevelCompleted');
 	
 	/* Sprite and Animation attributes */
 	var title_intro_animation = new jaws.Animation({
@@ -41,7 +41,8 @@ function MenuState() {
 	}
 	
 	var index = 0;
-	var items = ["Start", "About"]
+	var items = this.userMaxLevelCompleted > 0 ? ["Load Game", "New Game", "About"] : ["New Game", "About"]
+	jaws.preventDefaultKeys(["down","s","up","w","enter"]);
 	
 	this.setup = function() {
 		
@@ -60,7 +61,7 @@ function MenuState() {
 		})
 		
 		jaws.on_keydown(["enter", "space"], function() {
-			if (items[index] == "Start") {
+			if (items[index] == "New Game") {
 				jaws.switchGameState(PlayState, {
 					fps : 60
 				});
@@ -74,6 +75,27 @@ function MenuState() {
 	
 	this.update = function() {
 		
+		/* Input Management */
+		if (jaws.pressedWithoutRepeat(["enter", "space"])) {
+			
+			if(items[index] == "New Game") {
+				if(this.userMaxLevelCompleted > 0) {
+					var doDelete = confirm("Selecting New Game will erase all your saved progress. Are you sure you want to start over?");
+					if(doDelete) {
+						$.removeCookie('userMaxLevelCompleted');
+					}
+				}
+				jaws.switchGameState(PlayState, {fps:60});
+			}
+			
+			else if(items[index] == "Load Game") {
+				//do something
+			} else {
+				jaws.switchGameState(AboutState, {fps:60});
+			}
+		}
+		
+		/* Background Updates */
 		if(title_intro_animation.atLastFrame()) {
 			this.sprite.setImage(title_loop_animation.next());
 		} else {
@@ -89,16 +111,22 @@ function MenuState() {
 		this.sprite.draw();
 		
 		jaws.context.fillStyle = 'Black';
-		jaws.context.rect(150, jaws.height/1.5, 300, 150);
+		
+		if(this.userMaxLevelCompleted > 0) {
+			jaws.context.rect(150, jaws.height/1.5, 300, 125);	
+		} else {
+			jaws.context.rect(150, jaws.height/1.5, 300, 90);
+		}
+		
 		jaws.context.fill();
       	
 		for (var i = 0; items[i]; i++) {
 
-			jaws.context.font = "48pt Orbitron";
-			jaws.context.lineWidth = 25
-			jaws.context.fillStyle = (i == index) ? "White" : "Gray"
-			jaws.context.strokeStyle = "rgba(200,200,200,0.0)"
-			jaws.context.fillText(items[i], 200, jaws.height / 1.3 + i * (75))
+			jaws.context.font = "24pt Orbitron";
+			jaws.context.lineWidth = 12;
+			jaws.context.fillStyle = (i == index) ? "White" : "Gray";
+			jaws.context.strokeStyle = "rgba(200,200,200,0.0)";
+			jaws.context.fillText(items[i], 200, 420 + i * (36));
 		}
 	}
 }
