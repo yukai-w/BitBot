@@ -33,7 +33,7 @@ function LevelStage() {
 	
 	/* Synchronous data loading! */
 	$.ajax({
-		url : 'http://127.0.0.1:8020/game-off-2013/assets/levels/level1.json',
+		url : 'http://localhost/game-off-2013/assets/levels/level1.json',
 		async : false,
 		dataType : 'json',
 		success : function(data) {
