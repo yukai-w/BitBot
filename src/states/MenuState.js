@@ -8,7 +8,7 @@
 function MenuState() {
 	
 	/* Cookie loading */
-	this.userHasBeenHereBefore = false; //$.cookie('userHasBeenHereBefore');
+	this.userHasBeenHereBefore = $.cookie('userHasBeenHereBefore');
 	this.userMaxLevelCompleted = $.cookie('userMaxLevelCompleted');
 	
 	
@@ -117,7 +117,7 @@ function MenuState() {
 		
 		this.backgroundSprite.draw();
 
-		if(show_menu) {
+		if(show_menu || this.userHasBeenHereBefore) {
 			jaws.context.fillStyle = 'Black';
 			if(this.userMaxLevelCompleted > 0) {
 				jaws.context.rect(0, jaws.height/1.5, jaws.width, 125);	
