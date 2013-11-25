@@ -67,6 +67,7 @@ function NarrativeStage(options) {
 			this.dialogueSequence.draw();
 		}
 	}
+	
 	/**
 	 * This function is meant to be called once when the NarrativeStage has concluded,
 	 * and a new Stage will be loaded.  All code cleanup should be done here.

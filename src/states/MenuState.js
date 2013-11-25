@@ -11,7 +11,6 @@ function MenuState() {
 	this.userHasBeenHereBefore = $.cookie('userHasBeenHereBefore');
 	this.userMaxLevelCompleted = $.cookie('userMaxLevelCompleted');
 	
-	
 	/* Sprite and Animation attributes */
 	var title_intro_animation = new jaws.Animation({
 		sprite_sheet : "./assets/art/BitBotTitleIntro-SpriteSheet.png",
