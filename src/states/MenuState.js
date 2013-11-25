@@ -8,8 +8,9 @@
 function MenuState() {
 	
 	/* Cookie loading */
-	this.userHasBeenHereBefore = $.cookie('userHasBeenHereBefore');
+	this.userHasBeenHereBefore = false; //$.cookie('userHasBeenHereBefore');
 	this.userMaxLevelCompleted = $.cookie('userMaxLevelCompleted');
+	
 	
 	/* Sprite and Animation attributes */
 	var title_intro_animation = new jaws.Animation({
@@ -28,15 +29,17 @@ function MenuState() {
 		orientation : 'right'
 	});
 	
-	this.sprite = new jaws.Sprite({x : 0, y : 0, scale : 2});
+	var show_menu = false;
+	
+	this.backgroundSprite = new jaws.Sprite({x : 0, y : 0, scale : 2});
 	
 	if(this.userHasBeenHereBefore) {
-		this.sprite.setImage(title_loop_animation.frames[0]);
+		this.backgroundSprite.setImage(title_loop_animation.frames[0]);
 		title_intro_animation.index = title_intro_animation.frames.length-1;
 		$.cookie('userHasBeenHereBefore', 'true', { expires: 7 }); //register user for 7 more days
 		
 	} else {
-		this.sprite.setImage(title_intro_animation.frames[0]);
+		this.backgroundSprite.setImage(title_intro_animation.frames[0]);
 		$.cookie('userHasBeenHereBefore', 'true', { expires: 7 }); //register user for 7 days
 	}
 	
@@ -97,9 +100,13 @@ function MenuState() {
 		
 		/* Background Updates */
 		if(title_intro_animation.atLastFrame()) {
-			this.sprite.setImage(title_loop_animation.next());
+			this.backgroundSprite.setImage(title_loop_animation.next());
 		} else {
-			this.sprite.setImage(title_intro_animation.next());
+			this.backgroundSprite.setImage(title_intro_animation.next());
+		}
+		
+		if(title_loop_animation.atLastFrame()) {
+			show_menu = true;
 		}
 		
 	}
@@ -108,23 +115,25 @@ function MenuState() {
 		
 		jaws.context.clearRect(0, 0, jaws.width, jaws.height)
 		
-		this.sprite.draw();
+		this.backgroundSprite.draw();
 
-		jaws.context.fillStyle = 'Black';
-		if(this.userMaxLevelCompleted > 0) {
-			jaws.context.rect(0, jaws.height/1.5, jaws.width, 125);	
-		} else {
-			jaws.context.rect(0, jaws.height/1.5, jaws.width, 90);
-		}
-		jaws.context.fill();
-      	
-		for (var i = 0; items[i]; i++) {
-
-			jaws.context.font = "24pt Orbitron";
-			jaws.context.lineWidth = 12;
-			jaws.context.fillStyle = (i == index) ? "White" : "Gray";
-			jaws.context.strokeStyle = "rgba(200,200,200,0.0)";
-			jaws.context.fillText(items[i], 200, 420 + i * (36));
+		if(show_menu) {
+			jaws.context.fillStyle = 'Black';
+			if(this.userMaxLevelCompleted > 0) {
+				jaws.context.rect(0, jaws.height/1.5, jaws.width, 125);	
+			} else {
+				jaws.context.rect(0, jaws.height/1.5, jaws.width, 90);
+			}
+			jaws.context.fill();
+	      	
+			for (var i = 0; items[i]; i++) {
+	
+				jaws.context.font = "24pt Orbitron";
+				jaws.context.lineWidth = 12;
+				jaws.context.fillStyle = (i == index) ? "White" : "Gray";
+				jaws.context.strokeStyle = "rgba(200,200,200,0.0)";
+				jaws.context.fillText(items[i], 200, 420 + i * (36));
+			}
 		}
 	}
 }
