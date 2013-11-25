@@ -6,7 +6,7 @@
 function PlayState() {
 
 	var background_animation = new jaws.Animation({
-		sprite_sheet : "./assets/art/BitBotTitleLoop-SpriteSheet.png",
+		sprite_sheet : "./assets/art/BitBotGameLoop-SpriteSheet.png",
 		frame_size : [288, 288],
 		frame_duration : 300, //ms
 		loop : true,
