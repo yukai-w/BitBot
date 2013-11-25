@@ -546,6 +546,13 @@ function Robot(configuration_options) {
 	}
 	
 	/**
+	 * Returns true if this Robot still has battery left.
+	 */
+	this.isAlive = function() {
+		return (this.batteryLevel != 0);
+	}
+	
+	/**
 	 * Sets this Robot's target given the action to execute.
 	 * @param action the action to execute ('left','right','up', or 'down')
 	 */

@@ -278,6 +278,14 @@ function LevelStage() {
 			this.setMode('outro');
 			this.hasBeenCompletedSuccesfully = true;
 		}
+		
+		//if the player is dead, you lose! :(
+		if(! this.player.isAlive()) {
+			metonymyMusic.stop();
+			this.setMode('outro');
+			this.hasBeenCompletedSuccesfully = false;
+			gameOverMusic.play();
+		}
 	}
 	
 
