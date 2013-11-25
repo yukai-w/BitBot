@@ -6,13 +6,16 @@
  *
  */
 function MenuState() {
-	this.userHasBeenHereBefore = false; //this will be set by cookies later
+	
+	/* Cookie loading */
+	this.userHasBeenHereBefore = $.cookie('userHasBeenHereBefore');
+	
 	
 	/* Sprite and Animation attributes */
 	var title_intro_animation = new jaws.Animation({
 		sprite_sheet : "./assets/art/BitBotTitleIntro-SpriteSheet.png",
 		frame_size : [288, 288],
-		frame_duration : 50, //ms
+		frame_duration : 300, //ms
 		loop : false,
 		orientation : 'right'
 	});
@@ -28,9 +31,13 @@ function MenuState() {
 	this.sprite = new jaws.Sprite({x : 0, y : 0, scale : 2});
 	
 	if(this.userHasBeenHereBefore) {
-		this.sprite.setImage(title_intro_animation.frames[0]);
-	} else {
 		this.sprite.setImage(title_loop_animation.frames[0]);
+		title_intro_animation.index = title_intro_animation.frames.length-1;
+		$.cookie('userHasBeenHereBefore', 'true', { expires: 7 }); //register user for 7 more days
+		
+	} else {
+		this.sprite.setImage(title_intro_animation.frames[0]);
+		$.cookie('userHasBeenHereBefore', 'true', { expires: 7 }); //register user for 7 days
 	}
 	
 	var index = 0;

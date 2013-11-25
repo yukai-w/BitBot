@@ -35,7 +35,7 @@ I'm working on it. Expect to start soon. Will let you know. -- R
 >   Lloyd
 
 About BITBOT
---------
+------------
 
 You control a Bot-in-training Bot with a limited energy supply who is stuck in a
 loop of sensing, planning, and acting - when you sense, you can’t act.  To act
@@ -48,7 +48,8 @@ when you execute, the world might look different!
 
 ### Meta
 
-![Creative Commons License](http://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png)
+![Creative Commons
+License](<http://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png>)
 
 BITBOT is an HTML5/JS game built primarily using the [jaws.js][1] library.  It's
 procedurally rhetorical in that it aims to show what it's like to be a bot that
@@ -78,6 +79,12 @@ Referenced Open Source Projects
 -   [jQuery][4]
 
 [4]: <http://jquery.com/>
+
+-   [jQuery-Cookie][7]
+
+[7]: <http://github.com/carhartl/jquery-cookie>
+
+
 
 Team
 ----
