@@ -4,10 +4,12 @@
 function LevelStage() {
 	
 	/* Game logic attributes */
+	this.isBeingRetried = false;
 	this.isInIntro = true;
 	this.isPlaying = false;
 	this.isInOutro = false;
 	this.isDone = false;
+	this.hasBeenCompletedSuccesfully = undefined;
 	
 	/* Music files */
 	var gameOverMusic = new Howl({urls : ['./assets/sounds/music/gameover.mp3']});
@@ -26,6 +28,8 @@ function LevelStage() {
 	var element_data;
 	var intro_dialogue;
 	var outro_dialogue;
+	var fail_dialogue;
+	var retry_dialogue;
 	
 	/* Synchronous data loading! */
 	$.ajax({
@@ -37,9 +41,11 @@ function LevelStage() {
 			element_data = data.element_data;
 			intro_dialogue = data.intro_dialogue;
 			outro_dialogue = data.outro_dialogue;
+			fail_dialogue = data.fail_dialogue;
+			retry_dialogue = data.retry_dialogue;
 		}
 	}); 
-
+	
 	this.activeLevel = new Level(level_data);
 	var level_elements = LevelStage.extractLevelElementInformation(element_data, this.activeLevel);
 	this.enemies = level_elements.robots;
@@ -52,6 +58,10 @@ function LevelStage() {
 	this.hud = new HUD(this.player);
 	this.introDialogueSequence = new DialogueSequence();
 	this.outroDialogueSequence = new DialogueSequence();
+	this.failDialogueSequence = new DialogueSequence();
+	this.retryDialogueSequence = new DialogueSequence();
+	this.activeDialogueSequence = undefined;
+	
 	
 	/* Auxiliary arrays for drawing/collision detection. */
 	this.robots = this.enemies;
@@ -68,49 +78,53 @@ function LevelStage() {
 	
 	this.setup = function() {
 		//queue up the narrative
-		var that = this;
-		$.each(intro_dialogue, function(index, dialogue_beat) {
-			$.each(dialogue_beat, function(speaker, text) {
-				that.introDialogueSequence.enqueueDialogueBeat(speaker,text);
-			});
-		});
-		
-		$.each(outro_dialogue, function(index, dialogue_beat) {
-			$.each(dialogue_beat, function(speaker, text) {
-				that.outroDialogueSequence.enqueueDialogueBeat(speaker,text);
-			});
-		});
-		
-		this.introDialogueSequence.start();
-		this.outroDialogueSequence.start();
+		this.initAndStartDialogueSequences();
 	}
 
 	this.update = function() {
 		
+		
 		if(this.isInIntro) {
-			this.introDialogueSequence.update();
-			if(this.introDialogueSequence.isFinished) {
-				this.setMode('playing');
+			
+			if(this.isBeingRetried) {
+				this.activeDialogueSequence = this.retryDialogueSequence;
+				this.retryDialogueSequence.update();
+				if(this.retryDialogueSequence.isFinished) {
+					this.setMode('playing');
+				}
+				
+			} else {
+				this.activeDialogueSequence = this.introDialogueSequence;
+				this.introDialogueSequence.update();
+				if(this.introDialogueSequence.isFinished) {
+					this.setMode('playing');
+				}
 			}
+			
 		} else if(this.isPlaying) {
 			this.updateGameplayLoop();
 		} else if(this.isInOutro) {
-			this.outroDialogueSequence.update();
-			if(this.outroDialogueSequence.isFinished) {
-				this.setMode('done');
+			
+			if(this.hasBeenCompletedSuccesfully) {
+				this.activeDialogueSequence = this.outroDialogueSequence;
+				this.outroDialogueSequence.update();
+				if(this.outroDialogueSequence.isFinished) {
+					this.setMode('done');
+				}
+			} else {
+				this.activeDialogueSequence = this.failDialogueSequence;
+				this.failDialogueSequence.update();
+				if(this.failDialogueSequence.isFinished) {
+					this.setMode('done');
+				}
 			}
-		} else {
 			
 		}
 	}
 
 	this.draw = function() {
 		
-		if(this.isInIntro) {
-			this.introDialogueSequence.draw();
-		} else if(this.isInOutro) {
-			this.outroDialogueSequence.draw();
-		} else if(this.isPlaying) {
+		if(this.isPlaying) {
 
 			if (!this.player.isPlanning) {
 				jaws.draw(this.robotsOutOfPlay);
@@ -125,7 +139,7 @@ function LevelStage() {
 			jaws.draw(this.batteries);
 			this.hud.draw(); 
 		} else {
-			
+			this.activeDialogueSequence.draw();
 		}
 
 	}
@@ -173,7 +187,7 @@ function LevelStage() {
 			this.isDone = true;
 		}
 	}
-
+	
 	this.updateGameplayLoop = function() {
 		//Store a ref. for use in inner functions
 		var that = this;
@@ -262,6 +276,7 @@ function LevelStage() {
 		//if the player is off at the end, we've beaten the level!
 		if(this.player.isOff) {
 			this.setMode('outro');
+			this.hasBeenCompletedSuccesfully = true;
 		}
 	}
 	
@@ -324,6 +339,46 @@ function LevelStage() {
 		if (this.backgroundFreezeFrame.length != 0) {
 			goog.array.clear(this.backgroundFreezeFrame);
 		}
+	}
+	
+	/**
+	 * Initializes the following dialogue sequences for this LevelStage:
+	 * Intro, Outro, Retry, and Fail Dialogues.  Starts each of them
+	 * when loaded.
+	 */
+	this.initAndStartDialogueSequences = function() {
+		var that = this;
+		
+		$.each(intro_dialogue, function(index, dialogue_beat) {
+			$.each(dialogue_beat, function(speaker, text) {
+				that.introDialogueSequence.enqueueDialogueBeat(speaker,text);
+			});
+		});
+		
+		$.each(outro_dialogue, function(index, dialogue_beat) {
+			$.each(dialogue_beat, function(speaker, text) {
+				that.outroDialogueSequence.enqueueDialogueBeat(speaker,text);
+			});
+		});
+		
+		$.each(retry_dialogue, function(index, dialogue_beat) {
+			$.each(dialogue_beat, function(speaker, text) {
+				that.retryDialogueSequence.enqueueDialogueBeat(speaker,text);
+			});
+		});
+		
+		$.each(fail_dialogue, function(index, dialogue_beat) {
+			$.each(dialogue_beat, function(speaker, text) {
+				that.failDialogueSequence.enqueueDialogueBeat(speaker,text);
+			});
+		});
+		
+		this.introDialogueSequence.start();
+		this.outroDialogueSequence.start();
+		this.retryDialogueSequence.start();
+		this.failDialogueSequence.start();
+		
+		this.activeDialogueSequence = this.isBeingRetried ? this.retryDialogueSequence : this.introDialogueSequence;
 	}
 	
 	/**
