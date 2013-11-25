@@ -38,7 +38,9 @@ body {
 	margin: 0px;
 	width: 576px;
 	margin: 0px auto;
-	background: #333333;
+	background: 'black';
+	background-image: url(./../assets/art/BGPattern.png);
+	background-repeat: repeat;
 }
 
 canvas {
