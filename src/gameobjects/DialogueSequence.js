@@ -83,16 +83,16 @@ function DialogueSequence() {
 		if(current_speaker != '???') {
 			this.speakerSprite.draw();
 		} else {
-			jaws.context.font = "30pt VT323";
+			jaws.context.font = "30pt Orbitron";
 			jaws.context.fillStyle = "Black";
 			wrap_text(jaws.context, "?", 24, 560, 152, 15);
 		}
 		
-		jaws.context.font = "14pt VT323";
+		jaws.context.font = "10pt Orbitron";
 		jaws.context.fillStyle = "Black";
 		wrap_text(jaws.context, current_speaker, 8, 520, 152, 15);
 		
-		jaws.context.font = "16pt VT323";
+		jaws.context.font = "14pt Orbitron";
 		jaws.context.fillStyle = "Black";
 		wrap_text(jaws.context, current_text, 72, 545, jaws.width-72, 20);
 		

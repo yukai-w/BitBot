@@ -82,16 +82,16 @@ function MenuState() {
 		this.sprite.draw();
 		
 		jaws.context.fillStyle = 'Black';
-		jaws.context.rect(175, jaws.height/1.5, 225, 150);
+		jaws.context.rect(150, jaws.height/1.5, 300, 150);
 		jaws.context.fill();
       	
 		for (var i = 0; items[i]; i++) {
 
-			jaws.context.font = "60pt VT323";
+			jaws.context.font = "48pt Orbitron";
 			jaws.context.lineWidth = 25
 			jaws.context.fillStyle = (i == index) ? "White" : "Gray"
 			jaws.context.strokeStyle = "rgba(200,200,200,0.0)"
-			jaws.context.fillText(items[i], 205, jaws.height / 1.3 + i * (75))
+			jaws.context.fillText(items[i], 200, jaws.height / 1.3 + i * (75))
 		}
 	}
 }
