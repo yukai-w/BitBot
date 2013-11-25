@@ -33,7 +33,7 @@ function LevelStage() {
 	
 	/* Synchronous data loading! */
 	$.ajax({
-		url : 'http://localhost/game-off-2013/assets/levels/level1.json',
+		url : 'http://rogel.io/projects/assets/levels/level1.json',
 		async : false,
 		dataType : 'json',
 		success : function(data) {
