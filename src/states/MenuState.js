@@ -41,7 +41,7 @@ function MenuState() {
 	}
 	
 	var index = 0;
-	var items = this.userMaxLevelCompleted > 0 ? ["Load Game", "New Game", "About"] : ["New Game", "About"]
+	var items = this.userMaxLevelCompleted > 0  ? ["Load Game", "New Game", "About"] : ["New Game", "About"]
 	jaws.preventDefaultKeys(["down","s","up","w","enter"]);
 	
 	this.setup = function() {
@@ -90,7 +90,7 @@ function MenuState() {
 			
 			else if(items[index] == "Load Game") {
 				//do something
-			} else {
+			} else {//switch to About State
 				jaws.switchGameState(AboutState, {fps:60});
 			}
 		}
@@ -109,15 +109,13 @@ function MenuState() {
 		jaws.context.clearRect(0, 0, jaws.width, jaws.height)
 		
 		this.sprite.draw();
-		
+
 		jaws.context.fillStyle = 'Black';
-		
 		if(this.userMaxLevelCompleted > 0) {
-			jaws.context.rect(150, jaws.height/1.5, 300, 125);	
+			jaws.context.rect(0, jaws.height/1.5, jaws.width, 125);	
 		} else {
-			jaws.context.rect(150, jaws.height/1.5, 300, 90);
+			jaws.context.rect(0, jaws.height/1.5, jaws.width, 90);
 		}
-		
 		jaws.context.fill();
       	
 		for (var i = 0; items[i]; i++) {
