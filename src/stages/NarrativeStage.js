@@ -1,26 +1,16 @@
 /*
  * The NarrativeStage.
  */
-function NarrativeStage() {
+function NarrativeStage(options) {
 
 	/* Game logic attributes */
 	this.isPlaying = true;
 	this.isDone = false;
+	this.isNarrativeStage = true;
 
 	/* Level initialization */
-	var dialogue;
-	var background_img_string;
-
-	/* Synchronous data loading! */
-	$.ajax({
-		url : 'http://127.0.0.1:8020/game-off-2013/assets/levels/level0.json',
-		async : false,
-		dataType : 'json',
-		success : function(data) {
-			dialogue = data.dialogue;
-			background_img_string = data.background_img_string;
-		}
-	});
+	var dialogue = options.dialogue;
+	var background_img_string = options.background_img_string;
 
 	this.dialogueSequence = new DialogueSequence();
 	this.backgroundSprite = undefined;

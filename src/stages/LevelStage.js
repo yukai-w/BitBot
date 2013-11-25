@@ -1,15 +1,16 @@
 /*
  * The LevelStage.
  */
-function LevelStage() {
+function LevelStage(options) {
 	
 	/* Game logic attributes */
-	this.isBeingRetried = false;
+	this.isBeingRetried = options.player_is_retrying || false;
 	this.isInIntro = true;
 	this.isPlaying = false;
 	this.isInOutro = false;
 	this.isDone = false;
 	this.hasBeenCompletedSuccesfully = undefined;
+	this.isNarrativeStage = true;
 	
 	/* Music files */
 	var gameOverMusic = new Howl({urls : ['./assets/sounds/music/gameover.mp3']});
@@ -24,27 +25,12 @@ function LevelStage() {
 	}).play('loop');
 
 	/* Level initialization */
-	var level_data;
-	var element_data;
-	var intro_dialogue;
-	var outro_dialogue;
-	var fail_dialogue;
-	var retry_dialogue;
-	
-	/* Synchronous data loading! */
-	$.ajax({
-		url : 'http://127.0.0.1:8020/game-off-2013/assets/levels/level1.json',
-		async : false,
-		dataType : 'json',
-		success : function(data) {
-			level_data = data.level_data;
-			element_data = data.element_data;
-			intro_dialogue = data.intro_dialogue;
-			outro_dialogue = data.outro_dialogue;
-			fail_dialogue = data.fail_dialogue;
-			retry_dialogue = data.retry_dialogue;
-		}
-	}); 
+	var level_data = options.level_data;
+	var element_data = options.element_data;
+	var intro_dialogue = options.intro_dialogue;
+	var outro_dialogue = options.outro_dialogue;
+	var fail_dialogue = options.fail_dialogue;
+	var retry_dialogue = options.retry_dialogue;
 	
 	this.activeLevel = new Level(level_data);
 	var level_elements = LevelStage.extractLevelElementInformation(element_data, this.activeLevel);
