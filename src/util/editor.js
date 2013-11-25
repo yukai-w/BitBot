@@ -185,7 +185,8 @@ var Editor = {
 		
 		// draggables
 		$(".editor-bit-bot-container").draggable({
-			revert: 'invalid'
+			revert: true,
+			revertDuration: 0
 		});
 		$("#editor-enemy-bot-container").draggable({
 			revert: 'invalid'
@@ -200,12 +201,16 @@ var Editor = {
 			hoverClass: "editor-tile-drop-hover",
 			drop: function(event, ui) {
 				// snap object to tile
-				ui.draggable.css({top: $(this).offset().top, left: $(this).offset().left});
-				
+				// ui.draggable.css({top: $(this).offset().top, left: $(this).offset().left});
+				// $("<div class='editor-bit-bot-container'><img src='assets/art/editor-bot-player.png' /></div>");
 				// add player bot to game object grid
 				if(ui.draggable.hasClass('editor-bit-bot-container')) {
 					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '10');
-				} 
+					var newBitbotDraggable = $("<div class='editor-bit-bot-container'><img src='assets/art/editor-bot-player.png' /></div>");
+					editor.makeDraggable(newBitbotDraggable);
+					newBitbotDraggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});
+					$("#editor-bit-bot-fixed-container").before(newBitbotDraggable);
+				}
 				// add enemy bot to game object grid
 				else if(ui.draggable.attr('id') === "editor-enemy-bot-container") {
 					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '5');
@@ -219,6 +224,15 @@ var Editor = {
 				
 							
 			}
+		});
+	},
+	
+	/**
+	 * 
+	 */
+	makeDraggable: function(obj) {
+		obj.draggable({
+			revert: 'invalid'
 		});
 	},
 	
