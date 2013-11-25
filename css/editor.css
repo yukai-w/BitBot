@@ -81,16 +81,16 @@
 	padding-top: 10px;
 }
 
-#editor-bit-bot-container, #editor-bit-bot-fixed-container{
+.editor-bit-bot-container, #editor-bit-bot-fixed-container{
 	position: absolute;
 	top: 100px;
 }
 
-#editor-bit-bot-container img, #editor-bit-bot-fixed-container img{
+.editor-bit-bot-container img, #editor-bit-bot-fixed-container img{
 	height: 28px;
 }
 
-#editor-bit-bot-container {
+.editor-bit-bot-container {
 	z-index: 2;
 }
 

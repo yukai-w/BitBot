@@ -184,7 +184,7 @@ var Editor = {
 		});
 		
 		// draggables
-		$("#editor-bit-bot-container").draggable({
+		$(".editor-bit-bot-container").draggable({
 			revert: 'invalid'
 		});
 		$("#editor-enemy-bot-container").draggable({
@@ -196,14 +196,14 @@ var Editor = {
 		
 		// droppables
 		$(".editor-tile").droppable( {
-			accept: "#editor-bit-bot-container, #editor-enemy-bot-container, #editor-battery-container",
+			accept: ".editor-bit-bot-container, #editor-enemy-bot-container, #editor-battery-container",
 			hoverClass: "editor-tile-drop-hover",
 			drop: function(event, ui) {
 				// snap object to tile
 				ui.draggable.css({top: $(this).offset().top, left: $(this).offset().left});
 				
 				// add player bot to game object grid
-				if(ui.draggable.attr('id') === "editor-bit-bot-container") {
+				if(ui.draggable.hasClass('editor-bit-bot-container')) {
 					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '10');
 				} 
 				// add enemy bot to game object grid
