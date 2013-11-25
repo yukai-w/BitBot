@@ -53,7 +53,7 @@ when you execute, the world might look different!
 BITBOT is an HTML5/JS game built primarily using the [jaws.js][1] library.  It's
 procedurally rhetorical in that it aims to show what it's like to be a bot that
 follows the Robotic Paradigm of [Sensing-Planning-Acting][5].  BITBOT is
-licensed under a [Creative Commons Attribution-NonCommercial-NoDerivs 3.0
+provided under a [Creative Commons Attribution-NonCommercial-NoDerivs 3.0
 Unported License][6].
 
 [5]: <http://en.wikipedia.org/wiki/Robotic_paradigms#Hierarchical.2FDeliberative_Paradigm>.
