@@ -9,7 +9,11 @@ function MenuState() {
 	
 	/* Cookie loading */
 	this.userHasBeenHereBefore = $.cookie('userHasBeenHereBefore');
-	this.userMaxLevelCompleted = parseInt($.cookie('userMaxLevelCompleted'));
+	this.userMaxLevelCompleted = $.cookie('userMaxLevelCompleted');
+	if(isNaN(this.userMaxLevelCompleted)) {
+		this.userMaxLevelCompleted = 0;
+	}
+	
 	
 	/* Sprite and Animation attributes */
 	var title_intro_animation = new jaws.Animation({

@@ -7,6 +7,9 @@ function PlayState() {
 	
 	/* Cookie Loading */
 	this.userMaxLevelCompleted = parseInt($.cookie('userMaxLevelCompleted'));
+	if(isNaN(this.userMaxLevelCompleted)) {
+		this.userMaxLevelCompleted = 0;
+	}
 	
 	var background_animation = new jaws.Animation({
 		sprite_sheet : "./assets/art/BitBotGameLoop-SpriteSheet.png",
@@ -53,6 +56,8 @@ function PlayState() {
 
 		} else {//this.currentStage.isDone
 			
+			var old_player_level = current_player_level;
+			
 			if(this.currentStage.isNarrativeStage) {
 				current_player_level++; //auto-advance levels for narratives
 			} else {
@@ -69,6 +74,7 @@ function PlayState() {
 				//if we've gotten farther than ever before,
 				if(current_player_level > this.userMaxLevelCompleted) {
 					//record that in a cookie...FOR 10 YEARS
+					console.log(current_player_level);
 					$.cookie('userMaxLevelCompleted', current_player_level, {expires: 365*10});
 				}
 			}
