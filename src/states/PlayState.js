@@ -4,6 +4,9 @@
  *
  */
 function PlayState() {
+	
+	/* Cookie Loading */
+	this.userMaxLevelCompleted = parseInt($.cookie('userMaxLevelCompleted'));
 
 	var background_animation = new jaws.Animation({
 		sprite_sheet : "./assets/art/BitBotGameLoop-SpriteSheet.png",
@@ -61,7 +64,7 @@ function PlayState() {
 			}
 			
 			//if this is true, the player has advanced a level
-			if(old_player_level != current_player_level) {
+			if(old_player_level != current_player_level && current_player_level > this.userMaxLevelCompleted) {
 				//so record that in a cookie...FOR 10 YEARS
 				$.cookie('userMaxLevelCompleted', current_player_level, {expires: 365*10});
 			}

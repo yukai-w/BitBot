@@ -83,7 +83,7 @@ function MenuState() {
 			
 			else if(items[index] == "Load Game") {
 				
-				jaws.switchGameState(PlayState, {fps:60}, this.userMaxLevelCompleted+1);
+				jaws.switchGameState(LevelSelectState, {fps:60});
 				
 			} else {//switch to About State
 				jaws.switchGameState(AboutState, {fps:60});
