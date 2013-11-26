@@ -58,7 +58,7 @@ function DialogueSequence() {
 	this.update = function() {
 		var that = this;
 		
-		if (jaws.pressedWithoutRepeat(["space", "esc"])) {
+		if (jaws.pressedWithoutRepeat(["space"])) {
 			that.nextSfx.play();
 			if (! that.dialogueSequence.isEmpty()) {
 				var beat = that.dialogueSequence.dequeue();

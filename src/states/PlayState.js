@@ -47,6 +47,10 @@ function PlayState() {
 	var current_player_level = 0;
 	this.currentStage = undefined;
 	this.isPaused = false;
+	
+	var index = 0;
+	var items = this.userMaxLevelCompleted > 0  ? ["Restart", "Test Selection Screen", "Quit"] : ["Restart", "Quit"]
+	
 
 	this.setup = function(level_to_load) {
 
@@ -99,6 +103,36 @@ function PlayState() {
 				this.currentStage = generate_stage(current_player_level);
 				this.currentStage.setup();
 			}
+		} else { //we're in the pause menu!
+			
+			if(jaws.pressedWithoutRepeat(["down", "s"])) {
+				index++;
+				if (index >= items.length) {
+					index = items.length - 1;
+				}
+			}
+			
+			if(jaws.pressedWithoutRepeat(["up", "w"])) {
+				index--;
+				if (index < 0) {
+					index = 0
+				}				
+			}
+			
+			if (jaws.pressedWithoutRepeat(["enter"])) {
+			
+				if(items[index] == "Test Selection Screen") {
+					jaws.switchGameState(LevelSelectState, {fps:60}); //load level 0 for the first time playing
+				}
+				
+				else if(items[index] == "Restart") {
+					//restart myself!
+					jaws.switchGameState(PlayState, {fps:60}, current_player_level);
+					
+				} else {//switch to Menu State
+					jaws.switchGameState(MenuState, {fps:60});
+				}
+			}
 		}
 
 		// fps.innerHTML = jaws.game_loop.fps;
@@ -117,6 +151,15 @@ function PlayState() {
 			jaws.context.font = "24pt Orbitron";
 			jaws.context.fillStyle = 'White';
 			wrap_text(jaws.context, "Paused", 220, jaws.height/2,350,30);
+			
+			for (var i = 0; items[i]; i++) {
+	
+				jaws.context.font = "24pt Orbitron";
+				jaws.context.lineWidth = 12;
+				jaws.context.fillStyle = (i == index) ? "White" : "Gray";
+				jaws.context.strokeStyle = "rgba(200,200,200,0.0)";
+				jaws.context.fillText(items[i], 100, 350 + i * (36));
+			}
 		}
 	}
 
