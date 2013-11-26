@@ -11,10 +11,13 @@ function AboutState() {
 	var jose_info;
 	var jose_sprite;
 	var ian_info;
+	var ian_sprite;
 	var about_string;
 	var team_heading;
 	var contributor_heading;
 	var title_screen_frame;
+	
+	jaws.preventDefaultKeys(["esc"]);
 
 	this.setup = function() {
 		
@@ -23,22 +26,24 @@ function AboutState() {
 		background_overlay = new jaws.Sprite({x : 0, y : 0, color : 'Gray', alpha : 0.85, width : jaws.width, height : jaws.height});
 	
 		rogelio_info = {name : 'Rogelio E. Cardona-Rivera', role : 'Game Designer, Programmer', twitter : '@recardona', site : 'http://rogel.io'}; 
-		rogelio_sprite = new jaws.Sprite({x : 100, y : jaws.height*2.1/10, image : "./assets/art/Rogelio.png", scale : 3.5});
+		rogelio_sprite = new jaws.Sprite({x : 100, y : jaws.height*3.2/10, image : "./assets/art/Rogelio.png", scale : 3.5});
 	
 		jose_info = {name : 'Jos\xE9 D. V\xE9lez', role : 'Game Designer, Artist', twitter : '@danivive', site : 'http://jdvelez.tumblr.com'};
-		jose_sprite = new jaws.Sprite({x : 365, y : jaws.height*4/10, image : "./assets/art/Jose.png", scale : 3.5});
+		jose_sprite = new jaws.Sprite({x : 365, y : jaws.height*5.2/10, image : "./assets/art/Jose.png", scale : 3.5});
 	
 		ian_info = {name : 'Ian Coleman', role : 'Level Editor, Programmer', twitter : '@iancoleman', site : 'http://www.ianpcoleman.com'};
+		ian_sprite = new jaws.Sprite({x : 100, y : jaws.height*8/10, image : "./assets/art/Ian.png", scale : 3.5});
 	
-		about_string = "BitBot is an HTML5/JS game built as part of the 2013 Github Game Jam. This is only a test of this.";
+		about_string = "BitBot is an HTML5/JS game built as part of the 2013 Github Game Jam." + 
+			"For more information about this game, including licensing, please visit: http://github.com/recardona/game-off-2013";
 		team_heading = "BitBot was built by: ";
 		contributor_heading = "Special Thanks to: ";
-		
-		jaws.on_keydown(["enter", "space", "esc"], function() {
-				jaws.switchGameState(jaws.previous_game_state, {
-					fps : 60
-				})
-		});
+	}
+	
+	this.update = function() {
+		if(jaws.pressedWithoutRepeat("esc")) {
+			jaws.switchGameState(jaws.previous_game_state, {fps : 60});
+		}
 	}
 	
 	this.draw = function() {
@@ -47,27 +52,28 @@ function AboutState() {
 
 		title_screen_frame.draw();		
 		background_overlay.draw();
-		jaws.context.font = "18pt VT323";
+		jaws.context.font = "14pt Orbitron";
 		
 				
 		jaws.context.fillStyle = "White";
-		wrap_text(jaws.context, about_string, 30, jaws.height/10, jaws.width-30, 20);
+		wrap_text(jaws.context, about_string, 30, jaws.height/10, jaws.width-30, 25);
 		
 		jaws.context.fillStyle = "Black";
-		wrap_text(jaws.context, team_heading, 30, jaws.height*2/10, jaws.width-30, 20);
+		wrap_text(jaws.context, team_heading, 30, jaws.height*3/10, jaws.width-30, 20);
 		
 		jaws.context.fillStyle = "White";
-		print_person_map(265, jaws.height*2.5/10, rogelio_info);
+		print_person_map(255, jaws.height*3.7/10, rogelio_info);
 		rogelio_sprite.draw();
 		
-		print_person_map(35, jaws.height*4.5/10, jose_info);
+		print_person_map(35, jaws.height*5.7/10, jose_info);
 		jose_sprite.draw();
 		
 		jaws.context.fillStyle = "Black";
-		wrap_text(jaws.context, contributor_heading, 30, jaws.height*7/10, jaws.width-30, 20);
+		wrap_text(jaws.context, contributor_heading, 30, jaws.height*7.8/10, jaws.width-30, 20);
 		
 		jaws.context.fillStyle = "White";	
-		print_person_map(35, jaws.height*7.5/10, ian_info);
+		print_person_map(255, jaws.height*8.5/10, ian_info);
+		ian_sprite.draw();
 	}
 	
 	/**

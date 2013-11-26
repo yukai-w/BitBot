@@ -26,6 +26,7 @@ function init() {
 	//Other Sprites
 	jaws.assets.add("./assets/art/Jose.png");
 	jaws.assets.add("./assets/art/Rogelio.png");
+	jaws.assets.add("./assets/art/Ian.png");
 	
 	
 	//HUD
