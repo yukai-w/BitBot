@@ -60,7 +60,7 @@ function NarrativeStage(options) {
 				
 				if (music != undefined) {
 					var thisMusic = music;
-					var fade_time = 750; //ms
+					var fade_time = 1500; //ms
 					music.fadeOut(0.0,fade_time, function(){
 						thisMusic.stop();
 						console.log('music stopped');

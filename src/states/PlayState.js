@@ -58,7 +58,7 @@ function PlayState() {
 			} else {
 				//is a Level
 				//we must check if the player succeeded; if so, she can continue.
-				if(this.currentStage.hasBeenCompletedSuccesfully) {
+				if(this.currentStage.hasBeenCompletedSuccessfully) {
 					current_player_level++;
 				} 
 			}

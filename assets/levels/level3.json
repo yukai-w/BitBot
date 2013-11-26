@@ -62,11 +62,11 @@
       
   "intro_music" : "",
   
-  "outro_music" : "",
+  "outro_music" : "success",
   
-  "retry_music" : "",
+  "fail_music" : "gameover",
   
-  "fail_music" : "",
+  "play_music" : "metonymy"
   
-  "play_music" : ""
 }
+

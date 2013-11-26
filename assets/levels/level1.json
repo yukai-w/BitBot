@@ -67,9 +67,9 @@
       
   "intro_music" : null,
   
-  "outro_music" : null,
+  "outro_music" : "success",
   
-  "fail_music" : null,
+  "fail_music" : "gameover",
   
-  "play_music" : null
+  "play_music" : "metonymy"
 }
