@@ -12,12 +12,12 @@ function LevelSelectState() {
 		sprite_sheet : "./assets/art/BitBotGameLoop-SpriteSheet.png",
 		frame_size : [288, 288],
 		frame_duration : 300, //ms
-		loop : false,
+		loop : true,
 		orientation : 'right'
 	});
 	
-	this.backgroundSprite = new jaws.Sprite({x : 0, y : 0, scale : 2});
-	this.backgroundSprite.setImage(background_loop.next());
+	var selectMenuBGSprite = new jaws.Sprite({x : 0, y : 0, scale : 2});
+	selectMenuBGSprite.setImage(background_loop.next());
 	
 	//This is the level we're going to pass to the PlayState
 	var level_to_load = 0;
@@ -50,27 +50,29 @@ function LevelSelectState() {
 	
 	this.update = function() {
 		
+		selectMenuBGSprite.setImage(background_loop.next());
+		
 		/* Input Management */
-		if (jaws.pressedWithoutRepeat(["enter", "space"])) {
+		if (jaws.pressedWithoutRepeat(["enter"])) {
 			//switch to the Play State and give to it the level we want to show
 			jaws.switchGameState(PlayState, {fps:60}, level_to_load);
 		}
 		
 		if (jaws.pressedWithoutRepeat("esc")) {
-			jaws.switchGameState(jaws.previous_game_state);
+			jaws.clear();
+			jaws.switchGameState(MenuState, {fps:60});
 		}
-		
-		this.backgroundSprite.setImage(background_loop.next());
 	}
 
 	this.draw = function() {
 		
-		jaws.context.clearRect(0, 0, jaws.width, jaws.height)
+		jaws.context.clearRect(0, 0, jaws.width, jaws.height);
 		
-		this.backgroundSprite.draw();
+		selectMenuBGSprite.draw();
 		jaws.context.fillStyle = 'Black';
-		jaws.context.rect(0, jaws.height/6, jaws.width, jaws.height*4/6);	
-		jaws.context.fill();
+		jaws.context.fillRect(0, jaws.height/6, jaws.width, jaws.height*4/6);	
+		
+		console.log('drawing level select');
       	
 		for (var i = 0; levels[i]; i++) {
 
@@ -78,7 +80,7 @@ function LevelSelectState() {
 			jaws.context.lineWidth = 16;
 			jaws.context.fillStyle = (i == level_to_load) ? "White" : "Gray";
 			jaws.context.strokeStyle = "rgba(200,200,200,0.0)";
-			jaws.context.fillText(levels[i], 20, 135 + i * (32));
+			jaws.context.fillText(levels[i], 20, 165 + i * (32));
 		}
 	}
 }

@@ -109,18 +109,19 @@ function MenuState() {
 
 	this.draw = function() {
 		
-		jaws.context.clearRect(0, 0, jaws.width, jaws.height)
+		jaws.clear();
 		
 		this.backgroundSprite.draw();
 
 		if(show_menu || this.userHasBeenHereBefore) {
 			jaws.context.fillStyle = 'Black';
 			if(this.userMaxLevelCompleted > 0) {
-				jaws.context.rect(0, jaws.height/1.5, jaws.width, 125);	
+				jaws.context.fillRect(0, jaws.height/1.5, jaws.width, 125);
+				console.log('drawing big')	
 			} else {
-				jaws.context.rect(0, jaws.height/1.5, jaws.width, 90);
+				jaws.context.fillRect(0, jaws.height/1.5, jaws.width, 90);
+				console.log('drawing little');
 			}
-			jaws.context.fill();
 	      	
 			for (var i = 0; items[i]; i++) {
 	
