@@ -19,6 +19,10 @@ function LevelStage(options) {
 	var outro_dialogue = options.outro_dialogue;
 	var fail_dialogue = options.fail_dialogue;
 	var retry_dialogue = options.retry_dialogue;
+	var intro_music = options.intro_music;
+	var outro_music = options.outro_music;
+	var fail_music = options.fail_music;
+	var play_music = options.play_music;
 	
 	this.activeLevel = new Level(level_data);
 	var level_elements = LevelStage.extractLevelElementInformation(element_data, this.activeLevel);

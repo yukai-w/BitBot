@@ -65,11 +65,11 @@
       {"Master Controller" : "Recalibrate your visual processors.  Continue testing."}
       ],
       
-  "intro_music" : "",
+  "intro_music" : null,
   
-  "outro_music" : "",
+  "outro_music" : null,
   
-  "fail_music" : "",
+  "fail_music" : null,
   
-  "play_music" : ""
+  "play_music" : null
 }
