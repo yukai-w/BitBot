@@ -10,7 +10,7 @@ function LevelStage(options) {
 	this.isInOutro = false;
 	this.isDone = false;
 	this.hasBeenCompletedSuccesfully = undefined;
-	this.isNarrativeStage = true;
+	this.isNarrativeStage = false;
 	
 	/* Music files */
 	var gameOverMusic = new Howl({urls : ['./assets/sounds/music/gameover.mp3']});
