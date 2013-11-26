@@ -19,7 +19,7 @@ function AboutState() {
 	this.setup = function() {
 		
 		//grab the last frame from the title screen
-		title_screen_frame = jaws.previous_game_state.sprite;
+		title_screen_frame = jaws.previous_game_state.backgroundSprite;
 		background_overlay = new jaws.Sprite({x : 0, y : 0, color : 'Gray', alpha : 0.85, width : jaws.width, height : jaws.height});
 	
 		rogelio_info = {name : 'Rogelio E. Cardona-Rivera', role : 'Game Designer, Programmer', twitter : '@recardona', site : 'http://rogel.io'}; 

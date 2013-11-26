@@ -6,13 +6,16 @@
  *
  */
 function MenuState() {
-	this.userHasBeenHereBefore = false; //this will be set by cookies later
+	
+	/* Cookie loading */
+	this.userHasBeenHereBefore = $.cookie('userHasBeenHereBefore');
+	this.userMaxLevelCompleted = parseInt($.cookie('userMaxLevelCompleted'));
 	
 	/* Sprite and Animation attributes */
 	var title_intro_animation = new jaws.Animation({
 		sprite_sheet : "./assets/art/BitBotTitleIntro-SpriteSheet.png",
 		frame_size : [288, 288],
-		frame_duration : 50, //ms
+		frame_duration : 300, //ms
 		loop : false,
 		orientation : 'right'
 	});
@@ -25,16 +28,23 @@ function MenuState() {
 		orientation : 'right'
 	});
 	
-	this.sprite = new jaws.Sprite({x : 0, y : 0, scale : 2});
+	var show_menu = false;
+	
+	this.backgroundSprite = new jaws.Sprite({x : 0, y : 0, scale : 2});
 	
 	if(this.userHasBeenHereBefore) {
-		this.sprite.setImage(title_intro_animation.frames[0]);
+		this.backgroundSprite.setImage(title_loop_animation.frames[0]);
+		title_intro_animation.index = title_intro_animation.frames.length-1;
+		$.cookie('userHasBeenHereBefore', 'true', { expires: 7 }); //register user for 7 more days
+		
 	} else {
-		this.sprite.setImage(title_loop_animation.frames[0]);
+		this.backgroundSprite.setImage(title_intro_animation.frames[0]);
+		$.cookie('userHasBeenHereBefore', 'true', { expires: 7 }); //register user for 7 days
 	}
 	
 	var index = 0;
-	var items = ["Start", "About"]
+	var items = this.userMaxLevelCompleted > 0  ? ["Load Game", "New Game", "About"] : ["New Game", "About"]
+	jaws.preventDefaultKeys(["down","s","up","w","enter"]);
 	
 	this.setup = function() {
 		
@@ -51,26 +61,44 @@ function MenuState() {
 				index = 0
 			}
 		})
-		
-		jaws.on_keydown(["enter", "space"], function() {
-			if (items[index] == "Start") {
-				jaws.switchGameState(PlayState, {
-					fps : 60
-				});
-			} else {
-				jaws.switchGameState(AboutState, {
-					fps : 60
-				});
-			}
-		})
 	}
 	
 	this.update = function() {
 		
+		/* Input Management */
+		if (jaws.pressedWithoutRepeat(["enter", "space"])) {
+			
+			if(items[index] == "New Game") {
+				if(this.userMaxLevelCompleted > 0) {
+					var doDelete = confirm("Selecting New Game will erase all your saved progress. Are you sure you want to start over?");
+					if(doDelete) {
+						$.removeCookie('userMaxLevelCompleted');
+						jaws.switchGameState(PlayState, {fps:60}, 0); //load level 0 for the first time playing
+					}
+				} else {
+					jaws.switchGameState(PlayState, {fps:60}, 0); //load level 0 for the first time playing
+				}
+				
+			}
+			
+			else if(items[index] == "Load Game") {
+				
+				jaws.switchGameState(PlayState, {fps:60}, this.userMaxLevelCompleted+1);
+				
+			} else {//switch to About State
+				jaws.switchGameState(AboutState, {fps:60});
+			}
+		}
+		
+		/* Background Updates */
 		if(title_intro_animation.atLastFrame()) {
-			this.sprite.setImage(title_loop_animation.next());
+			this.backgroundSprite.setImage(title_loop_animation.next());
 		} else {
-			this.sprite.setImage(title_intro_animation.next());
+			this.backgroundSprite.setImage(title_intro_animation.next());
+		}
+		
+		if(title_loop_animation.atLastFrame()) {
+			show_menu = true;
 		}
 		
 	}
@@ -79,19 +107,25 @@ function MenuState() {
 		
 		jaws.context.clearRect(0, 0, jaws.width, jaws.height)
 		
-		this.sprite.draw();
-		
-		jaws.context.fillStyle = 'Black';
-		jaws.context.rect(175, jaws.height/1.5, 225, 150);
-		jaws.context.fill();
-      	
-		for (var i = 0; items[i]; i++) {
+		this.backgroundSprite.draw();
 
-			jaws.context.font = "60pt VT323";
-			jaws.context.lineWidth = 25
-			jaws.context.fillStyle = (i == index) ? "White" : "Gray"
-			jaws.context.strokeStyle = "rgba(200,200,200,0.0)"
-			jaws.context.fillText(items[i], 205, jaws.height / 1.3 + i * (75))
+		if(show_menu || this.userHasBeenHereBefore) {
+			jaws.context.fillStyle = 'Black';
+			if(this.userMaxLevelCompleted > 0) {
+				jaws.context.rect(0, jaws.height/1.5, jaws.width, 125);	
+			} else {
+				jaws.context.rect(0, jaws.height/1.5, jaws.width, 90);
+			}
+			jaws.context.fill();
+	      	
+			for (var i = 0; items[i]; i++) {
+	
+				jaws.context.font = "24pt Orbitron";
+				jaws.context.lineWidth = 12;
+				jaws.context.fillStyle = (i == index) ? "White" : "Gray";
+				jaws.context.strokeStyle = "rgba(200,200,200,0.0)";
+				jaws.context.fillText(items[i], 200, 420 + i * (36));
+			}
 		}
 	}
 }

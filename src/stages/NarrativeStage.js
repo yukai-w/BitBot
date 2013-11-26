@@ -1,26 +1,16 @@
 /*
  * The NarrativeStage.
  */
-function NarrativeStage() {
+function NarrativeStage(options) {
 
 	/* Game logic attributes */
 	this.isPlaying = true;
 	this.isDone = false;
+	this.isNarrativeStage = true;
 
 	/* Level initialization */
-	var dialogue;
-	var background_img_string;
-
-	/* Synchronous data loading! */
-	$.ajax({
-		url : 'http://localhost/game-off-2013/assets/levels/level0.json',
-		async : false,
-		dataType : 'json',
-		success : function(data) {
-			dialogue = data.dialogue;
-			background_img_string = data.background_img_string;
-		}
-	});
+	var dialogue = options.dialogue;
+	var background_img_string = options.background_img_string;
 
 	this.dialogueSequence = new DialogueSequence();
 	this.backgroundSprite = undefined;
@@ -77,6 +67,7 @@ function NarrativeStage() {
 			this.dialogueSequence.draw();
 		}
 	}
+	
 	/**
 	 * This function is meant to be called once when the NarrativeStage has concluded,
 	 * and a new Stage will be loaded.  All code cleanup should be done here.

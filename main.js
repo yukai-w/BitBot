@@ -5,14 +5,8 @@ function init() {
 	//Background
 	jaws.assets.add("./assets/art/BitBotTitleIntro-SpriteSheet.png");
 	jaws.assets.add("./assets/art/BitBotTitleLoop-SpriteSheet.png");
-	
-	jaws.assets.add("./assets/art/LevelBackground01.png");
-	jaws.assets.add("./assets/art/LevelBackground02.png");
-	jaws.assets.add("./assets/art/LevelBackground03.png");
-	jaws.assets.add("./assets/art/LevelBackground04.png");
-	jaws.assets.add("./assets/art/LevelBackground05.png");
-	jaws.assets.add("./assets/art/LevelBackground06.png");
-	
+	jaws.assets.add("./assets/art/BitBotGameLoop-SpriteSheet.png");
+
 
 	//Tiles
 	jaws.assets.add("./assets/art/Tile.png");

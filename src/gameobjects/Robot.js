@@ -120,13 +120,13 @@ function Robot(configuration_options) {
 	this.isPlanning = false;
 	this.isExecuting = false;
 	this.isFalling = false; //true if we just fell off the game level
-	this.isRespawning = false;
+	this.isRespawning = true;
 	this.isRebooting = false; //true if we encountered a weird state
 	this.isExiting = false; //true if we just finished the level
 	this.isOff = false; //true if we're done with the level
 	this.canRespawn = true;
-
-	this.isIdle = true;
+	this.isIdle = false;
+	
 	this.actionQueue = new goog.structs.Queue();
 	this.previousPositionStack = [];
 	this.actionQueueSizeMax = 12;
@@ -543,6 +543,13 @@ function Robot(configuration_options) {
 	 */
 	this.isInPlay = function() {
 		return (this.isPlanning || this.isExecuting || this.isIdle);
+	}
+	
+	/**
+	 * Returns true if this Robot still has battery left.
+	 */
+	this.isAlive = function() {
+		return (this.batteryLevel != 0);
 	}
 	
 	/**
