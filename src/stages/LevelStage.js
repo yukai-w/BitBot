@@ -26,6 +26,8 @@ function LevelStage(options) {
 		fail_music_should_play = false;
 	var play_music = options.play_music,
 		play_music_is_playing = false;
+		
+	var music_fade_time = 750; //ms
 	
 	this.activeLevel = new Level(level_data);
 	var level_elements = LevelStage.extractLevelElementInformation(element_data, this.activeLevel);
@@ -78,7 +80,7 @@ function LevelStage(options) {
 					
 					if(play_music != undefined) {
 						play_music.stop();
-						play_music.fadeIn(0.15, 1500, function() {
+						play_music.fadeIn(0.15, music_fade_time, function() {
 							play_music_is_playing = true;	
 						});
 					}
@@ -101,7 +103,7 @@ function LevelStage(options) {
 			if(play_music != undefined) {
 				if(!play_music_is_playing) {
 					play_music.stop();
-					play_music.fadeIn(0.15, 1500, function() {
+					play_music.fadeIn(0.15, music_fade_time, function() {
 						play_music_is_playing = true;
 					});	
 				}
@@ -115,7 +117,7 @@ function LevelStage(options) {
 			
 			if(play_music != undefined) {
 				if(play_music_is_playing) {
-					play_music.fadeOut(0.0, 1500, function() {
+					play_music.fadeOut(0.0, music_fade_time, function() {
 					  play_music.stop();
 					  play_music_is_playing = false;
 					});
@@ -150,7 +152,6 @@ function LevelStage(options) {
 					this.setMode('done');
 				}
 			}
-			
 		}
 	}
 
