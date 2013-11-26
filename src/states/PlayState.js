@@ -149,14 +149,7 @@ function PlayState() {
 }
 
 PlayState.sound_map = {
-	metonymy : new Howl({
-						urls : ['./assets/sounds/music/metonymy.mp3'],
-						loop : true,
-						volume : 0.25,
-						sprite : {
-									loop : [0, 30000]
-								 }
-						}),
+	metonymy : new Howl({urls : ['./assets/sounds/music/metonymy.mp3'], loop : true, volume : 0.2}),
 	gameover : new Howl({urls : ['./assets/sounds/music/gameover.mp3']}),
 	success  : new Howl({urls : ['./assets/sounds/fx/success.mp3']})
 };
