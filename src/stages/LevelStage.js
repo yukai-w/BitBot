@@ -52,11 +52,6 @@ function LevelStage(options) {
 	this.foregroundFreezeFrame = [];
 	this.backgroundFreezeFrame = [];
 	
-	// To quit, press 'esc'
-	jaws.on_keydown("esc", function() {
-		jaws.switchGameState(MenuState);
-	});
-	
 	this.setup = function() {
 		//queue up the narrative
 		this.initAndStartDialogueSequences();
@@ -68,8 +63,6 @@ function LevelStage(options) {
 	}
 
 	this.update = function() {
-		
-		console.log(play_music.pos());
 		
 		if(this.isInIntro) {
 						

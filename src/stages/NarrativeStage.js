@@ -45,6 +45,7 @@ function NarrativeStage(options) {
 
 		this.dialogueSequence.start();
 		if (music != undefined) {
+			music.stop();
 			music.play();
 		}
 
@@ -63,7 +64,6 @@ function NarrativeStage(options) {
 					var fade_time = 1500; //ms
 					music.fadeOut(0.0,fade_time, function(){
 						thisMusic.stop();
-						console.log('music stopped');
 					});
 				}
 			}

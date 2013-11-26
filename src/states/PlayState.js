@@ -103,7 +103,6 @@ function PlayState() {
 			}
 		});
 
-		console.log(level_data);
 		return level_data;
 	}
 
