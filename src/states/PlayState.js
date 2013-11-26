@@ -84,7 +84,7 @@ function PlayState() {
 			this.currentStage.setup();
 		}
 
-		fps.innerHTML = jaws.game_loop.fps;
+		// fps.innerHTML = jaws.game_loop.fps;
 	}
 
 	this.draw = function() {
