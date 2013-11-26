@@ -59,7 +59,6 @@ function LevelSelectState() {
 		}
 		
 		if (jaws.pressedWithoutRepeat("esc")) {
-			jaws.clear();
 			jaws.switchGameState(MenuState, {fps:60});
 		}
 	}
