@@ -12,18 +12,6 @@ function LevelStage(options) {
 	this.hasBeenCompletedSuccesfully = undefined;
 	this.isNarrativeStage = false;
 	
-	/* Music files */
-	var gameOverMusic = new Howl({urls : ['./assets/sounds/music/gameover.mp3']});
-	var metonymyMusic = new Howl({
-		urls : ['./assets/sounds/music/metonymy.mp3'],
-		loop : true,
-		volume : 0.25,
-		sprite : {
-			loop : [0, 30000]
-		}
-
-	}).play('loop');
-
 	/* Level initialization */
 	var level_data = options.level_data;
 	var element_data = options.element_data;
@@ -152,9 +140,6 @@ function LevelStage(options) {
 		delete this.activeLevel;
 		delete this.player;
 		delete this.hud;
-		
-		metonymyMusic.stop();
-		gameOverMusic.stop();
 	}
 	
 	this.setMode = function(mode) {
@@ -267,10 +252,8 @@ function LevelStage(options) {
 		
 		//if the player is dead, you lose! :(
 		if(! this.player.isAlive()) {
-			metonymyMusic.stop();
 			this.setMode('outro');
 			this.hasBeenCompletedSuccesfully = false;
-			gameOverMusic.play();
 		}
 	}
 	

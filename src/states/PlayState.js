@@ -7,6 +7,22 @@ function PlayState() {
 	
 	/* Cookie Loading */
 	this.userMaxLevelCompleted = parseInt($.cookie('userMaxLevelCompleted'));
+	
+	/* Music SFX */
+	var metonymyMusic = new Howl({
+		urls : ['./assets/sounds/music/metonymy.mp3'],
+		loop : true,
+		volume : 0.25,
+		sprite : {
+			loop : [0, 30000]
+		}
+
+	}).play('loop');
+	var gameOverMusic = new Howl({urls : ['./assets/sounds/music/gameover.mp3']});
+	var success_sfx = new Howl({
+		urls : ['./assets/sounds/fx/success.mp3']
+	});
+
 
 	var background_animation = new jaws.Animation({
 		sprite_sheet : "./assets/art/BitBotGameLoop-SpriteSheet.png",
@@ -53,20 +69,28 @@ function PlayState() {
 
 		} else {//this.currentStage.isDone
 			
-			if(!this.currentStage.isNarrative) {
+			if(this.currentStage.isNarrativeStage) {
 				current_player_level++; //auto-advance levels for narratives
 			} else {
 				//is a Level
 				//we must check if the player succeeded; if so, she can continue.
 				if(this.currentStage.hasBeenCompletedSuccesfully) {
+					success_sfx.play();
 					current_player_level++;
 				} 
 			}
 			
 			//if this is true, the player has advanced a level
-			if(old_player_level != current_player_level && current_player_level > this.userMaxLevelCompleted) {
-				//so record that in a cookie...FOR 10 YEARS
-				$.cookie('userMaxLevelCompleted', current_player_level, {expires: 365*10});
+			if(old_player_level != current_player_level) {
+				
+				//if we've gotten farther than ever before,
+				if(current_player_level > this.userMaxLevelCompleted) {
+					//record that in a cookie...FOR 10 YEARS
+					$.cookie('userMaxLevelCompleted', current_player_level, {expires: 365*10});
+				}
+				
+			} else {
+				gameOverMusic.play();
 			}
 			
 			this.currentStage.destroy();

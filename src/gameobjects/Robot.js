@@ -41,9 +41,6 @@ function Robot(configuration_options) {
 	this.rebootSfx = new Howl({
 		urls : ['./assets/sounds/fx/reboot.mp3'],
 	});
-	this.successSfx = new Howl({
-		urls : ['./assets/sounds/fx/success.mp3']
-	});
 
 	/* Sprite and Animation attributes */
 	var animation = new jaws.Animation({
@@ -454,7 +451,6 @@ function Robot(configuration_options) {
 		}
 
 		if (this.exitAnimation.atFirstFrame()) {
-			this.successSfx.play();
 			this.setMode('off');
 		}
 	}
