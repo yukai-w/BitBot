@@ -69,7 +69,11 @@ function LevelSelectState() {
 		
 		selectMenuBGSprite.draw();
 		jaws.context.fillStyle = 'Black';
-		jaws.context.fillRect(0, jaws.height/6, jaws.width, jaws.height*4/6);	
+		jaws.context.fillRect(0, jaws.height/6, jaws.width, jaws.height*4/6);
+		
+		jaws.context.font = "24pt Orbitron";
+		jaws.context.fillStyle = 'White';
+		wrap_text(jaws.context, "Identify Test", 180, (jaws.height/6)+40, jaws.width*4/6, 30);	
 		
 		console.log('drawing level select');
       	
@@ -79,7 +83,7 @@ function LevelSelectState() {
 			jaws.context.lineWidth = 16;
 			jaws.context.fillStyle = (i == level_to_load) ? "White" : "Gray";
 			jaws.context.strokeStyle = "rgba(200,200,200,0.0)";
-			jaws.context.fillText(levels[i], 20, 165 + i * (32));
+			jaws.context.fillText(levels[i], 20, 175 + i * (32));
 		}
 	}
 }
