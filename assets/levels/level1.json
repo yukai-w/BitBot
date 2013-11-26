@@ -63,5 +63,13 @@
       
   "fail_dialogue" : [
       {"Master Controller" : "Recalibrate your visual processors.  Continue testing."}
-      ]
+      ],
+      
+  "intro_music" : "",
+  
+  "outro_music" : "",
+  
+  "fail_music" : "",
+  
+  "play_music" : ""
 }

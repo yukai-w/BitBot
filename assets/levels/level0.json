@@ -16,5 +16,7 @@
       {"???" : "Security, this is Friedman. Disregard request. Situation is under control."}
       ],
       
-  "background_img_string" : null
+  "background_img_string" : null,
+  
+  "music" : null
 }
