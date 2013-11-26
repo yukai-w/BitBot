@@ -8,22 +8,6 @@ function PlayState() {
 	/* Cookie Loading */
 	this.userMaxLevelCompleted = parseInt($.cookie('userMaxLevelCompleted'));
 	
-	/* Music SFX */
-	var metonymyMusic = new Howl({
-		urls : ['./assets/sounds/music/metonymy.mp3'],
-		loop : true,
-		volume : 0.25,
-		sprite : {
-			loop : [0, 30000]
-		}
-
-	}).play('loop');
-	var gameOverMusic = new Howl({urls : ['./assets/sounds/music/gameover.mp3']});
-	var success_sfx = new Howl({
-		urls : ['./assets/sounds/fx/success.mp3']
-	});
-
-
 	var background_animation = new jaws.Animation({
 		sprite_sheet : "./assets/art/BitBotGameLoop-SpriteSheet.png",
 		frame_size : [288, 288],
@@ -75,7 +59,6 @@ function PlayState() {
 				//is a Level
 				//we must check if the player succeeded; if so, she can continue.
 				if(this.currentStage.hasBeenCompletedSuccesfully) {
-					success_sfx.play();
 					current_player_level++;
 				} 
 			}
@@ -88,9 +71,6 @@ function PlayState() {
 					//record that in a cookie...FOR 10 YEARS
 					$.cookie('userMaxLevelCompleted', current_player_level, {expires: 365*10});
 				}
-				
-			} else {
-				gameOverMusic.play();
 			}
 			
 			this.currentStage.destroy();
@@ -134,11 +114,21 @@ function PlayState() {
 		var is_narrative_stage = data.narrative_level;
 
 		if (is_narrative_stage) {
+			
+			var music_file = data.music != null ? PlayState.sound_map[data.music] : undefined; 
+			
 			new_stage = new NarrativeStage({
 				dialogue : data.dialogue, 
-				background_img_string : data.background_img_string
+				background_img_string : data.background_img_string,
+				music : music_file
 			});
 		} else {
+			
+			var intro_music_file = data.intro_music != null ? PlayState.sound_map[data.intro_music] : undefined;
+			var outro_music_file = data.outro_music != null ? PlayState.sound_map[data.outro_music] : undefined;
+			var fail_music_file = data.fail_music != null ? PlayState.sound_map[data.fail_music] : undefined;
+			var play_music_file = data.play_music != null ? PlayState.sound_map[data.play_music] : undefined;
+			
 			new_stage = new LevelStage({
 				level_data : data.level_data, 
 				element_data : data.element_data, 
@@ -146,6 +136,10 @@ function PlayState() {
 				outro_dialogue : data.outro_dialogue, 
 				retry_dialogue : data.retry_dialogue, 
 				fail_dialogue : data.fail_dialogue,
+				intro_music : intro_music_file,
+				outro_music : outro_music_file,
+				fail_music : fail_music_file,
+				play_music : play_music_file,
 				player_is_retrying : false
 			});
 		}
@@ -153,4 +147,17 @@ function PlayState() {
 		return new_stage;
 	}
 }
+
+PlayState.sound_map = {
+	metonymy : new Howl({
+						urls : ['./assets/sounds/music/metonymy.mp3'],
+						loop : true,
+						volume : 0.25,
+						sprite : {
+									loop : [0, 30000]
+								 }
+						}),
+	gameover : new Howl({urls : ['./assets/sounds/music/gameover.mp3']}),
+	success  : new Howl({urls : ['./assets/sounds/fx/success.mp3']})
+};
 
