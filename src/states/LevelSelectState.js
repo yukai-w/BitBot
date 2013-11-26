@@ -24,7 +24,7 @@ function LevelSelectState() {
 	
 	//Find the max level that has been unlocked by the player.
 	var maxLevel = this.userMaxLevelCompleted;
-	var levels = new Array(maxLevel+2); //we show levels 0 to maxLevel+1, which is maxLevel+2
+	var levels = new Array(maxLevel);
 	for(var level_idx = 0; level_idx <= maxLevel; level_idx++) {
 		levels[level_idx] = "Test Protocol "+level_idx;
 	}
