@@ -33,8 +33,20 @@ function PlayState() {
 		width : jaws.width,
 		height : jaws.height
 	});
+	
+	var pause_overlay = new jaws.Sprite({
+		x : 0,
+		y : 0,
+		color : 'Black',
+		alpha : 0.75,
+		width : jaws.width,
+		height : jaws.height
+	});
+
+	
 	var current_player_level = 0;
 	this.currentStage = undefined;
+	this.isPaused = false;
 
 	this.setup = function(level_to_load) {
 
@@ -47,41 +59,46 @@ function PlayState() {
 	this.update = function() {
 
 		background_sprite.setImage(background_animation.next());
-
-		var old_player_level = current_player_level;
-
-		if (!this.currentStage.isDone) {
-
-			this.currentStage.update();
-
-		} else {//this.currentStage.isDone
-			
-			var old_player_level = current_player_level;
-			
-			if(this.currentStage.isNarrativeStage) {
-				current_player_level++; //auto-advance levels for narratives
-			} else {
-				//is a Level
-				//we must check if the player succeeded; if so, she can continue.
-				if(this.currentStage.hasBeenCompletedSuccessfully) {
-					current_player_level++;
-				} 
-			}
-			
-			//if this is true, the player has advanced a level
-			if(old_player_level != current_player_level) {
+		
+		if (jaws.pressedWithoutRepeat("esc")) {
+			this.isPaused = !this.isPaused;
+		}
+		
+		if(!this.isPaused)
+		{
+	
+			if (!this.currentStage.isDone) {
+	
+				this.currentStage.update();
+	
+			} else {//this.currentStage.isDone
 				
-				//if we've gotten farther than ever before,
-				if(current_player_level > this.userMaxLevelCompleted) {
-					//record that in a cookie...FOR 10 YEARS
-					console.log(current_player_level);
-					$.cookie('userMaxLevelCompleted', current_player_level, {expires: 365*10});
+				var old_player_level = current_player_level;
+				
+				if(this.currentStage.isNarrativeStage) {
+					current_player_level++; //auto-advance levels for narratives
+				} else {
+					//is a Level
+					//we must check if the player succeeded; if so, she can continue.
+					if(this.currentStage.hasBeenCompletedSuccessfully) {
+						current_player_level++;
+					} 
 				}
+				
+				//if this is true, the player has advanced a level
+				if(old_player_level != current_player_level) {
+					
+					//if we've gotten farther than ever before,
+					if(current_player_level > this.userMaxLevelCompleted) {
+						//record that in a cookie...FOR 10 YEARS
+						$.cookie('userMaxLevelCompleted', current_player_level, {expires: 365*10});
+					}
+				}
+				
+				this.currentStage.destroy();
+				this.currentStage = generate_stage(current_player_level);
+				this.currentStage.setup();
 			}
-			
-			this.currentStage.destroy();
-			this.currentStage = generate_stage(current_player_level);
-			this.currentStage.setup();
 		}
 
 		// fps.innerHTML = jaws.game_loop.fps;
@@ -93,6 +110,14 @@ function PlayState() {
 		background_sprite.draw();
 		background_overlay.draw();
 		this.currentStage.draw();
+		
+		if(this.isPaused) {
+			pause_overlay.draw();
+			
+			jaws.context.font = "24pt Orbitron";
+			jaws.context.fillStyle = 'White';
+			wrap_text(jaws.context, "Paused", 220, jaws.height/2,350,30);
+		}
 	}
 
 	function load_level(level_number) {
