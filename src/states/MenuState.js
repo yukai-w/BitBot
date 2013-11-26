@@ -9,7 +9,7 @@ function MenuState() {
 	
 	/* Cookie loading */
 	this.userHasBeenHereBefore = $.cookie('userHasBeenHereBefore');
-	this.userMaxLevelCompleted = $.cookie('userMaxLevelCompleted');
+	this.userMaxLevelCompleted = parseInt($.cookie('userMaxLevelCompleted'));
 	
 	/* Sprite and Animation attributes */
 	var title_intro_animation = new jaws.Animation({
@@ -61,18 +61,6 @@ function MenuState() {
 				index = 0
 			}
 		})
-		
-		jaws.on_keydown(["enter", "space"], function() {
-			if (items[index] == "New Game") {
-				jaws.switchGameState(PlayState, {
-					fps : 60
-				});
-			} else {
-				jaws.switchGameState(AboutState, {
-					fps : 60
-				});
-			}
-		})
 	}
 	
 	this.update = function() {
@@ -85,13 +73,18 @@ function MenuState() {
 					var doDelete = confirm("Selecting New Game will erase all your saved progress. Are you sure you want to start over?");
 					if(doDelete) {
 						$.removeCookie('userMaxLevelCompleted');
+						jaws.switchGameState(PlayState, {fps:60}, 0); //load level 0 for the first time playing
 					}
+				} else {
+					jaws.switchGameState(PlayState, {fps:60}, 0); //load level 0 for the first time playing
 				}
-				jaws.switchGameState(PlayState, {fps:60});
+				
 			}
 			
 			else if(items[index] == "Load Game") {
-				//do something
+				
+				jaws.switchGameState(PlayState, {fps:60}, this.userMaxLevelCompleted+1);
+				
 			} else {//switch to About State
 				jaws.switchGameState(AboutState, {fps:60});
 			}

@@ -30,9 +30,10 @@ function PlayState() {
 	var current_player_level = 0;
 	this.currentStage = undefined;
 
-	this.setup = function() {
+	this.setup = function(level_to_load) {
 
 		/* Level setup */
+		current_player_level = level_to_load;
 		this.currentStage = generate_stage(current_player_level);
 		this.currentStage.setup();
 	}
@@ -40,6 +41,8 @@ function PlayState() {
 	this.update = function() {
 
 		background_sprite.setImage(background_animation.next());
+
+		var old_player_level = current_player_level;
 
 		if (!this.currentStage.isDone) {
 
@@ -56,7 +59,12 @@ function PlayState() {
 					current_player_level++;
 				} 
 			}
-			console.log(current_player_level);
+			
+			//if this is true, the player has advanced a level
+			if(old_player_level != current_player_level) {
+				//so record that in a cookie...FOR 10 YEARS
+				$.cookie('userMaxLevelCompleted', current_player_level, {expires: 365*10});
+			}
 			
 			this.currentStage.destroy();
 			this.currentStage = generate_stage(current_player_level);
