@@ -70,7 +70,7 @@ function MenuState() {
 	this.update = function() {
 		
 		/* Input Management */
-		if (jaws.pressedWithoutRepeat(["enter", "space"])) {
+		if (jaws.pressedWithoutRepeat(["enter"])) {
 			
 			if(items[index] == "New Game") {
 				if(this.userMaxLevelCompleted > 0) {
