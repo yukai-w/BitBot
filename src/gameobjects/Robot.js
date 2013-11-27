@@ -255,6 +255,7 @@ function Robot(configuration_options) {
 					
 		//if we've reached the reboot timer threshold, stop!
 		if(this.rebootingWatchdogTimer > rebooting_timer_threshold) {
+			this.moveToCenterOfNearestTile();
 			this.setMode('idle');
 			this.rebootingWatchdogTimer = 0;
 		}
@@ -481,6 +482,15 @@ function Robot(configuration_options) {
 	this.moveToMyPosition = function(sprite) {
 		sprite.x = this.sprite.x;
 		sprite.y = this.sprite.y;
+	}
+	
+	/**
+	 * Moves this Robot to the center of the nearest tile.
+	 */
+	this.moveToCenterOfNearestTile = function() {
+		var tile_map = this.internalWorldRepresentation.activeLevel.tileMap;
+		var closest_tile = tile_map.at(this.sprite.x, this.sprite.y);
+		closest_tile[0].moveToMyPosition(this.sprite);
 	}
 	
 	/**

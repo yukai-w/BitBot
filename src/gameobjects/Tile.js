@@ -39,6 +39,15 @@ function Tile(x, y, enum_val) {
 		return {x:this.centerX, y:this.centerY};
 	}
 	
+	/**
+	 * Moves the paramter jaws.Sprite to my position.
+	 * @param sprite a jaws.Sprite.
+	 */
+	this.moveToMyPosition = function(sprite) {
+		sprite.x = this.centerX;
+		sprite.y = this.centerY;
+	}
+	
 }
 
 Tile.default_size = {
