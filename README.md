@@ -44,7 +44,7 @@ outdated.  You must make it from the start to the goal while balancing your
 energy supply, and anticipating how the world might be when you begin to act.
 
 Use the arrow keys to control your robot in planning mode, and be aware that
-when you execute, the world might look different!
+when you execute, the world might have **changed**!
 
 ### Meta
 
