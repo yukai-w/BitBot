@@ -4,13 +4,13 @@
  *
  */
 function PlayState() {
-	
+
 	/* Cookie Loading */
 	this.userMaxLevelCompleted = parseInt($.cookie('userMaxLevelCompleted'));
-	if(isNaN(this.userMaxLevelCompleted)) {
+	if (isNaN(this.userMaxLevelCompleted)) {
 		this.userMaxLevelCompleted = 0;
 	}
-	
+
 	var background_animation = new jaws.Animation({
 		sprite_sheet : "./assets/art/BitBotGameLoop-SpriteSheet.png",
 		frame_size : [288, 288],
@@ -25,6 +25,7 @@ function PlayState() {
 		scale : 2
 	});
 	background_sprite.setImage(background_animation.frames[0]);
+
 	var background_overlay = new jaws.Sprite({
 		x : 0,
 		y : 0,
@@ -33,7 +34,7 @@ function PlayState() {
 		width : jaws.width,
 		height : jaws.height
 	});
-	
+
 	var pause_overlay = new jaws.Sprite({
 		x : 0,
 		y : 0,
@@ -43,14 +44,12 @@ function PlayState() {
 		height : jaws.height
 	});
 
-	
 	var current_player_level = 0;
 	this.currentStage = undefined;
 	this.isPaused = false;
-	
+
 	var index = 0;
-	var items = this.userMaxLevelCompleted > 0  ? ["Restart", "Test Selection Screen", "Quit"] : ["Restart", "Quit"]
-	
+	var items = this.userMaxLevelCompleted > 0 ? ["Restart", "Test Selection Screen", "Quit"] : ["Restart", "Quit"]
 
 	this.setup = function(level_to_load) {
 
@@ -63,74 +62,84 @@ function PlayState() {
 	this.update = function() {
 
 		background_sprite.setImage(background_animation.next());
-		
+
 		if (jaws.pressedWithoutRepeat("esc")) {
 			this.isPaused = !this.isPaused;
 		}
-		
-		if(!this.isPaused)
-		{
-	
+
+		if (!this.isPaused) {
+
 			if (!this.currentStage.isDone) {
-	
+
 				this.currentStage.update();
-	
+
 			} else {//this.currentStage.isDone
-				
+
 				var old_player_level = current_player_level;
-				
-				if(this.currentStage.isNarrativeStage) {
-					current_player_level++; //auto-advance levels for narratives
+
+				if (this.currentStage.isNarrativeStage) {
+					current_player_level++;
+					//auto-advance levels for narratives
 				} else {
 					//is a Level
 					//we must check if the player succeeded; if so, she can continue.
-					if(this.currentStage.hasBeenCompletedSuccessfully) {
+					if (this.currentStage.hasBeenCompletedSuccessfully) {
 						current_player_level++;
-					} 
-				}
-				
-				//if this is true, the player has advanced a level
-				if(old_player_level != current_player_level) {
-					
-					//if we've gotten farther than ever before,
-					if(current_player_level > this.userMaxLevelCompleted) {
-						//record that in a cookie...FOR 10 YEARS
-						$.cookie('userMaxLevelCompleted', current_player_level, {expires: 365*10});
 					}
 				}
-				
+
+				//if this is true, the player has advanced a level
+				if (old_player_level != current_player_level) {
+
+					//if we've gotten farther than ever before,
+					if (current_player_level > this.userMaxLevelCompleted) {
+						//record that in a cookie...FOR 10 YEARS
+						$.cookie('userMaxLevelCompleted', current_player_level, {
+							expires : 365 * 10
+						});
+					}
+				}
+
 				this.currentStage.destroy();
 				this.currentStage = generate_stage(current_player_level);
 				this.currentStage.setup();
 			}
-		} else { //we're in the pause menu!
-			
-			if(jaws.pressedWithoutRepeat(["down", "s"])) {
+		} else {//we're in the pause menu!
+
+			if (jaws.pressedWithoutRepeat(["down", "s"])) {
 				index++;
 				if (index >= items.length) {
 					index = items.length - 1;
 				}
 			}
-			
-			if(jaws.pressedWithoutRepeat(["up", "w"])) {
+
+			if (jaws.pressedWithoutRepeat(["up", "w"])) {
 				index--;
 				if (index < 0) {
 					index = 0
-				}				
-			}
-			
-			if (jaws.pressedWithoutRepeat(["enter"])) {
-			
-				if(items[index] == "Test Selection Screen") {
-					jaws.switchGameState(LevelSelectState, {fps:60}); //load level 0 for the first time playing
 				}
-				
-				else if(items[index] == "Restart") {
+			}
+
+			if (jaws.pressedWithoutRepeat(["enter"])) {
+
+				if (items[index] == "Test Selection Screen") {
+					stop_all_music();
+					jaws.switchGameState(LevelSelectState, {
+						fps : 60
+					});
+					//load level 0 for the first time playing
+				} else if (items[index] == "Restart") {
 					//restart myself!
-					jaws.switchGameState(PlayState, {fps:60}, current_player_level);
-					
+					stop_all_music();
+					jaws.switchGameState(PlayState, {
+						fps : 60
+					}, current_player_level);
+
 				} else {//switch to Menu State
-					jaws.switchGameState(MenuState, {fps:60});
+					stop_all_music();
+					jaws.switchGameState(MenuState, {
+						fps : 60
+					});
 				}
 			}
 		}
@@ -144,16 +153,16 @@ function PlayState() {
 		background_sprite.draw();
 		background_overlay.draw();
 		this.currentStage.draw();
-		
-		if(this.isPaused) {
+
+		if (this.isPaused) {
 			pause_overlay.draw();
-			
+
 			jaws.context.font = "24pt Orbitron";
 			jaws.context.fillStyle = 'White';
-			wrap_text(jaws.context, "Paused", 220, jaws.height/2,350,30);
-			
+			wrap_text(jaws.context, "Paused", 220, jaws.height / 2, 350, 30);
+
 			for (var i = 0; items[i]; i++) {
-	
+
 				jaws.context.font = "24pt Orbitron";
 				jaws.context.lineWidth = 12;
 				jaws.context.fillStyle = (i == index) ? "White" : "Gray";
@@ -162,7 +171,22 @@ function PlayState() {
 			}
 		}
 	}
+	/**
+	 * Stops all the music that could possibly be playing.
+	 */
+	function stop_all_music() {
+		$.each(PlayState.sound_map, function(key, val) {
+			val.stop();
+		});
+	}
 
+	/**
+	 * Loads the level information from a JSON file identified by the parameter.
+	 * Makes a synchronous jQuery call, so this method could take a while.
+	 * 	You have been warned!
+	 * @param {Number} level_number the level to load. Assumed to exist as
+	 * 	./assets/levels/level(level_number).json
+	 */
 	function load_level(level_number) {
 		var load_url = "http://127.0.0.1:8020/game-off-2013/assets/levels/levelXX.json".replace("XX", level_number);
 		// var load_url = "http://rogel.io/projects/assets/levels/levelXX.json".replace("XX", level_number);
@@ -181,34 +205,40 @@ function PlayState() {
 		return level_data;
 	}
 
+	/**
+	 * Generates the Stage given by the level number.  The stage could be either a
+	 * NarrativeStage (see NarrativeStage.js) or a LevelStage (see LevelStage.js)
+	 * @param {Number} level_number the number that identifies the JSON file containing
+	 * 	the level information (see load_level(level_number))
+	 */
 	function generate_stage(level_number) {
-		
+
 		var data = load_level(level_number);
 		var new_stage = undefined;
 		var is_narrative_stage = data.narrative_level;
 
 		if (is_narrative_stage) {
-			
-			var music_file = data.music != null ? PlayState.sound_map[data.music] : undefined; 
-			
+
+			var music_file = data.music != null ? PlayState.sound_map[data.music] : undefined;
+
 			new_stage = new NarrativeStage({
-				dialogue : data.dialogue, 
+				dialogue : data.dialogue,
 				background_img_string : data.background_img_string,
 				music : music_file
 			});
 		} else {
-			
+
 			var intro_music_file = data.intro_music != null ? PlayState.sound_map[data.intro_music] : undefined;
 			var outro_music_file = data.outro_music != null ? PlayState.sound_map[data.outro_music] : undefined;
 			var fail_music_file = data.fail_music != null ? PlayState.sound_map[data.fail_music] : undefined;
 			var play_music_file = data.play_music != null ? PlayState.sound_map[data.play_music] : undefined;
-			
+
 			new_stage = new LevelStage({
-				level_data : data.level_data, 
-				element_data : data.element_data, 
-				intro_dialogue : data.intro_dialogue, 
-				outro_dialogue : data.outro_dialogue, 
-				retry_dialogue : data.retry_dialogue, 
+				level_data : data.level_data,
+				element_data : data.element_data,
+				intro_dialogue : data.intro_dialogue,
+				outro_dialogue : data.outro_dialogue,
+				retry_dialogue : data.retry_dialogue,
 				fail_dialogue : data.fail_dialogue,
 				intro_music : intro_music_file,
 				outro_music : outro_music_file,
@@ -217,15 +247,31 @@ function PlayState() {
 				player_is_retrying : false
 			});
 		}
-		
+
 		return new_stage;
 	}
+
 }
 
+/**
+ * A map of all the sounds that are relevant for the PlayState.
+ */
 PlayState.sound_map = {
-	metonymy : new Howl({urls : ['./assets/sounds/music/metonymy.mp3'], loop : true, volume : 0.3}),
-	morallyambiguousai : new Howl({urls : ['./assets/sounds/music/morallyambiguousai.mp3'], loop : true, volume : 0.6}),
-	gameover : new Howl({urls : ['./assets/sounds/music/gameover.mp3']}),
-	success  : new Howl({urls : ['./assets/sounds/fx/success.mp3']})
+	metonymy : new Howl({
+		urls : ['./assets/sounds/music/metonymy.mp3'],
+		loop : true,
+		volume : 0.3
+	}),
+	morallyambiguousai : new Howl({
+		urls : ['./assets/sounds/music/morallyambiguousai.mp3'],
+		loop : true,
+		volume : 0.6
+	}),
+	gameover : new Howl({
+		urls : ['./assets/sounds/music/gameover.mp3']
+	}),
+	success : new Howl({
+		urls : ['./assets/sounds/fx/success.mp3']
+	})
 };
 
