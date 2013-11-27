@@ -199,28 +199,33 @@ var Editor = {
 		
 		// droppables
 		$(".editor-tile").droppable( {
-			accept: "#editor-bit-bot-fixed-container, #editor-enemy-bot-fixed-container, #editor-battery-fixed-container",
+			accept: "#editor-enemy-bot-fixed-container, .editor-enemy-bot-container, #editor-battery-fixed-container",
 			hoverClass: "editor-tile-drop-hover",
 			drop: function(event, ui) {
 				// snap object to tile
 				// ui.draggable.css({top: $(this).offset().top, left: $(this).offset().left});
 				// $("<div class='editor-bit-bot-container'><img src='assets/art/editor-bot-player.png' /></div>");
 				// add player bot to game object grid
-				if(ui.draggable.attr('id') === 'editor-bit-bot-fixed-container') {
-					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '10');
-					var newBitbotDraggable = $("<div class='editor-bit-bot-container'><img src='assets/art/editor-bot-player.png' /></div>");
-					editor.makeDraggable(newBitbotDraggable);
-					newBitbotDraggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});					
-					$("#editor-bit-bot-fixed-container").before(newBitbotDraggable);
-				}
+				// if(ui.draggable.attr('id') === 'editor-bit-bot-fixed-container') {
+					// editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '10');
+					// var newBitbotDraggable = $("<div class='editor-bit-bot-container'><img src='assets/art/editor-bot-player.png' /></div>");
+					// editor.makeDraggable(newBitbotDraggable);
+					// newBitbotDraggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});					
+					// $("#editor-bit-bot-fixed-container").before(newBitbotDraggable);
+				// }
 				// add enemy bot to game object grid
-				else if(ui.draggable.attr('id') === "editor-enemy-bot-fixed-container") {
+				// else 
+				if(ui.draggable.attr('id') === "editor-enemy-bot-fixed-container") {
 					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '5');
 					var newEnemybotDraggable = $("<div class='editor-enemy-bot-container'><img src='assets/art/editor-bot-enemy.png' /></div>");
 					editor.makeDraggable(newEnemybotDraggable);
 					newEnemybotDraggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});					
 					$("#editor-enemy-bot-fixed-container").before(newEnemybotDraggable);
-				} 
+				} // just update that one grid tile
+				else if(ui.draggable.hasClass("editor-enemy-bot-container")) {
+					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '5');
+					ui.draggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});
+				}
 				// add battery to game object grid	
 				else if(ui.draggable.attr('id') === "editor-battery-fixed-container") {
 					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '9');
