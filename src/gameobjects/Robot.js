@@ -367,8 +367,15 @@ function Robot(configuration_options) {
 			this.setMode('idle');
 		}
 		
+		//if the player is planning, then don't count the planning time toward
+		//your AI execution time - since the player cannot plan and execute at
+		//the same time, this check will only affect AI robots that could be
+		//executing when the player is planning.
+		if (! this.internalWorldRepresentation.player.isPlanning) {
+			this.executingWatchdogTimer += jaws.game_loop.tick_duration;
+		}
+		
 		//check if you have been there too long!
-		this.executingWatchdogTimer += jaws.game_loop.tick_duration;
 		if (this.executingWatchdogTimer >= executing_timer_threshold) {
 			//that means we've gotten into a weird state :( - RESET!
 			this.executingWatchdogTimer = 0.0;
