@@ -597,10 +597,17 @@ function Robot(configuration_options) {
 	 * @param player_AI the Robot whom you'd like to apply AI moves.
 	 */
 	function handle_AI_input(player_AI) {
-		if (player_AI.type == 'dreyfus_class') {
-			for (var action_idx = 0; action_idx < player_AI.actionQueueSizeMax; action_idx++) {
-				player_AI.actionQueue.enqueue(Robot.types[player_AI.type].direction[player_AI.directionCode]);
-			}
+		
+		var AI_type = player_AI.type;
+		var code = player_AI.directionCode;
+		
+		if (AI_type == 'dreyfus_class') {
+			
+			var code = player_AI.directionCode;
+			
+			$.each(Robot.types[AI_type].commands[code], function(idx, action) {
+				player_AI.actionQueue.enqueue(action);
+			});
 		}
 	}
 
@@ -645,21 +652,44 @@ function Robot(configuration_options) {
 }
 
 /**
- * An enum of the Robot types, which contains information of image files.
+ * A map of the Robot types, which contains information of image files.
  */
 Robot.types = {
 	'player_controlled' : {
 		sprite_sheet : "./assets/art/BlueBitBot-SpriteSheet.png",
 	},
 
+	//Dreyfus-class Robots move in fixed patterns, given by their identifier.
 	'dreyfus_class' : {
 		sprite_sheet : "./assets/art/GrayBitBot-SpriteSheet.png",
-		direction : {
-			5 : 'left',
-			6 : 'down',
-			7 : 'right',
-			8 : 'up',
-			undefined : undefined
+		commands : {
+			5 : ['right', 'right', 'down', 'down', 'left', 'left', 'up', 'up'], //square patrol
+			6 : ['left', 'left', 'left', 'left', 'right', 'right', 'right', 'right'], //ping-pong
+			7 : ['down', 'down', 'down', 'right', 'right', 'left', 'left', 'up', 'up', 'up'], //L-pattern
+			8 : ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'up', 'down'] //Konami-pattern
 		}
+		
+	},
+	
+	//Weizenbaum-class Robots move in opposite tandem with the player.
+	'weizenbaum_class' : {
+		sprite_sheet : "./assets/art/BrownBitBot-SpriteSheet.png",
+	},
+	
+	//Searle-class Robots will move toward the player.
+	'searle_class' : {
+		sprite_sheet : "./assets/art/PurpleBitBot-SpriteSheet.png"
 	}
 };
+
+/**
+ * A map that has the opposite actions of each of the directions,
+ * for quick access.
+ */
+Robot.opposite_actions = {
+	'left' : 'right',
+	'right' : 'left',
+	'up' : 'down',
+	'down' : 'up'
+};
+
