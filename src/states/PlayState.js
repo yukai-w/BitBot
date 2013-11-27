@@ -49,7 +49,7 @@ function PlayState() {
 	this.isPaused = false;
 
 	var index = 0;
-	var items = this.userMaxLevelCompleted > 0 ? ["Restart", "Test Selection Screen", "Quit"] : ["Restart", "Quit"]
+	var items = this.userMaxLevelCompleted > 0 ? ["Restart", "Test Selection Screen", "Quit"] : ["Restart", "Quit"];
 	var menu_select_sfx = new Howl({
 		urls : ['./assets/sounds/fx/menuselect.mp3']
 	});
@@ -64,6 +64,7 @@ function PlayState() {
 
 	this.update = function() {
 
+		items = this.userMaxLevelCompleted > 0 ? ["Restart", "Test Selection Screen", "Quit"] : ["Restart", "Quit"];
 		background_sprite.setImage(background_animation.next());
 
 		if (jaws.pressedWithoutRepeat("esc")) {
