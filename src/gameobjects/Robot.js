@@ -587,8 +587,8 @@ function Robot(configuration_options) {
 	this.doCollideProtocol = function() {
 		var prev_position = this.previousPositionStack.pop();
 		this.targetPosition = prev_position || {
-			x : this.previousPosition.x,
-			y : this.previousPosition.y + robot_step_distance
+			x : this.sprite.x,
+			y : this.sprite.y + robot_step_distance
 		};
 		
 		this.setMode('executing');
