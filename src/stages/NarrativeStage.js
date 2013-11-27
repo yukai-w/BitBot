@@ -11,6 +11,7 @@ function NarrativeStage(options) {
 	/* Level initialization */
 	var dialogue = options.dialogue;
 	var background_img_string = options.background_img_string;
+	var music = options.music;
 
 	this.dialogueSequence = new DialogueSequence();
 	this.backgroundSprite = undefined;
@@ -43,6 +44,10 @@ function NarrativeStage(options) {
 		});
 
 		this.dialogueSequence.start();
+		if (music != undefined) {
+			music.stop();
+			music.play();
+		}
 
 	}
 
@@ -53,6 +58,14 @@ function NarrativeStage(options) {
 
 			if (this.dialogueSequence.isFinished) {
 				this.setMode('done');
+				
+				if (music != undefined) {
+					var thisMusic = music;
+					var fade_time = 750; //ms
+					music.fadeOut(0.0,fade_time, function(){
+						thisMusic.stop();
+					});
+				}
 			}
 		}
 	}
@@ -67,7 +80,6 @@ function NarrativeStage(options) {
 			this.dialogueSequence.draw();
 		}
 	}
-	
 	/**
 	 * This function is meant to be called once when the NarrativeStage has concluded,
 	 * and a new Stage will be loaded.  All code cleanup should be done here.

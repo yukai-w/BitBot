@@ -9,21 +9,9 @@ function LevelStage(options) {
 	this.isPlaying = false;
 	this.isInOutro = false;
 	this.isDone = false;
-	this.hasBeenCompletedSuccesfully = undefined;
-	this.isNarrativeStage = true;
+	this.hasBeenCompletedSuccessfully = undefined;
+	this.isNarrativeStage = false;
 	
-	/* Music files */
-	var gameOverMusic = new Howl({urls : ['./assets/sounds/music/gameover.mp3']});
-	var metonymyMusic = new Howl({
-		urls : ['./assets/sounds/music/metonymy.mp3'],
-		loop : true,
-		volume : 0.25,
-		sprite : {
-			loop : [0, 30000]
-		}
-
-	}).play('loop');
-
 	/* Level initialization */
 	var level_data = options.level_data;
 	var element_data = options.element_data;
@@ -31,6 +19,15 @@ function LevelStage(options) {
 	var outro_dialogue = options.outro_dialogue;
 	var fail_dialogue = options.fail_dialogue;
 	var retry_dialogue = options.retry_dialogue;
+	var intro_music = options.intro_music;
+	var outro_music = options.outro_music,
+		outro_music_should_play = false;
+	var fail_music = options.fail_music,
+		fail_music_should_play = false;
+	var play_music = options.play_music,
+		play_music_is_playing = false;
+		
+	var music_fade_time = 750; //ms
 	
 	this.activeLevel = new Level(level_data);
 	var level_elements = LevelStage.extractLevelElementInformation(element_data, this.activeLevel);
@@ -57,26 +54,36 @@ function LevelStage(options) {
 	this.foregroundFreezeFrame = [];
 	this.backgroundFreezeFrame = [];
 	
-	// To quit, press 'esc'
-	jaws.on_keydown("esc", function() {
-		jaws.switchGameState(MenuState);
-	});
-	
 	this.setup = function() {
 		//queue up the narrative
 		this.initAndStartDialogueSequences();
+		
+		if(intro_music != undefined) {
+			this.stopAllMusic();
+			intro_music.play(); //play
+		}
 	}
 
 	this.update = function() {
 		
-		
 		if(this.isInIntro) {
-			
+						
 			if(this.isBeingRetried) {
 				this.activeDialogueSequence = this.retryDialogueSequence;
 				this.retryDialogueSequence.update();
 				if(this.retryDialogueSequence.isFinished) {
 					this.setMode('playing');
+					
+					if(intro_music != undefined) {
+						intro_music.stop();						
+					}
+					
+					if(play_music != undefined) {
+						play_music.stop();
+						play_music.fadeIn(0.15, music_fade_time, function() {
+							play_music_is_playing = true;	
+						});
+					}
 				}
 				
 			} else {
@@ -84,27 +91,67 @@ function LevelStage(options) {
 				this.introDialogueSequence.update();
 				if(this.introDialogueSequence.isFinished) {
 					this.setMode('playing');
+					
+					if(intro_music != undefined) {
+						intro_music.stop();						
+					}
 				}
 			}
 			
 		} else if(this.isPlaying) {
+			
+			if(play_music != undefined) {
+				if(!play_music_is_playing) {
+					play_music.stop();
+					play_music.fadeIn(0.15, music_fade_time, function() {
+						play_music_is_playing = true;
+					});	
+				}
+			}
+			
 			this.updateGameplayLoop();
+			
 		} else if(this.isInOutro) {
 			
-			if(this.hasBeenCompletedSuccesfully) {
+			var that = this;
+			
+			if(play_music != undefined) {
+				if(play_music_is_playing) {
+					play_music.fadeOut(0.0, music_fade_time, function() {
+					  play_music.stop();
+					  play_music_is_playing = false;
+					});
+				}
+			}
+			
+			if(this.hasBeenCompletedSuccessfully) {
 				this.activeDialogueSequence = this.outroDialogueSequence;
 				this.outroDialogueSequence.update();
+				
+				if(outro_music != undefined) {
+					if(outro_music_should_play) {
+						outro_music.play();
+						outro_music_should_play = false;
+					}
+				}
+				
 				if(this.outroDialogueSequence.isFinished) {
 					this.setMode('done');
 				}
 			} else {
 				this.activeDialogueSequence = this.failDialogueSequence;
 				this.failDialogueSequence.update();
+				
+				if(fail_music != undefined) {
+					if(fail_music_should_play) {
+						fail_music.play();
+						fail_music_should_play = false;
+					}
+				}
 				if(this.failDialogueSequence.isFinished) {
 					this.setMode('done');
 				}
 			}
-			
 		}
 	}
 
@@ -152,9 +199,6 @@ function LevelStage(options) {
 		delete this.activeLevel;
 		delete this.player;
 		delete this.hud;
-		
-		metonymyMusic.stop();
-		gameOverMusic.stop();
 	}
 	
 	this.setMode = function(mode) {
@@ -262,15 +306,15 @@ function LevelStage(options) {
 		//if the player is off at the end, we've beaten the level!
 		if(this.player.isOff) {
 			this.setMode('outro');
-			this.hasBeenCompletedSuccesfully = true;
+			this.hasBeenCompletedSuccessfully = true;
+			outro_music_should_play = true;
 		}
 		
 		//if the player is dead, you lose! :(
 		if(! this.player.isAlive()) {
-			metonymyMusic.stop();
 			this.setMode('outro');
-			this.hasBeenCompletedSuccesfully = false;
-			gameOverMusic.play();
+			this.hasBeenCompletedSuccessfully = false;
+			fail_music_should_play = true;
 		}
 	}
 	
@@ -395,6 +439,13 @@ function LevelStage(options) {
 				that.robotsOutOfPlay.push(robot);
 			}
 		});
+	}
+	
+	this.stopAllMusic = function() {
+		intro_music.stop();
+		outro_music.stop();
+		fail_music.stop();
+		play_music.stop();
 	}
 }
 

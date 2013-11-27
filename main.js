@@ -26,6 +26,7 @@ function init() {
 	//Other Sprites
 	jaws.assets.add("./assets/art/Jose.png");
 	jaws.assets.add("./assets/art/Rogelio.png");
+	jaws.assets.add("./assets/art/Ian.png");
 	
 	
 	//HUD
@@ -47,6 +48,8 @@ function init() {
 	//Music
 	jaws.assets.add("./assets/sounds/music/metonymy.mp3");
 	jaws.assets.add("./assets/sounds/music/gameover.mp3");
+	jaws.assets.add("./assets/sounds/music/morallyambiguousai.mp3");
+	
 	
 	//Fx
 	jaws.assets.add("./assets/sounds/fx/success.mp3");
@@ -57,6 +60,7 @@ function init() {
 	jaws.assets.add("./assets/sounds/fx/move.mp3");
 	jaws.assets.add("./assets/sounds/fx/reboot.mp3");
 	jaws.assets.add("./assets/sounds/fx/next.mp3");
+	jaws.assets.add("./assets/sounds/fx/menuselect.mp3");
 	
 	
 	jaws.start(MenuState);

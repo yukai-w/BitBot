@@ -41,9 +41,6 @@ function Robot(configuration_options) {
 	this.rebootSfx = new Howl({
 		urls : ['./assets/sounds/fx/reboot.mp3'],
 	});
-	this.successSfx = new Howl({
-		urls : ['./assets/sounds/fx/success.mp3']
-	});
 
 	/* Sprite and Animation attributes */
 	var animation = new jaws.Animation({
@@ -134,7 +131,9 @@ function Robot(configuration_options) {
 	this.planningWatchdogTimer = 0.0;
 	var planning_timer_threshold = 1000.0;
 	this.executingWatchdogTimer = 0.0;
-	var executing_timer_threshold = 3000.0;
+	var executing_timer_threshold = 3100.0;
+	this.rebootingWatchdogTimer = 0.0;
+	var rebooting_timer_threshold = 2000.0;
 	
 
 	/* Game input attributes */
@@ -234,6 +233,10 @@ function Robot(configuration_options) {
 	 * method sets this Robot to 'idle' mode.
 	 */
 	this.reboot = function() {
+		
+		console.log('rebooting...')
+		console.log(this.rebootingWatchdogTimer);
+		
 		this.executingWatchdogTimer = 0.0;
 		this.sprite.setImage(this.rebootAnimation.next());
 		this.orientation = this.rebootAnimation.currentFrame();
@@ -242,15 +245,19 @@ function Robot(configuration_options) {
 		if(this.executingSfx.pos() > 0) {
 			this.executingSfx.stop();
 		}
-			
-		if(this.rebootAnimation.index == 1 && this.isPlayerControlled) {
-			if(this.rebootSfx.pos() == 0) {
-				this.rebootSfx.play();	
-			}
+		
+		//if we're starting the reboot timer, and it's the player,
+		if(this.rebootingWatchdogTimer == 0 && this.isPlayerControlled) {
+			this.rebootSfx.play(); //play the reboot sfx
 		}
-				
-		if(this.rebootSfx.pos() > 2) {
+		
+		this.rebootingWatchdogTimer += jaws.game_loop.tick_duration;
+					
+		//if we've reached the reboot timer threshold, stop!
+		if(this.rebootingWatchdogTimer > rebooting_timer_threshold) {
+			this.moveToCenterOfNearestTile();
 			this.setMode('idle');
+			this.rebootingWatchdogTimer = 0;
 		}
 	}
 	
@@ -360,8 +367,15 @@ function Robot(configuration_options) {
 			this.setMode('idle');
 		}
 		
+		//if the player is planning, then don't count the planning time toward
+		//your AI execution time - since the player cannot plan and execute at
+		//the same time, this check will only affect AI robots that could be
+		//executing when the player is planning.
+		if (! this.internalWorldRepresentation.player.isPlanning) {
+			this.executingWatchdogTimer += jaws.game_loop.tick_duration;
+		}
+		
 		//check if you have been there too long!
-		this.executingWatchdogTimer += jaws.game_loop.tick_duration;
 		if (this.executingWatchdogTimer >= executing_timer_threshold) {
 			//that means we've gotten into a weird state :( - RESET!
 			this.executingWatchdogTimer = 0.0;
@@ -454,7 +468,6 @@ function Robot(configuration_options) {
 		}
 
 		if (this.exitAnimation.atFirstFrame()) {
-			this.successSfx.play();
 			this.setMode('off');
 		}
 	}
@@ -476,6 +489,15 @@ function Robot(configuration_options) {
 	this.moveToMyPosition = function(sprite) {
 		sprite.x = this.sprite.x;
 		sprite.y = this.sprite.y;
+	}
+	
+	/**
+	 * Moves this Robot to the center of the nearest tile.
+	 */
+	this.moveToCenterOfNearestTile = function() {
+		var tile_map = this.internalWorldRepresentation.activeLevel.tileMap;
+		var closest_tile = tile_map.at(this.sprite.x, this.sprite.y);
+		closest_tile[0].moveToMyPosition(this.sprite);
 	}
 	
 	/**
@@ -582,8 +604,8 @@ function Robot(configuration_options) {
 	this.doCollideProtocol = function() {
 		var prev_position = this.previousPositionStack.pop();
 		this.targetPosition = prev_position || {
-			x : this.previousPosition.x,
-			y : this.previousPosition.y + robot_step_distance
+			x : this.sprite.x,
+			y : this.sprite.y + robot_step_distance
 		};
 		
 		this.setMode('executing');
@@ -601,10 +623,17 @@ function Robot(configuration_options) {
 	 * @param player_AI the Robot whom you'd like to apply AI moves.
 	 */
 	function handle_AI_input(player_AI) {
-		if (player_AI.type == 'dreyfus_class') {
-			for (var action_idx = 0; action_idx < player_AI.actionQueueSizeMax; action_idx++) {
-				player_AI.actionQueue.enqueue(Robot.types[player_AI.type].direction[player_AI.directionCode]);
-			}
+		
+		var AI_type = player_AI.type;
+		var code = player_AI.directionCode;
+		
+		if (AI_type == 'dreyfus_class') {
+			
+			var code = player_AI.directionCode;
+			
+			$.each(Robot.types[AI_type].commands[code], function(idx, action) {
+				player_AI.actionQueue.enqueue(action);
+			});
 		}
 	}
 
@@ -649,21 +678,44 @@ function Robot(configuration_options) {
 }
 
 /**
- * An enum of the Robot types, which contains information of image files.
+ * A map of the Robot types, which contains information of image files.
  */
 Robot.types = {
 	'player_controlled' : {
 		sprite_sheet : "./assets/art/BlueBitBot-SpriteSheet.png",
 	},
 
+	//Dreyfus-class Robots move in fixed patterns, given by their identifier.
 	'dreyfus_class' : {
 		sprite_sheet : "./assets/art/GrayBitBot-SpriteSheet.png",
-		direction : {
-			5 : 'left',
-			6 : 'down',
-			7 : 'right',
-			8 : 'up',
-			undefined : undefined
+		commands : {
+			5 : ['right', 'right', 'down', 'down', 'left', 'left', 'up', 'up'], //square patrol
+			6 : ['left', 'left', 'left', 'left', 'right', 'right', 'right', 'right'], //ping-pong
+			7 : ['down', 'down', 'down', 'right', 'right', 'left', 'left', 'up', 'up', 'up'], //L-pattern
+			8 : ['up', 'up', 'down', 'down', 'left', 'right', 'left', 'right', 'up', 'down'] //Konami-pattern
 		}
+		
+	},
+	
+	//Weizenbaum-class Robots move in opposite tandem with the player.
+	'weizenbaum_class' : {
+		sprite_sheet : "./assets/art/BrownBitBot-SpriteSheet.png",
+	},
+	
+	//Searle-class Robots will move toward the player.
+	'searle_class' : {
+		sprite_sheet : "./assets/art/PurpleBitBot-SpriteSheet.png"
 	}
 };
+
+/**
+ * A map that has the opposite actions of each of the directions,
+ * for quick access.
+ */
+Robot.opposite_actions = {
+	'left' : 'right',
+	'right' : 'left',
+	'up' : 'down',
+	'down' : 'up'
+};
+

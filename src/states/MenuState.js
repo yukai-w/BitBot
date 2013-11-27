@@ -9,7 +9,11 @@ function MenuState() {
 	
 	/* Cookie loading */
 	this.userHasBeenHereBefore = $.cookie('userHasBeenHereBefore');
-	this.userMaxLevelCompleted = parseInt($.cookie('userMaxLevelCompleted'));
+	this.userMaxLevelCompleted = $.cookie('userMaxLevelCompleted');
+	if(isNaN(this.userMaxLevelCompleted)) {
+		this.userMaxLevelCompleted = 0;
+	}
+	
 	
 	/* Sprite and Animation attributes */
 	var title_intro_animation = new jaws.Animation({
@@ -44,6 +48,10 @@ function MenuState() {
 	
 	var index = 0;
 	var items = this.userMaxLevelCompleted > 0  ? ["Load Game", "New Game", "About"] : ["New Game", "About"]
+	var menu_select_sfx = new Howl({
+		urls : ['./assets/sounds/fx/menuselect.mp3']
+	});
+	
 	jaws.preventDefaultKeys(["down","s","up","w","enter"]);
 	
 	this.setup = function() {
@@ -66,7 +74,10 @@ function MenuState() {
 	this.update = function() {
 		
 		/* Input Management */
-		if (jaws.pressedWithoutRepeat(["enter", "space"])) {
+		if (jaws.pressedWithoutRepeat(["enter"])) {
+			
+			//sound the confirmation
+			menu_select_sfx.play();
 			
 			if(items[index] == "New Game") {
 				if(this.userMaxLevelCompleted > 0) {
@@ -83,7 +94,7 @@ function MenuState() {
 			
 			else if(items[index] == "Load Game") {
 				
-				jaws.switchGameState(PlayState, {fps:60}, this.userMaxLevelCompleted+1);
+				jaws.switchGameState(LevelSelectState, {fps:60});
 				
 			} else {//switch to About State
 				jaws.switchGameState(AboutState, {fps:60});
@@ -105,18 +116,19 @@ function MenuState() {
 
 	this.draw = function() {
 		
-		jaws.context.clearRect(0, 0, jaws.width, jaws.height)
+		jaws.clear();
 		
 		this.backgroundSprite.draw();
 
 		if(show_menu || this.userHasBeenHereBefore) {
 			jaws.context.fillStyle = 'Black';
 			if(this.userMaxLevelCompleted > 0) {
-				jaws.context.rect(0, jaws.height/1.5, jaws.width, 125);	
+				jaws.context.fillRect(0, jaws.height/1.5, jaws.width, 125);
+				console.log('drawing big')	
 			} else {
-				jaws.context.rect(0, jaws.height/1.5, jaws.width, 90);
+				jaws.context.fillRect(0, jaws.height/1.5, jaws.width, 90);
+				console.log('drawing little');
 			}
-			jaws.context.fill();
 	      	
 			for (var i = 0; items[i]; i++) {
 	

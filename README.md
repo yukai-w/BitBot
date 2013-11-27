@@ -36,6 +36,7 @@ I'm working on it. Expect to start soon. Will let you know. -- R
 
 About BITBOT
 ------------
+![Screenshot](https://raw.github.com/recardona/BitBot/master/screenshot.png)
 
 You control a Bot-in-training Bot with a limited energy supply who is stuck in a
 loop of sensing, planning, and acting - when you sense, you can’t act.  To act
@@ -44,7 +45,7 @@ outdated.  You must make it from the start to the goal while balancing your
 energy supply, and anticipating how the world might be when you begin to act.
 
 Use the arrow keys to control your robot in planning mode, and be aware that
-when you execute, the world might look different!
+when you execute, the world might have **changed**!
 
 ### Meta
 
