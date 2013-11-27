@@ -47,7 +47,7 @@
       {"Master Controller" : "Welcome to the BITBOT Training Program."},
       {"Master Controller" : "I am the Master Controller.  I am in charge of this program."},
       {"Master Controller" : "You are a Bot-in-Training Bot. This program is meant to test your functionality."},
-      {"Master Controller" : "We will begin the Training Program with a series of callibration tests."},
+      {"Master Controller" : "We will begin the Training Program with a series of calibration tests."},
       {"Master Controller" : "Please navigate from your (RED) start location to the (GREEN) goal location."},
       {"Master Controller" : "Be sure to not run out of power."}
       ],
