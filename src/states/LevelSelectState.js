@@ -7,6 +7,7 @@ function LevelSelectState() {
 	/* Cookie loading */
 	this.userMaxLevelCompleted = parseInt($.cookie('userMaxLevelCompleted'));
 	
+	
 	/* Sprite and Animation attributes */
 	var background_loop = new jaws.Animation({
 		sprite_sheet : "./assets/art/BitBotGameLoop-SpriteSheet.png",
@@ -28,6 +29,10 @@ function LevelSelectState() {
 	for(var level_idx = 0; level_idx <= maxLevel; level_idx++) {
 		levels[level_idx] = "Test Protocol "+level_idx;
 	}
+	
+	var menu_select_sfx = new Howl({
+		urls : ['./assets/sounds/fx/menuselect.mp3']
+	});
 	
 	jaws.preventDefaultKeys(["down","s","up","w","enter","esc"]);
 	
@@ -54,6 +59,10 @@ function LevelSelectState() {
 		
 		/* Input Management */
 		if (jaws.pressedWithoutRepeat(["enter"])) {
+			
+			//sound the confirmation
+			menu_select_sfx.play();
+			
 			//switch to the Play State and give to it the level we want to show
 			jaws.switchGameState(PlayState, {fps:60}, level_to_load);
 		}

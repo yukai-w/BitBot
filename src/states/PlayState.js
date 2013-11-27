@@ -50,6 +50,9 @@ function PlayState() {
 
 	var index = 0;
 	var items = this.userMaxLevelCompleted > 0 ? ["Restart", "Test Selection Screen", "Quit"] : ["Restart", "Quit"]
+	var menu_select_sfx = new Howl({
+		urls : ['./assets/sounds/fx/menuselect.mp3']
+	});
 
 	this.setup = function(level_to_load) {
 
@@ -121,6 +124,9 @@ function PlayState() {
 			}
 
 			if (jaws.pressedWithoutRepeat(["enter"])) {
+
+				//sound the confirmation				
+				menu_select_sfx.play();
 
 				if (items[index] == "Test Selection Screen") {
 					stop_all_music();

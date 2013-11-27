@@ -60,6 +60,7 @@ function init() {
 	jaws.assets.add("./assets/sounds/fx/move.mp3");
 	jaws.assets.add("./assets/sounds/fx/reboot.mp3");
 	jaws.assets.add("./assets/sounds/fx/next.mp3");
+	jaws.assets.add("./assets/sounds/fx/menuselect.mp3");
 	
 	
 	jaws.start(MenuState);

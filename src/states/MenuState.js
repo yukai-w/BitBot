@@ -48,6 +48,10 @@ function MenuState() {
 	
 	var index = 0;
 	var items = this.userMaxLevelCompleted > 0  ? ["Load Game", "New Game", "About"] : ["New Game", "About"]
+	var menu_select_sfx = new Howl({
+		urls : ['./assets/sounds/fx/menuselect.mp3']
+	});
+	
 	jaws.preventDefaultKeys(["down","s","up","w","enter"]);
 	
 	this.setup = function() {
@@ -71,6 +75,9 @@ function MenuState() {
 		
 		/* Input Management */
 		if (jaws.pressedWithoutRepeat(["enter"])) {
+			
+			//sound the confirmation
+			menu_select_sfx.play();
 			
 			if(items[index] == "New Game") {
 				if(this.userMaxLevelCompleted > 0) {
