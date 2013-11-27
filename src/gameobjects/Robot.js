@@ -131,7 +131,9 @@ function Robot(configuration_options) {
 	this.planningWatchdogTimer = 0.0;
 	var planning_timer_threshold = 1000.0;
 	this.executingWatchdogTimer = 0.0;
-	var executing_timer_threshold = 3000.0;
+	var executing_timer_threshold = 3100.0;
+	this.rebootingWatchdogTimer = 0.0;
+	var rebooting_timer_threshold = 2000.0;
 	
 
 	/* Game input attributes */
@@ -231,6 +233,10 @@ function Robot(configuration_options) {
 	 * method sets this Robot to 'idle' mode.
 	 */
 	this.reboot = function() {
+		
+		console.log('rebooting...')
+		console.log(this.rebootingWatchdogTimer);
+		
 		this.executingWatchdogTimer = 0.0;
 		this.sprite.setImage(this.rebootAnimation.next());
 		this.orientation = this.rebootAnimation.currentFrame();
@@ -239,15 +245,18 @@ function Robot(configuration_options) {
 		if(this.executingSfx.pos() > 0) {
 			this.executingSfx.stop();
 		}
-			
-		if(this.rebootAnimation.index == 1 && this.isPlayerControlled) {
-			if(this.rebootSfx.pos() == 0) {
-				this.rebootSfx.play();	
-			}
+		
+		//if we're starting the reboot timer, and it's the player,
+		if(this.rebootingWatchdogTimer == 0 && this.isPlayerControlled) {
+			this.rebootSfx.play(); //play the reboot sfx
 		}
-				
-		if(this.rebootSfx.pos() > 2) {
+		
+		this.rebootingWatchdogTimer += jaws.game_loop.tick_duration;
+					
+		//if we've reached the reboot timer threshold, stop!
+		if(this.rebootingWatchdogTimer > rebooting_timer_threshold) {
 			this.setMode('idle');
+			this.rebootingWatchdogTimer = 0;
 		}
 	}
 	
