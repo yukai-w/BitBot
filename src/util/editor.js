@@ -214,12 +214,20 @@ var Editor = {
 					// $("#editor-bit-bot-fixed-container").before(newBitbotDraggable);
 				// }
 				// add enemy bot to game object grid
-				// else 
+				// else
+				 
+				// set coordinates of object dropped
+				ui.draggable.attr('x', $(this).attr('x'));
+				ui.draggable.attr('y', $(this).attr('y'));
+				
 				if(ui.draggable.attr('id') === "editor-enemy-bot-fixed-container") {
 					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '5');
 					var newEnemybotDraggable = $("<div class='editor-enemy-bot-container'><img src='assets/art/editor-bot-enemy.png' /></div>");
 					editor.makeDraggable(newEnemybotDraggable);
 					newEnemybotDraggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});					
+					// set coordinates of new enemy bot
+					newEnemybotDraggable.attr('x', $(this).attr('x'));
+					newEnemybotDraggable.attr('y', $(this).attr('y'));
 					$("#editor-enemy-bot-fixed-container").before(newEnemybotDraggable);
 				} // just update that one grid tile
 				else if(ui.draggable.hasClass("editor-enemy-bot-container")) {
@@ -242,8 +250,13 @@ var Editor = {
 	 * Makes any object draggable
 	 */
 	makeDraggable: function(obj) {
+		var editor = this;
 		obj.draggable({
-			revert: 'invalid'
+			revert: 'invalid',
+			start: function(event, ui) {
+				// reset coordinates on grid when dragged (will be reset on drop)
+				editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), "0");				
+			}
 		});
 	},
 	
