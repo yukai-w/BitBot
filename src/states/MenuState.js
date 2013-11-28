@@ -33,6 +33,11 @@ function MenuState() {
 	});
 	
 	var show_menu = false;
+	this.titleMusic = new Howl({
+		urls : ['./assets/sounds/music/title.mp3'],
+		loop : true,
+		volume : 0.5
+	});
 	
 	this.backgroundSprite = new jaws.Sprite({x : 0, y : 0, scale : 2});
 	
@@ -61,14 +66,18 @@ function MenuState() {
 			if (index >= items.length) {
 				index = items.length - 1
 			}
-		})
+		});
 		
 		jaws.on_keydown(["up", "w"], function() {
 			index--;
 			if (index < 0) {
 				index = 0
 			}
-		})
+		});
+		
+		if(this.titleMusic.pos() == 0) {
+			this.titleMusic.play();
+		}
 	}
 	
 	this.update = function() {
@@ -85,9 +94,17 @@ function MenuState() {
 					if(doDelete) {
 						$.removeCookie('userMaxLevelCompleted');
 						jaws.switchGameState(PlayState, {fps:60}, 0); //load level 0 for the first time playing
+						if(title_background_music_is_playing) {
+							title_background_music.stop();
+							title_background_music_is_playing = false;
+						}
 					}
 				} else {
 					jaws.switchGameState(PlayState, {fps:60}, 0); //load level 0 for the first time playing
+					if(title_background_music_is_playing) {
+						title_background_music.stop();
+						title_background_music_is_playing = false;
+					}
 				}
 				
 			}

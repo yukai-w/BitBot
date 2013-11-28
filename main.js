@@ -49,6 +49,7 @@ function init() {
 	jaws.assets.add("./assets/sounds/music/metonymy.mp3");
 	jaws.assets.add("./assets/sounds/music/gameover.mp3");
 	jaws.assets.add("./assets/sounds/music/morallyambiguousai.mp3");
+	jaws.assets.add("./assets/sounds/music/title.mp3");
 	
 	
 	//Fx
