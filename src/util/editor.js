@@ -405,18 +405,22 @@ var Editor = {
 	updateTile: function(tile) {
 		var editor = this;
 		
-		var tileType = undefined;
+		var tileType = editor.tileTypes.UNDEFINED;
 		var rowIndex = parseInt(tile.attr('y'));
 		var columnIndex = parseInt(tile.attr('x'));
 		
 		if(editor.keyModifier === 'r') {					
 			tileType = editor.tileTypes.REGULAR;					
 		}
-		else if(editor.keyModifier === 's') {					
-			tileType = editor.tileTypes.START;					
+		else if(editor.keyModifier === 's') {
+			if(editor.startCount < editor.startLimit) {					
+				tileType = editor.tileTypes.START;			
+			}		
 		}
-		else if(editor.keyModifier === 'g') {					
-			tileType = editor.tileTypes.GOAL;					
+		else if(editor.keyModifier === 'g') {
+			if(editor.goalCount < editor.goalLimit) {					
+				tileType = editor.tileTypes.GOAL;
+			}					
 		}
 		else if(editor.keyModifier === 'f') {
 			tileType = editor.tileTypes.REGULAR;
