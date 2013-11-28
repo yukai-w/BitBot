@@ -5,9 +5,9 @@ function Robot(configuration_options) {
 
 	/* Game Design Attributes */
 	var battery_movement_cost = 0.1;
-	var battery_idle_decay = 0.01;
+	var battery_idle_decay = 0.02;
 	var battery_collide_penalty = 5.0;
-	var battery_respawn_penalty = 5.0;
+	var battery_respawn_penalty = 2.5;
 
 
 	/* Configuration Attributes */
@@ -113,7 +113,7 @@ function Robot(configuration_options) {
 	this.previousPosition = undefined;
 	this.targetPostion = undefined;
 
-	this.batteryLevel = 100.0;
+	
 	this.isPlayerControlled = (this.type == 'player_controlled' ? true : false);
 	this.isPlanning = false;
 	this.isExecuting = false;
@@ -235,9 +235,6 @@ function Robot(configuration_options) {
 	 */
 	this.reboot = function() {
 		
-		console.log('rebooting...')
-		console.log(this.rebootingWatchdogTimer);
-		
 		this.executingWatchdogTimer = 0.0;
 		this.sprite.setImage(this.rebootAnimation.next());
 		this.orientation = this.rebootAnimation.currentFrame();
@@ -309,6 +306,8 @@ function Robot(configuration_options) {
 	 */
 	this.execute = function() {
 		
+		this.batteryLevel -= battery_movement_cost;
+		
 		//if we have a target, move to it.
 		if (this.targetPosition != undefined) {
 			var tx = this.targetPosition.x - this.sprite.x;
@@ -360,7 +359,6 @@ function Robot(configuration_options) {
 			});
 			var action = this.actionQueue.dequeue();
 			this.findActionTarget(action);
-			this.batteryLevel -= battery_movement_cost;
 		}
 
 		//but if there are no more actions, then you're done.
