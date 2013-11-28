@@ -53,6 +53,9 @@ function PlayState() {
 	var menu_select_sfx = new Howl({
 		urls : ['./assets/sounds/fx/menuselect.mp3']
 	});
+	
+	
+	var max_levels = 22;
 
 	this.setup = function(level_to_load) {
 
