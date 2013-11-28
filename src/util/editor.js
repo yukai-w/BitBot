@@ -416,11 +416,17 @@ var Editor = {
 			if(editor.startCount < editor.startLimit) {					
 				tileType = editor.tileTypes.START;			
 			}		
+			else {
+				this.showAlert("start tile limit reached");
+			}
 		}
 		else if(editor.keyModifier === 'g') {
 			if(editor.goalCount < editor.goalLimit) {					
 				tileType = editor.tileTypes.GOAL;
 			}					
+			else {
+				this.showAlert("goal tile limit reached");
+			}
 		}
 		else if(editor.keyModifier === 'f') {
 			tileType = editor.tileTypes.REGULAR;
