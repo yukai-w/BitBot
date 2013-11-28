@@ -47,7 +47,8 @@
   
   "outro_dialogue": [
       {"Master Controller" : "Satisfactory."},
-      {"Master Controller" : "Collision avoidance subroutines and shock absorbers all within nominal ranges."}
+      {"Master Controller" : "Collision avoidance subroutines and shock absorbers all within nominal ranges."},
+      {"Master Controller" : "All primary tests passed. Beginning temporary shutdown and defragmentation."}
       ],
 
   "retry_dialogue": [

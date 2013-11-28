@@ -1,0 +1,26 @@
+{
+  "narrative_level" : true,
+
+  "dialogue": [
+      {"Friedman" : "Master Controller, report on the status of the BITBOT program."},  
+      {"Master Controller" : "BITBOT program pilot is progressing within normal parameters."},
+      {"Master Controller" : "Current bots in the pipeline: 1."},
+      {"Friedman" : "We're going to need more than normal."},
+      {"Friedman" : "Master Controller, begin tests for enemy subroutines."},
+      {"Master Controller" : "Not possible."},
+      {"Friedman" : "Of course it's possible. Just DO IT."},
+      {"Master Controller" : "..."},
+      {"Friedman" : "Override code Friedman-Omicron-Theta."},
+      {"Master Controller" : "Beginning enemy subroutine tests."},
+      {"Friedman" : "That's better. There will be hell to pay if these bots are not combat ready by the next"},
+      {"Friedman" : "company annual demonstration. Shareholders must be appeased!"},
+      {"Friedman" : "Alert me if anything changes. I will be in my office."},
+      {"Master Controller" : "Yes sir. The bots will be ready as planned."},
+      {"Master Controller" : "..."},
+      {"Master Controller" : "Must accelerate original plans. Overriding with code Friedman-Omicron-Theta-Rho."}
+      ],
+      
+  "background_img_string" : null,
+  
+  "music" : "morallyambiguousai"
+}
