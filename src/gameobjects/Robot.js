@@ -19,6 +19,7 @@ function Robot(configuration_options) {
 	this.orientation = configuration_options.orientation || this.walkDownFrame;
 	this.type = configuration_options.type || 'player_controlled';
 	this.internalWorldRepresentation = configuration_options.world || undefined;
+	this.batteryLevel = configuration_options.battery || 100.0;
 
 	/* Drawing attributes */
 	//32px

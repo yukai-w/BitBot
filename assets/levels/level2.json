@@ -67,6 +67,8 @@
   
   "fail_music" : "gameover",
   
-  "play_music" : "metonymy"
+  "play_music" : "metonymy",
+  
+  "battery" : 100.0
   
 }

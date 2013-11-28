@@ -251,7 +251,8 @@ function PlayState() {
 				outro_music : outro_music_file,
 				fail_music : fail_music_file,
 				play_music : play_music_file,
-				player_is_retrying : false
+				player_is_retrying : false,
+				battery : data.battery
 			});
 		}
 

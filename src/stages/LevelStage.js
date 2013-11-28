@@ -36,7 +36,8 @@ function LevelStage(options) {
 	this.player = new Robot({
 		position : this.activeLevel.startTile.getCenterCoordinate(),
 		type : 'player_controlled',
-		world : this
+		world : this,
+		battery : options.battery
 	});
 	this.hud = new HUD(this.player);
 	this.introDialogueSequence = new DialogueSequence();
