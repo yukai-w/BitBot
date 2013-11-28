@@ -509,7 +509,7 @@ var Editor = {
 		var editorTiles = $(".editor-tile");
 		editorTiles.removeClass();
 		editorTiles.addClass("editor-tile editor-tile-undefined");
-		
+		$(".editor-enemy-bot-container, .editor-enemy-bot-ping-pong-container, .editor-enemy-bot-ell-pattern-container, .editor-enemy-bot-konami-container").remove();
 		this.clearGrid();
 	}
 };
