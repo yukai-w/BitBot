@@ -80,11 +80,11 @@ var Editor = {
 		var editor = this;
 		
 		$(document).keydown(function(event) {
-			if(event.which == 70) {
-				editor.keyModifier = 'f';
+			if(event.which == 84) {
+				editor.keyModifier = 't';
 			}
-			else if(event.which == 82) {
-				editor.keyModifier = 'r';
+			else if(event.which == 79) {
+				editor.keyModifier = 'o';
 			} 
 			else if(event.which == 83) {
 				editor.keyModifier = 's';
@@ -387,7 +387,7 @@ var Editor = {
 				this.goalCount++;
 			}
 			break;
-		case this.tileTypes.REGULAR:
+		case this.tileTypes.OBSTACLE:
 			tile.addClass("editor-tile-raised");
 			tile.attr("type", "raised");
 			break;
@@ -410,7 +410,7 @@ var Editor = {
 		var rowIndex = parseInt(tile.attr('y'));
 		var columnIndex = parseInt(tile.attr('x'));
 		
-		if(editor.keyModifier === 'r') {					
+		if(editor.keyModifier === 't') {					
 			tileType = editor.tileTypes.REGULAR;					
 		}
 		else if(editor.keyModifier === 's') {
@@ -429,8 +429,8 @@ var Editor = {
 				this.showAlert("goal tile limit reached");
 			}
 		}
-		else if(editor.keyModifier === 'f') {
-			tileType = editor.tileTypes.REGULAR;
+		else if(editor.keyModifier === 'o') {
+			tileType = editor.tileTypes.OBSTACLE;
 		}
 		else if(editor.keyModifier === undefined) {
 			tileType = editor.tileTypes.UNDEFINED;
