@@ -81,12 +81,12 @@
 	padding-top: 10px;
 }
 
-.editor-bit-bot-container, #editor-bit-bot-fixed-container{
+#editor-bit-bot-fixed-container{
 	position: absolute;
 	top: 100px;
 }
 
-.editor-bit-bot-container img, #editor-bit-bot-fixed-container img{
+#editor-bit-bot-fixed-container img{
 	height: 28px;
 }
 
@@ -98,7 +98,7 @@
 	z-index: 1;
 }
 
-.editor-enemy-bot-container, #editor-enemy-bot-fixed-container { 
+#editor-enemy-bot-fixed-container { 
 	position: absolute;
 	top: 150px;
 }
@@ -111,7 +111,7 @@
 	z-index: 1;
 }
 
-.editor-battery-container, #editor-battery-fixed-container {
+#editor-battery-fixed-container {
 	position: absolute;
 	top: 250px;
 }
