@@ -66,8 +66,10 @@ function LevelSelectState() {
 			//this will stop it once we've decided to load a level.
 			if(jaws.previous_game_state.titleMusic != undefined && jaws.previous_game_state.titleMusic.pos() != 0) {
 				
-				jaws.previous_game_state.titleMusic.fadeOut(0.0, 750, function() {
-					jaws.previous_game_state.titleMusic.stop();	
+				var title_music = jaws.previous_game_state.titleMusic;
+				
+				title_music.fadeOut(0.0, 750, function() {
+					title_music.stop();	
 				});
 			}
 			
@@ -92,8 +94,6 @@ function LevelSelectState() {
 		jaws.context.fillStyle = 'White';
 		wrap_text(jaws.context, "Identify Test", 180, (jaws.height/6)+40, jaws.width*4/6, 30);	
 		
-		console.log('drawing level select');
-      	
 		for (var i = 0; levels[i]; i++) {
 
 			jaws.context.font = "16pt Orbitron";
