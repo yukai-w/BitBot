@@ -221,28 +221,33 @@ var Editor = {
 				ui.draggable.attr('y', $(this).attr('y'));
 				
 				if(ui.draggable.attr('id') === "editor-enemy-bot-fixed-container") {
-					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '5');
-					var newEnemybotDraggable = $("<div class='editor-enemy-bot-container'><img src='assets/art/editor-bot-enemy.png' /></div>");
-					editor.makeDraggable(newEnemybotDraggable);
-					newEnemybotDraggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});					
-					// set coordinates of new enemy bot
-					newEnemybotDraggable.attr('x', $(this).attr('x'));
-					newEnemybotDraggable.attr('y', $(this).attr('y'));
-					$("#editor-enemy-bot-fixed-container").before(newEnemybotDraggable);
-				} // just update that one grid tile
+					editor.doFixedContainerDrop(5, $(this));
+					// editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '5');
+					// var newEnemybotDraggable = $("<div class='editor-enemy-bot-container'><img src='assets/art/editor-bot-enemy.png' /></div>");
+					// editor.makeDraggable(newEnemybotDraggable);
+					// newEnemybotDraggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});					
+					// // set coordinates of new enemy bot
+					// newEnemybotDraggable.attr('x', $(this).attr('x'));
+					// newEnemybotDraggable.attr('y', $(this).attr('y'));
+					// $("#editor-enemy-bot-fixed-container").before(newEnemybotDraggable);
+				}
+				else if(ui.draggable.attr('id') === "editor-enemy-bot-ping-pong-fixed-container") {
+					
+				}
 				else if(ui.draggable.hasClass("editor-enemy-bot-container")) {
 					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '5');
 					ui.draggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});
 				}
 				// add battery to game object grid	
 				else if(ui.draggable.attr('id') === "editor-battery-fixed-container") {
-					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '9');
-					var newBatteryDraggable = $("<div class='editor-battery-container'><img src='assets/art/Battery.png' /></div>");
-					editor.makeDraggable(newBatteryDraggable);
-					newBatteryDraggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});
-					newBatteryDraggable.attr('x', $(this).attr('x'));
-					newBatteryDraggable.attr('y', $(this).attr('y'));					
-					$("#editor-battery-fixed-container").before(newBatteryDraggable);
+					editor.doFixedContainerDrop(9, $(this));
+					// editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '9');
+					// var newBatteryDraggable = $("<div class='editor-battery-container'><img src='assets/art/Battery.png' /></div>");
+					// editor.makeDraggable(newBatteryDraggable);
+					// newBatteryDraggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});
+					// newBatteryDraggable.attr('x', $(this).attr('x'));
+					// newBatteryDraggable.attr('y', $(this).attr('y'));					
+					// $("#editor-battery-fixed-container").before(newBatteryDraggable);
 				}	
 				else if(ui.draggable.hasClass("editor-battery-container")) {
 					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '9');
@@ -250,6 +255,38 @@ var Editor = {
 				}						
 			}
 		});
+	},
+	
+	
+	/**
+	 * Behavior for when a container is dragged from object pool and dropped
+	 * @param objectId - id of the game object that is dropped
+	 */
+	doFixedContainerDrop: function(objectId, tile) {
+		var editor = this;
+		
+		editor.updateGameObjectGrid(tile.attr('x'), tile.attr('y'), objectId);
+		var newEnemybotDraggable = null;
+		
+		switch(objectId) {
+			case 5:
+				newEnemybotDraggable = $("<div class='editor-enemy-bot-container'><img src='assets/art/editor-bot-enemy.png' /></div>");
+				break;
+			case 6:
+			case 7:
+			case 8:
+			case 9:
+				newEnemybotDraggable = $("<div class='editor-battery-container'><img src='assets/art/Battery.png' /></div>");
+				break;
+			default:
+				break;
+		}
+		editor.makeDraggable(newEnemybotDraggable);
+		newEnemybotDraggable.css({top: tile.offset().top, left: tile.offset().left, position: "absolute"});					
+		// set coordinates of new enemy bot
+		newEnemybotDraggable.attr('x', tile.attr('x'));
+		newEnemybotDraggable.attr('y', tile.attr('y'));
+		$("#editor-enemy-bot-fixed-container").before(newEnemybotDraggable);
 	},
 	
 	/**
