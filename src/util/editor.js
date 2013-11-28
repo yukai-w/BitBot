@@ -247,19 +247,31 @@ var Editor = {
 					// newEnemybotDraggable.attr('y', $(this).attr('y'));
 					// $("#editor-enemy-bot-fixed-container").before(newEnemybotDraggable);
 				}
-				else if(ui.draggable.attr('id') === "editor-enemy-bot-ping-pong-fixed-container") {
-					editor.doFixedContainerDrop(6, $(this));
-				}
-				else if(ui.draggable.attr('id') === "editor-enemy-bot-ell-pattern-fixed-container") {
-					editor.doFixedContainerDrop(7, $(this));
-				}
-				else if(ui.draggable.attr('id') === "editor-enemy-bot-konami-fixed-container") {
-					editor.doFixedContainerDrop(8, $(this));
-				}
 				else if(ui.draggable.hasClass("editor-enemy-bot-container")) {
 					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '5');
 					ui.draggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});
 				}
+				else if(ui.draggable.attr('id') === "editor-enemy-bot-ping-pong-fixed-container") {
+					editor.doFixedContainerDrop(6, $(this));
+				}
+				else if(ui.draggable.hasClass("editor-enemy-bot-ping-pong-container")) {
+					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), 6);
+					ui.draggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});
+				}
+				else if(ui.draggable.attr('id') === "editor-enemy-bot-ell-pattern-fixed-container") {
+					editor.doFixedContainerDrop(7, $(this));
+				}
+				else if(ui.draggable.hasClass("editor-enemy-bot-ell-pattern-container")) {
+					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), 7);
+					ui.draggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});
+				}
+				else if(ui.draggable.attr('id') === "editor-enemy-bot-konami-fixed-container") {
+					editor.doFixedContainerDrop(8, $(this));
+				}
+				else if(ui.draggable.hasClass("editor-enemy-bot-konami-container")) {
+					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), 8);
+					ui.draggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});
+				}				
 				// add battery to game object grid	
 				else if(ui.draggable.attr('id') === "editor-battery-fixed-container") {
 					editor.doFixedContainerDrop(9, $(this));
