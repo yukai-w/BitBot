@@ -1,6 +1,6 @@
 #editor-container {
 	position: relative;
-	width: 1024px;
+	width: 1024px;	
 }
 
 #editor-grid-container {
@@ -15,6 +15,10 @@
 	background-color: #0f0f0f;
 	border: solid 1px #f3f3f3;
 	position: absolute;
+}
+
+.editor-tile.valid {
+	background-color: #3f3f3f;
 }
 
 .editor-output-row {
@@ -55,8 +59,8 @@
 #editor-grid-printout-container, #editor-gameobject-grid-printout-container {
 	position: absolute;
 	width: 150px;
-	top: 500px;
-	
+	top: 740px;
+	padding-bottom: 50px;
 }
 
 #editor-grid-printout-container  {
@@ -64,7 +68,7 @@
 }
 
 #editor-gameobject-grid-printout-container {
-	left: 475px;
+	left: 575px;
 }
 
 #alert {
@@ -81,12 +85,12 @@
 	padding-top: 10px;
 }
 
-.editor-bit-bot-container, #editor-bit-bot-fixed-container{
+/*#editor-bit-bot-fixed-container{
 	position: absolute;
 	top: 100px;
 }
 
-.editor-bit-bot-container img, #editor-bit-bot-fixed-container img{
+#editor-bit-bot-fixed-container img{
 	height: 28px;
 }
 
@@ -96,22 +100,71 @@
 
 #editor-bit-bot-fixed-container {
 	z-index: 1;
-}
+}*/
 
-.editor-enemy-bot-container, #editor-enemy-bot-fixed-container { 
+/* SQUARE PATTERN ENEMY BOT */
+#editor-enemy-bot-fixed-container { 
 	position: absolute;
 	top: 150px;
+	background-color: #f30000;
+	z-index: 1;
 }
 
 .editor-enemy-bot-container {
 	z-index: 2;
+	background-color: #f33333
 }
 
-#editor-enemy-bot-fixed-container {
+/*#editor-enemy-bot-fixed-container {
+	z-index: 1;
+}*/
+
+/* PING-PONG PATTERN ENEMY BOT */
+#editor-enemy-bot-ping-pong-fixed-container {
+	position: absolute;
+	top: 150px;
+	left: 40px;
+	background-color: #33f333;
 	z-index: 1;
 }
 
-.editor-battery-container, #editor-battery-fixed-container {
+.editor-enemy-bot-ping-pong-container {
+	z-index: 2;
+	background-color: #33f333;
+}
+
+/* L-PATTERN ENEMY BOT */
+#editor-enemy-bot-ell-pattern-fixed-container {
+	position: absolute;
+	top: 150px;
+	left: 80px;
+	background-color: #3333f3;
+	z-index: 1;
+}
+
+.editor-enemy-bot-ell-pattern-container {
+	z-index: 2;
+	background-color: #3333f3;
+}
+
+
+/* KONAMI CODE PATTERN ENEMY BOT */
+#editor-enemy-bot-konami-fixed-container {
+	position: absolute;
+	top: 150px;
+	left: 120px;
+	background-color: #f333f3;
+	z-index: 1;
+}
+
+.editor-enemy-bot-konami-container {
+	z-index: 2;
+	background-color: #f333f3;
+}
+
+
+/* BATTERY */
+#editor-battery-fixed-container {
 	position: absolute;
 	top: 250px;
 }
