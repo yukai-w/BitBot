@@ -81,7 +81,7 @@
 	padding-top: 10px;
 }
 
-#editor-bit-bot-fixed-container{
+/*#editor-bit-bot-fixed-container{
 	position: absolute;
 	top: 100px;
 }
@@ -96,8 +96,9 @@
 
 #editor-bit-bot-fixed-container {
 	z-index: 1;
-}
+}*/
 
+/* SQUARE PATTERN ENEMY BOT */
 #editor-enemy-bot-fixed-container { 
 	position: absolute;
 	top: 150px;
@@ -111,6 +112,30 @@
 	z-index: 1;
 }
 
+/* PING-PONG PATTERN ENEMY BOT */
+#editor-enemy-bot-ping-pong-fixed-container {
+	position: absolute;
+	top: 150px;
+	left: 40px;
+}
+
+/* L-PATTERN ENEMY BOT */
+#editor-enemy-bot-ell-pattern-fixed-container {
+	position: absolute;
+	top: 150px;
+	left: 80px;
+}
+
+
+/* KONAMI CODE PATTERN ENEMY BOT */
+#editor-enemy-bot-konami-fixed-container {
+	position: absolute;
+	top: 150px;
+	left: 120px;
+}
+
+
+/* BATTERY */
 #editor-battery-fixed-container {
 	position: absolute;
 	top: 250px;
