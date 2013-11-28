@@ -6,7 +6,7 @@ function Robot(configuration_options) {
 	/* Game Design Attributes */
 	var battery_movement_cost = 0.1;
 	var battery_idle_decay = 0.02;
-	var battery_collide_penalty = 5.0;
+	var battery_collide_penalty = 20.0;
 	var battery_respawn_penalty = 2.5;
 
 
