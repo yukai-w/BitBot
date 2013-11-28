@@ -161,7 +161,7 @@ function Robot(configuration_options) {
 		}
 		
 		
-		bound_player_attributes(this);
+		this.boundBatteryAttributes();
 		this.moveToMyPosition(this.shadowSprite);
 	}
 
@@ -665,13 +665,13 @@ function Robot(configuration_options) {
 	 * Forces the player to have reasonable life values.
 	 * @param {Object} player the player to bound the attributes of
 	 */
-	function bound_player_attributes(player) {
-		if (player.batteryLevel > 100) {
-			player.batteryLevel = 100;
+	this.boundBatteryAttributes = function() {
+		if (this.batteryLevel > 100) {
+			this.batteryLevel = 100;
 		}
 
-		if (player.batteryLevel < 0) {
-			player.batteryLevel = 0;
+		if (this.batteryLevel < 0) {
+			this.batteryLevel = 0;
 		}
 	}
 

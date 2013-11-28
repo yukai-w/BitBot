@@ -294,6 +294,7 @@ function LevelStage(options) {
 			$.each(collided_batteries, function(battery_idx, battery) {
 				goog.array.remove(that.batteries, battery);
 				that.player.batteryLevel += battery.use();
+				that.player.boundBatteryAttributes();
 			});
 		}
 
