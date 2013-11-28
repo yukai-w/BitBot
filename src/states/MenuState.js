@@ -1,8 +1,6 @@
 /*
  *
- * MenuState is our lobby/welcome menu were gamer can chose start, high score and settings.
- * For this example we have only implemented start. Start switches active game state by simply:
- *   jaws.switchGameState(play)   (jaws.switchGameState(PlayState) would have worked too)
+ * MenuState is the TitleScreen.
  *
  */
 function MenuState() {
