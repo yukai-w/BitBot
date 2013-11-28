@@ -163,14 +163,15 @@ function LevelStage(options) {
 			if (!this.player.isPlanning) {
 				jaws.draw(this.robotsOutOfPlay);
 				this.activeLevel.draw();
+				jaws.draw(this.batteries);
 				jaws.draw(this.robotsInPlay);
 			} else {
 				jaws.draw(this.backgroundFreezeFrame);
 				this.activeLevel.draw();
+				jaws.draw(this.batteries);
 				jaws.draw(this.foregroundFreezeFrame);
 			}
 
-			jaws.draw(this.batteries);
 			this.hud.draw(); 
 		} else {
 			this.activeDialogueSequence.draw();
