@@ -162,6 +162,7 @@ var Editor = {
 		
 		// attach mousedown behavior to tiles in grid
 		gridContainer.on('mousedown', '.editor-tile', function(event) {
+			// console.log("mousedown on tile");
 			editor.mouseDown = true;
 			editor.updateTile($(this));
 		});
@@ -169,7 +170,7 @@ var Editor = {
 		// attach mouseover behavior to tiles in grid
 		gridContainer.find('.editor-tile').on('mouseover', function(event) {
 			if(editor.mouseDown) {
-				editor.updateTile($(this));
+				// editor.updateTile($(this));
 			}
 		});
 		
@@ -435,6 +436,7 @@ var Editor = {
 			tileType = editor.tileTypes.UNDEFINED;
 		}
 		
+		// console.log(tileType);
 		editor.setTileType(tile, tileType);
 		editor.updateGrid(columnIndex, rowIndex, tileType);
 	},
