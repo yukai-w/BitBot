@@ -94,16 +94,14 @@ function MenuState() {
 					if(doDelete) {
 						$.removeCookie('userMaxLevelCompleted');
 						jaws.switchGameState(PlayState, {fps:60}, 0); //load level 0 for the first time playing
-						if(title_background_music_is_playing) {
-							title_background_music.stop();
-							title_background_music_is_playing = false;
+						if(this.titleMusic.pos() != 0) {
+							this.titleMusic.stop();
 						}
 					}
 				} else {
 					jaws.switchGameState(PlayState, {fps:60}, 0); //load level 0 for the first time playing
-					if(title_background_music_is_playing) {
-						title_background_music.stop();
-						title_background_music_is_playing = false;
+					if(this.titleMusic.pos() != 0) {
+						this.titleMusic.stop();
 					}
 				}
 				
@@ -141,10 +139,8 @@ function MenuState() {
 			jaws.context.fillStyle = 'Black';
 			if(this.userMaxLevelCompleted > 0) {
 				jaws.context.fillRect(0, jaws.height/1.5, jaws.width, 125);
-				console.log('drawing big')	
 			} else {
 				jaws.context.fillRect(0, jaws.height/1.5, jaws.width, 90);
-				console.log('drawing little');
 			}
 	      	
 			for (var i = 0; items[i]; i++) {
