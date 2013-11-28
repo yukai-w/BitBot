@@ -17,6 +17,10 @@
 	position: absolute;
 }
 
+.editor-tile.valid {
+	background-color: #3f3f3f;
+}
+
 .editor-output-row {
 	width: 100%;
 }

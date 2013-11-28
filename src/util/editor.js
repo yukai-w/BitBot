@@ -107,7 +107,7 @@ var Editor = {
 		for(var i=0; i < this.height; i++) {
 			this.grid[i] = new Array(this.width);
 			this.gameObjectGrid[i] = new Array(this.width);
-			for(var j=0; j < this.width; j++) {
+			for(var j=0; j < this.width; j++) {				
 				this.grid[i][j] = 0;
 				this.gameObjectGrid[i][j] = 0;
 				this.outputGrid();
@@ -127,6 +127,9 @@ var Editor = {
 		$.each(this.grid, function(rowIndex, row) {						
 			$.each(row, function(index, value) {
 				var editorTile = $("<div class='editor-tile'></div>");
+				if(index >= 3 && index <=14 && rowIndex >= 3 && rowIndex <= 14) {
+					editorTile.addClass("valid");
+				}
 				editorTile.attr('x', index);
 				editorTile.attr('y', rowIndex);				
 				var leftOffset = index * width;
