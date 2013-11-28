@@ -184,11 +184,23 @@ var Editor = {
 		});
 		
 		// draggables
-		$("#editor-bit-bot-fixed-container").draggable({
+		// $("#editor-bit-bot-fixed-container").draggable({
+			// revert: true,
+			// revertDuration: 0
+		// });
+		$("#editor-enemy-bot-fixed-container").draggable({
 			revert: true,
 			revertDuration: 0
 		});
-		$("#editor-enemy-bot-fixed-container").draggable({
+		$("#editor-enemy-bot-ping-pong-fixed-container").draggable({
+			revert: true,
+			revertDuration: 0
+		});
+		$("#editor-enemy-bot-ell-pattern-fixed-container").draggable({
+			revert: true,
+			revertDuration: 0
+		});
+		$("#editor-enemy-bot-konami-fixed-container").draggable({
 			revert: true,
 			revertDuration: 0
 		});
@@ -199,7 +211,11 @@ var Editor = {
 		
 		// droppables
 		$(".editor-tile").droppable( {
-			accept: "#editor-enemy-bot-fixed-container, .editor-enemy-bot-container, #editor-battery-fixed-container, .editor-battery-container",
+			accept: "#editor-enemy-bot-fixed-container, .editor-enemy-bot-container, \
+					#editor-enemy-bot-ping-pong-fixed-container, .editor-enemy-bot-ping-pong-container, \
+					#editor-enemy-bot-ell-pattern-fixed-container, .editor-enemy-bot-ell-pattern-container, \
+					#editor-enemy-bot-konami-fixed-container, .editor-enemy-bot-konami-container, \
+					#editor-battery-fixed-container, .editor-battery-container",
 			hoverClass: "editor-tile-drop-hover",
 			drop: function(event, ui) {
 				// snap object to tile
@@ -232,7 +248,13 @@ var Editor = {
 					// $("#editor-enemy-bot-fixed-container").before(newEnemybotDraggable);
 				}
 				else if(ui.draggable.attr('id') === "editor-enemy-bot-ping-pong-fixed-container") {
-					
+					editor.doFixedContainerDrop(6, $(this));
+				}
+				else if(ui.draggable.attr('id') === "editor-enemy-bot-ell-pattern-fixed-container") {
+					editor.doFixedContainerDrop(7, $(this));
+				}
+				else if(ui.draggable.attr('id') === "editor-enemy-bot-konami-fixed-container") {
+					editor.doFixedContainerDrop(8, $(this));
 				}
 				else if(ui.draggable.hasClass("editor-enemy-bot-container")) {
 					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '5');
@@ -273,8 +295,14 @@ var Editor = {
 				newEnemybotDraggable = $("<div class='editor-enemy-bot-container'><img src='assets/art/editor-bot-enemy.png' /></div>");
 				break;
 			case 6:
+				newEnemybotDraggable = $("<div class='editor-enemy-bot-ping-pong-container'><img src='assets/art/editor-bot-enemy.png' /></div>");
+				break;
 			case 7:
+				newEnemybotDraggable = $("<div class='editor-enemy-bot-ell-pattern-container'><img src='assets/art/editor-bot-enemy.png' /></div>");
+				break;
 			case 8:
+				newEnemybotDraggable = $("<div class='editor-enemy-bot-konami-container'><img src='assets/art/editor-bot-enemy.png' /></div>");
+				break;
 			case 9:
 				newEnemybotDraggable = $("<div class='editor-battery-container'><img src='assets/art/Battery.png' /></div>");
 				break;

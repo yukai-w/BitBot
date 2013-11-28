@@ -102,7 +102,8 @@
 #editor-enemy-bot-fixed-container { 
 	position: absolute;
 	top: 150px;
-	background-color: #f30000
+	background-color: #f30000;
+	z-index: 1;
 }
 
 .editor-enemy-bot-container {
@@ -110,16 +111,22 @@
 	background-color: #f33333
 }
 
-#editor-enemy-bot-fixed-container {
+/*#editor-enemy-bot-fixed-container {
 	z-index: 1;
-}
+}*/
 
 /* PING-PONG PATTERN ENEMY BOT */
 #editor-enemy-bot-ping-pong-fixed-container {
 	position: absolute;
 	top: 150px;
 	left: 40px;
-	background-color: #33f333
+	background-color: #33f333;
+	z-index: 1;
+}
+
+.editor-enemy-bot-ping-pong-container {
+	z-index: 2;
+	background-color: #33f333;
 }
 
 /* L-PATTERN ENEMY BOT */
@@ -127,7 +134,13 @@
 	position: absolute;
 	top: 150px;
 	left: 80px;
-	background-color: #3333f3
+	background-color: #3333f3;
+	z-index: 1;
+}
+
+.editor-enemy-bot-ell-pattern-container {
+	z-index: 2;
+	background-color: #3333f3;
 }
 
 
@@ -136,7 +149,13 @@
 	position: absolute;
 	top: 150px;
 	left: 120px;
-	background-color: #f333f3
+	background-color: #f333f3;
+	z-index: 1;
+}
+
+.editor-enemy-bot-konami-container {
+	z-index: 2;
+	background-color: #f333f3;
 }
 
 
