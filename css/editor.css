@@ -102,10 +102,12 @@
 #editor-enemy-bot-fixed-container { 
 	position: absolute;
 	top: 150px;
+	background-color: #f30000
 }
 
 .editor-enemy-bot-container {
 	z-index: 2;
+	background-color: #f33333
 }
 
 #editor-enemy-bot-fixed-container {
@@ -117,6 +119,7 @@
 	position: absolute;
 	top: 150px;
 	left: 40px;
+	background-color: #33f333
 }
 
 /* L-PATTERN ENEMY BOT */
@@ -124,6 +127,7 @@
 	position: absolute;
 	top: 150px;
 	left: 80px;
+	background-color: #3333f3
 }
 
 
@@ -132,6 +136,7 @@
 	position: absolute;
 	top: 150px;
 	left: 120px;
+	background-color: #f333f3
 }
 
 
