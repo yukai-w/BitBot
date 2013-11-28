@@ -6,7 +6,6 @@ function Battery(pos) {
 	this.x = pos.x;
 	this.y = pos.y;
 	this.drawing_vert_offset = 5;
-	
 	this.useSfx = new Howl({
 		urls : ['./assets/sounds/fx/powerup.mp3'],
 		volume : 0.35
@@ -21,6 +20,9 @@ function Battery(pos) {
 		anchor : "center",
 		image : "./assets/art/Battery.png"
 	});
+	
+	//create a collision rect which matches the in-game tile collision system
+	this.collisionRect = new jaws.Rect(this.sprite.x-16, this.sprite.y-32, 8, 15);
 	
 	this.shadowSprite = new jaws.Sprite({
 		x : pos.x,
@@ -39,7 +41,7 @@ function Battery(pos) {
 	}
 
 	this.rect = function() {
-		return this.sprite.rect().resizeTo(8, 15);
+		return this.collisionRect;
 	}
 
 	this.use = function() {
