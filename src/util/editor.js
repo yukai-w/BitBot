@@ -369,7 +369,7 @@ var Editor = {
 			tile.attr("type", "flat");
 			break;
 		case this.tileTypes.START:
-			if(this.startCount + 1 > this.startLimit) {
+			if(this.startCount == this.startLimit) {
 				this.showAlert("start tile limit reached");
 			} else {
 				tile.addClass("editor-tile-start");
@@ -378,7 +378,7 @@ var Editor = {
 			}
 			break;
 		case this.tileTypes.GOAL:			
-			if(this.goalCount + 1 > this.goalLimit) {
+			if(this.goalCount == this.goalLimit) {
 				this.showAlert("goal tile limit reached");
 			} else {
 				tile.addClass("editor-tile-goal");
@@ -510,6 +510,8 @@ var Editor = {
 		editorTiles.removeClass();
 		editorTiles.addClass("editor-tile editor-tile-undefined");
 		$(".editor-enemy-bot-container, .editor-enemy-bot-ping-pong-container, .editor-enemy-bot-ell-pattern-container, .editor-enemy-bot-konami-container").remove();
+		this.startCount = 0;
+		this.goalCount = 0;		
 		this.clearGrid();
 	}
 };
