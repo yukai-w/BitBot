@@ -199,7 +199,7 @@ var Editor = {
 		
 		// droppables
 		$(".editor-tile").droppable( {
-			accept: "#editor-enemy-bot-fixed-container, .editor-enemy-bot-container, #editor-battery-fixed-container",
+			accept: "#editor-enemy-bot-fixed-container, .editor-enemy-bot-container, #editor-battery-fixed-container, .editor-battery-container",
 			hoverClass: "editor-tile-drop-hover",
 			drop: function(event, ui) {
 				// snap object to tile
@@ -239,9 +239,15 @@ var Editor = {
 					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '9');
 					var newBatteryDraggable = $("<div class='editor-battery-container'><img src='assets/art/Battery.png' /></div>");
 					editor.makeDraggable(newBatteryDraggable);
-					newBatteryDraggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});					
+					newBatteryDraggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});
+					newBatteryDraggable.attr('x', $(this).attr('x'));
+					newBatteryDraggable.attr('y', $(this).attr('y'));					
 					$("#editor-battery-fixed-container").before(newBatteryDraggable);
-				}							
+				}	
+				else if(ui.draggable.hasClass("editor-battery-container")) {
+					editor.updateGameObjectGrid($(this).attr('x'), $(this).attr('y'), '9');
+					ui.draggable.css({top: $(this).offset().top, left: $(this).offset().left, position: "absolute"});
+				}						
 			}
 		});
 	},
