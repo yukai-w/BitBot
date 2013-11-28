@@ -7,13 +7,13 @@
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
-      [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0], 
-      [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0], 
-      [0, 0, 0, 0, 1, 1, 2, 1, 1, 1, 1, 3, 1, 1, 0, 0, 0, 0], 
-      [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0], 
-      [0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0], 
-      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
+      [0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0], 
+      [0, 0, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0], 
+      [0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0], 
+      [0, 0, 0, 0, 2, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0], 
+      [0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0], 
+      [0, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 0, 0, 0, 0], 
+      [0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 3, 0, 0, 0, 0], 
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], 
       [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -44,16 +44,17 @@
       ],
       
   "intro_dialogue": [
-      {"Master Controller" : "Welcome to Test 3."}
+      {"Master Controller" : "Falling off the platform will result in a severe penalty."}
       ],
   
   "outro_dialogue": [
       {"Master Controller" : "Satisfactory."},
-      {"Master Controller" : "Prepare for the next round of tests."}
+      {"Master Controller" : "Navigation processors are adequate."},
+      {"Master Controller" : "Continue testing."}
       ],
 
   "retry_dialogue": [
-      {"Master Controller" : "Please navigate from your (RED) start location to the (GREEN) goal location."}
+      {"Master Controller" : "Falling off the platform will result in a severe penalty."}
       ],
       
   "fail_dialogue" : [
@@ -69,4 +70,3 @@
   "play_music" : "metonymy"
   
 }
-
