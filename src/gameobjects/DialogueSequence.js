@@ -22,7 +22,7 @@ function DialogueSequence() {
 	//sound that plays when the user advances the conversation
 	this.nextSfx = new Howl({
 		urls : ['./assets/sounds/fx/next.mp3'],
-		volume : 0.3
+		volume : 0.15
 	});
 	
 	//picture of the speaker who's speaking
@@ -115,5 +115,6 @@ function DialogueSequence() {
 
 DialogueSequence.speaker_portraits = {
 	'Master Controller' : "./assets/art/PortraitMasterController.png",
+	'Friedman' : "./assets/art/PortraitFriedman.png",
 	'???' : undefined
 };

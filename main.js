@@ -33,6 +33,7 @@ function init() {
 	jaws.assets.add("./assets/art/DialogueBox.png");
 	jaws.assets.add("./assets/art/DialogueBoxNextArrow.png");
 	jaws.assets.add("./assets/art/PortraitMasterController.png");
+	jaws.assets.add("./assets/art/PortraitFriedman.png");
 	jaws.assets.add("./assets/art/CommandPrompt.png");
 	jaws.assets.add("./assets/art/ArrowDown.png");
 	jaws.assets.add("./assets/art/ArrowLeft.png");
@@ -49,6 +50,8 @@ function init() {
 	jaws.assets.add("./assets/sounds/music/metonymy.mp3");
 	jaws.assets.add("./assets/sounds/music/gameover.mp3");
 	jaws.assets.add("./assets/sounds/music/morallyambiguousai.mp3");
+	jaws.assets.add("./assets/sounds/music/title.mp3");
+	jaws.assets.add("./assets/sounds/music/intro.mp3");
 	
 	
 	//Fx

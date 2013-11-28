@@ -7,7 +7,6 @@ function LevelSelectState() {
 	/* Cookie loading */
 	this.userMaxLevelCompleted = parseInt($.cookie('userMaxLevelCompleted'));
 	
-	
 	/* Sprite and Animation attributes */
 	var background_loop = new jaws.Animation({
 		sprite_sheet : "./assets/art/BitBotGameLoop-SpriteSheet.png",
@@ -63,12 +62,21 @@ function LevelSelectState() {
 			//sound the confirmation
 			menu_select_sfx.play();
 			
+			//if we're loading from the MenuState, then the title music should still be playing.  
+			//this will stop it once we've decided to load a level.
+			if(jaws.previous_game_state.titleMusic != undefined && jaws.previous_game_state.titleMusic.pos() != 0) {
+				
+				jaws.previous_game_state.titleMusic.fadeOut(0.0, 750, function() {
+					jaws.previous_game_state.titleMusic.stop();	
+				});
+			}
+			
 			//switch to the Play State and give to it the level we want to show
 			jaws.switchGameState(PlayState, {fps:60}, level_to_load);
 		}
 		
 		if (jaws.pressedWithoutRepeat("esc")) {
-			jaws.switchGameState(MenuState, {fps:60});
+			jaws.switchGameState(jaws.previous_game_state, {fps:60});
 		}
 	}
 

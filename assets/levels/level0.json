@@ -13,7 +13,7 @@
       {"???" : "Security to East Laboratory!"},
       {"Master Controller" : "No...faults detected.  Activating program."},
       {"???" : "..."},
-      {"???" : "Security, this is Friedman. Disregard request. Situation is under control."}
+      {"Friedman" : "Security, this is Friedman. Disregard request. Situation is under control."}
       ],
       
   "background_img_string" : null,

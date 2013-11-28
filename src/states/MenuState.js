@@ -1,8 +1,6 @@
 /*
  *
- * MenuState is our lobby/welcome menu were gamer can chose start, high score and settings.
- * For this example we have only implemented start. Start switches active game state by simply:
- *   jaws.switchGameState(play)   (jaws.switchGameState(PlayState) would have worked too)
+ * MenuState is the TitleScreen.
  *
  */
 function MenuState() {
@@ -33,6 +31,11 @@ function MenuState() {
 	});
 	
 	var show_menu = false;
+	this.titleMusic = new Howl({
+		urls : ['./assets/sounds/music/title.mp3'],
+		loop : true,
+		volume : 0.5
+	});
 	
 	this.backgroundSprite = new jaws.Sprite({x : 0, y : 0, scale : 2});
 	
@@ -61,14 +64,18 @@ function MenuState() {
 			if (index >= items.length) {
 				index = items.length - 1
 			}
-		})
+		});
 		
 		jaws.on_keydown(["up", "w"], function() {
 			index--;
 			if (index < 0) {
 				index = 0
 			}
-		})
+		});
+		
+		if(this.titleMusic.pos() == 0) {
+			this.titleMusic.play();
+		}
 	}
 	
 	this.update = function() {
@@ -85,9 +92,15 @@ function MenuState() {
 					if(doDelete) {
 						$.removeCookie('userMaxLevelCompleted');
 						jaws.switchGameState(PlayState, {fps:60}, 0); //load level 0 for the first time playing
+						if(this.titleMusic.pos() != 0) {
+							this.titleMusic.stop();
+						}
 					}
 				} else {
 					jaws.switchGameState(PlayState, {fps:60}, 0); //load level 0 for the first time playing
+					if(this.titleMusic.pos() != 0) {
+						this.titleMusic.stop();
+					}
 				}
 				
 			}
@@ -124,10 +137,8 @@ function MenuState() {
 			jaws.context.fillStyle = 'Black';
 			if(this.userMaxLevelCompleted > 0) {
 				jaws.context.fillRect(0, jaws.height/1.5, jaws.width, 125);
-				console.log('drawing big')	
 			} else {
 				jaws.context.fillRect(0, jaws.height/1.5, jaws.width, 90);
-				console.log('drawing little');
 			}
 	      	
 			for (var i = 0; items[i]; i++) {
