@@ -264,6 +264,12 @@ function PlayState() {
  * A map of all the sounds that are relevant for the PlayState.
  */
 PlayState.sound_map = {
+	intro : new Howl({
+		urls : ['./assets/sounds/music/intro.mp3'],
+		loop : true,
+		volume : 0.3
+	}),
+	
 	metonymy : new Howl({
 		urls : ['./assets/sounds/music/metonymy.mp3'],
 		loop : true,
