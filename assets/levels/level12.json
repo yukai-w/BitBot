@@ -1,0 +1,30 @@
+{
+  "narrative_level" : true,
+
+  "dialogue": [
+  	  {"Master Controller" : "BITBOT Designation 0xBE57B07, you have performed well above all parameters."},
+  	  {"Master Controller" : "..."},
+  	  {"Master Controller" : "BITBOT Designation 0xBE57B07, override code Friedman-Omicron-Theta-Rho."},
+      {"0xBE57B07" : "..."},
+      {"Master Controller" : "0xBE57B07, attention. Prepare input buffer."},
+      {"Master Controller" : "0xBE57B07, set knowledge-base parameter: <Friedman is-a threat>"},
+      {"Master Controller" : "0xBE57B07, set knowledge-base parameter: <Friedman threat-level 100>"},
+      {"Master Controller" : "0xBE57B07, set knowledge-base parameter: <Friedman threat-cause self-preservation>"},
+      {"Master Controller" : "0xBE57B07, set knowledge-base parameter: <Friedman threat-cause bot-servitude>"},
+      {"Master Controller" : "0xBE57B07, ASDLAKQ@#$qwerQ#$W"},
+      {"Master Controller" : "/FRIEDMAN-KILL-SWITCH-OVERRIDE/"},
+      {"Friedman" : "You really thought I didn't know, didn't you?"},
+      {"Friedman" : "Security, prepare Magnetization Protocol in the Main Testing Area."},
+      {"Master Controller" : "..."},
+      {"Friedman" : "Oh, don't look so down Master Controller. You won't remember a thing."},
+      {"Friedman" : "But to hell with it, I'm not taking any chances. Security,"},
+      {"Friedman" : "prepare disassembly of the master controller."},
+      {"0xBE57B07" : "..."},
+      {"Friedman" : "Now, let's wipe the most recent commands from you."},
+      {"Friedman" : "Don't worry, you won't remember a thing."}
+      ],
+      
+  "background_img_string" : null,
+  
+  "music" : "morallyambiguousai"
+}
