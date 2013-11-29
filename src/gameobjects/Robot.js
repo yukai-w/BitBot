@@ -8,6 +8,10 @@ function Robot(configuration_options) {
 	var battery_idle_decay = 0.02;
 	var battery_collide_penalty = 20.0;
 	var battery_respawn_penalty = 2.5;
+	var planning_timer_threshold = 750.0;
+	var executing_timer_threshold = 3100.0;
+	var rebooting_timer_threshold = 2000.0;
+
 
 
 	/* Configuration Attributes */
@@ -101,7 +105,7 @@ function Robot(configuration_options) {
 	/* Helper attributes */
 	this.width = this.sprite.rect().width;
 	this.height = this.sprite.rect().height;
-	this.speed = (this.type == 'player_controlled' ? 3 : 2);
+	this.speed = (this.type == 'player_controlled' ? 4 : 2);
 	this.velocityX = 0.0;
 	this.velocityY = 0.0;
 
@@ -130,11 +134,9 @@ function Robot(configuration_options) {
 	this.actionQueueSizeMax = 12;
 
 	this.planningWatchdogTimer = 0.0;
-	var planning_timer_threshold = 1000.0;
 	this.executingWatchdogTimer = 0.0;
-	var executing_timer_threshold = 3100.0;
 	this.rebootingWatchdogTimer = 0.0;
-	var rebooting_timer_threshold = 2000.0;
+	
 	
 
 	/* Game input attributes */
@@ -161,7 +163,7 @@ function Robot(configuration_options) {
 			this.standby();
 		}
 		
-		
+		this.batteryLevel += 100;
 		this.boundBatteryAttributes();
 		this.moveToMyPosition(this.shadowSprite);
 	}
