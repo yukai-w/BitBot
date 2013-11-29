@@ -43,7 +43,7 @@
       
   "intro_dialogue": [
       {"Friedman" : "Welcome to the BITBOT Training Program."},
-      {"Friedman" : "I am the Dr. Robert Friedman.  I am in charge of this program."},
+      {"Friedman" : "I am THE Dr. Robert Friedman.  I'm in charge of this program."},
       {"Friedman" : "You are a Bot-in-Training Bot. This program is meant to test your functionality."},
       {"Friedman" : "We will begin the Training Program with a series of calibration tests."},
       {"Friedman" : "Please navigate from your (RED) start location to the (GREEN) goal location."}
@@ -68,7 +68,7 @@
   
   "fail_music" : "gameover",
   
-  "play_music" : "metonymy",
+  "play_music" : "morallyambiguousai",
   
-  "battery" : 100.0
+  "battery" : 50.0
 }
