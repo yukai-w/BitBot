@@ -63,6 +63,12 @@ function PlayState() {
 		current_player_level = level_to_load;
 		this.currentStage = generate_stage(current_player_level);
 		this.currentStage.setup();
+		
+		//if the user navigates to another window, pause the game
+		var that = this;
+		window.onblur = function() {
+			that.isPaused = true;
+		}
 	}
 
 	this.update = function() {
@@ -109,7 +115,6 @@ function PlayState() {
 						});
 					}
 				}
-
 				
 				this.currentStage.destroy();
 				this.currentStage = generate_stage(current_player_level, is_retrying);
