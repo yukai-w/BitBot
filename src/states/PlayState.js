@@ -95,8 +95,11 @@ function PlayState() {
 					}
 				}
 
+				var is_retrying = true;
 				//if this is true, the player has advanced a level
 				if (old_player_level != current_player_level) {
+					
+					is_retrying = false;
 
 					//if we've gotten farther than ever before,
 					if (current_player_level > this.userMaxLevelCompleted) {
@@ -107,8 +110,9 @@ function PlayState() {
 					}
 				}
 
+				
 				this.currentStage.destroy();
-				this.currentStage = generate_stage(current_player_level);
+				this.currentStage = generate_stage(current_player_level, is_retrying);
 				this.currentStage.setup();
 			}
 		} else {//we're in the pause menu!
@@ -221,11 +225,12 @@ function PlayState() {
 	 * @param {Number} level_number the number that identifies the JSON file containing
 	 * 	the level information (see load_level(level_number))
 	 */
-	function generate_stage(level_number) {
+	function generate_stage(level_number, retrying) {
 
 		var data = load_level(level_number);
 		var new_stage = undefined;
 		var is_narrative_stage = data.narrative_level;
+		var is_retrying = retrying || false;
 
 		if (is_narrative_stage) {
 
@@ -254,7 +259,7 @@ function PlayState() {
 				outro_music : outro_music_file,
 				fail_music : fail_music_file,
 				play_music : play_music_file,
-				player_is_retrying : false,
+				player_is_retrying : is_retrying,
 				battery : data.battery
 			});
 		}
