@@ -40,14 +40,14 @@ function LevelSelectState() {
 		jaws.on_keydown(["down", "s"], function() {
 			level_to_load++;
 			if (level_to_load >= levels.length) {
-				level_to_load = levels.length - 1
+				level_to_load = 0;
 			}
 		});
 		
 		jaws.on_keydown(["up", "w"], function() {
 			level_to_load--;
 			if (level_to_load < 0) {
-				level_to_load = 0
+				level_to_load = levels.length - 1
 			}
 		});
 	}
