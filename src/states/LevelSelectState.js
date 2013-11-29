@@ -94,13 +94,39 @@ function LevelSelectState() {
 		jaws.context.fillStyle = 'White';
 		wrap_text(jaws.context, "Identify Test", 180, (jaws.height/6)+40, jaws.width*4/6, 30);	
 		
-		for (var i = 0; levels[i]; i++) {
+		if(levels.length <= 9) {
+		
+			for (var i = 0; levels[i]; i++) {
+	
+				jaws.context.font = "16pt Orbitron";
+				jaws.context.lineWidth = 16;
+				jaws.context.fillStyle = (i == level_to_load) ? "White" : "Gray";
+				jaws.context.strokeStyle = "rgba(200,200,200,0.0)";
+				jaws.context.fillText(levels[i], 20, 175 + i * (32));
+			}
+			
+		} else {
+			
+			col1 = levels.slice(0, 10);
+			col2 = levels.slice(10,levels.length);
+			
+			for (var i = 0; col1[i]; i++) {
+	
+				jaws.context.font = "16pt Orbitron";
+				jaws.context.lineWidth = 16;
+				jaws.context.fillStyle = (i == level_to_load) ? "White" : "Gray";
+				jaws.context.strokeStyle = "rgba(200,200,200,0.0)";
+				jaws.context.fillText(col1[i], 20, 175 + i * (32));
+			}
+			
+			for (var i = 0; col2[i]; i++) {
 
-			jaws.context.font = "16pt Orbitron";
-			jaws.context.lineWidth = 16;
-			jaws.context.fillStyle = (i == level_to_load) ? "White" : "Gray";
-			jaws.context.strokeStyle = "rgba(200,200,200,0.0)";
-			jaws.context.fillText(levels[i], 20, 175 + i * (32));
+				jaws.context.font = "16pt Orbitron";
+				jaws.context.lineWidth = 16;
+				jaws.context.fillStyle = ((i+10) == level_to_load) ? "White" : "Gray";
+				jaws.context.strokeStyle = "rgba(200,200,200,0.0)";
+				jaws.context.fillText(col2[i], 356, 175 + i * (32));
+			}
 		}
 	}
 }
