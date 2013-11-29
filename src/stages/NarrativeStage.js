@@ -45,7 +45,7 @@ function NarrativeStage(options) {
 
 		this.dialogueSequence.start();
 		if (music != undefined) {
-			music.stop();
+			music.pos(0);
 			music.play();
 		}
 
