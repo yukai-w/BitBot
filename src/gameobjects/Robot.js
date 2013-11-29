@@ -163,7 +163,7 @@ function Robot(configuration_options) {
 			this.standby();
 		}
 		
-		this.batteryLevel += 100;
+		// this.batteryLevel += 100;
 		this.boundBatteryAttributes();
 		this.moveToMyPosition(this.shadowSprite);
 	}
