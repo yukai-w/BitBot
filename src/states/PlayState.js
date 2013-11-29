@@ -169,10 +169,7 @@ function PlayState() {
 	this.draw = function() {
 
 		jaws.context.clearRect(0, 0, jaws.width, jaws.height);
-		background_sprite.draw();
-		background_overlay.draw();
-		this.currentStage.draw();
-
+		
 		if (this.isPaused) {
 			pause_overlay.draw();
 
@@ -188,6 +185,12 @@ function PlayState() {
 				jaws.context.strokeStyle = "rgba(200,200,200,0.0)";
 				jaws.context.fillText(items[i], 100, 350 + i * (36));
 			}
+		}
+		
+		else {
+			background_sprite.draw();
+			background_overlay.draw();
+			this.currentStage.draw();
 		}
 	}
 	/**
