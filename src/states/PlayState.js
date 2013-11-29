@@ -49,7 +49,7 @@ function PlayState() {
 	this.isPaused = false;
 
 	var index = 0;
-	var items = this.userMaxLevelCompleted > 0 ? ["Restart", "Test Selection Screen", "Quit"] : ["Restart", "Quit"];
+	var items = this.userMaxLevelCompleted > 0 ? ["Continue", "Restart", "Test Selection Screen", "Quit"] : ["Continue", "Restart", "Quit"];
 	var menu_select_sfx = new Howl({
 		urls : ['./assets/sounds/fx/menuselect.mp3']
 	});
@@ -73,7 +73,7 @@ function PlayState() {
 
 	this.update = function() {
 
-		items = this.userMaxLevelCompleted > 0 ? ["Restart", "Test Selection Screen", "Quit"] : ["Restart", "Quit"];
+		items = this.userMaxLevelCompleted > 0 ? ["Continue", "Restart", "Test Selection Screen", "Quit"] : ["Continue", "Restart", "Quit"];
 		background_sprite.setImage(background_animation.next());
 
 		if (jaws.pressedWithoutRepeat("esc")) {
@@ -154,6 +154,9 @@ function PlayState() {
 						fps : 60
 					}, current_player_level);
 
+				} else if (items[index] == "Continue") {
+					this.isPaused = !this.isPaused; //unpause
+					
 				} else {//switch to Menu State
 					stop_all_music();
 					jaws.switchGameState(MenuState, {
