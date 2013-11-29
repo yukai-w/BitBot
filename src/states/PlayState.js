@@ -55,7 +55,7 @@ function PlayState() {
 	});
 	
 	
-	var max_levels = 22;
+	var max_levels = 19;
 
 	this.setup = function(level_to_load) {
 
