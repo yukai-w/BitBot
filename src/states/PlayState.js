@@ -269,26 +269,26 @@ function PlayState() {
  */
 PlayState.sound_map = {
 	intro : new Howl({
-		urls : ['./assets/sounds/music/intro.mp3'],
+		urls : ['./assets/sounds/music/intro.mp3', './assets/sounds/music/intro.ogg', './assets/sounds/music/intro.wav'],
 		loop : true,
 		volume : 0.05
 	}),
 	
 	metonymy : new Howl({
-		urls : ['./assets/sounds/music/metonymy.mp3'],
+		urls : ['./assets/sounds/music/metonymy.mp3', './assets/sounds/music/metonymy.ogg', './assets/sounds/music/metonymy.wav'],
 		loop : true,
 		volume : 0.3
 	}),
 	morallyambiguousai : new Howl({
-		urls : ['./assets/sounds/music/morallyambiguousai.mp3'],
+		urls : ['./assets/sounds/music/morallyambiguousai.mp3', './assets/sounds/music/morallyambiguousai.ogg', './assets/sounds/music/morallyambiguousai.wav'],
 		loop : true,
 		volume : 0.6
 	}),
 	gameover : new Howl({
-		urls : ['./assets/sounds/music/gameover.mp3']
+		urls : ['./assets/sounds/music/gameover.mp3', './assets/sounds/music/gameover.ogg', './assets/sounds/music/gameover.wav']
 	}),
 	success : new Howl({
-		urls : ['./assets/sounds/fx/success.mp3']
+		urls : ['./assets/sounds/fx/success.mp3', './assets/sounds/fx/success.ogg', './assets/sounds/fx/success.wav']
 	})
 };
 

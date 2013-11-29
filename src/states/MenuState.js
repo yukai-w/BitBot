@@ -32,7 +32,7 @@ function MenuState() {
 	
 	var show_menu = false;
 	this.titleMusic = new Howl({
-		urls : ['./assets/sounds/music/title.mp3'],
+		urls : ['./assets/sounds/music/title.mp3','./assets/sounds/music/title.ogg','./assets/sounds/music/title.wav'],
 		loop : true,
 		volume : 0.5
 	});
@@ -52,7 +52,7 @@ function MenuState() {
 	var index = 0;
 	var items = this.userMaxLevelCompleted > 0  ? ["Load Game", "New Game", "About"] : ["New Game", "About"]
 	var menu_select_sfx = new Howl({
-		urls : ['./assets/sounds/fx/menuselect.mp3']
+		urls : ['./assets/sounds/fx/menuselect.mp3', './assets/sounds/fx/menuselect.ogg', './assets/sounds/fx/menuselect.wav']
 	});
 	
 	jaws.preventDefaultKeys(["down","s","up","w","enter"]);
