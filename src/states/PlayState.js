@@ -293,7 +293,7 @@ PlayState.sound_map = {
 	metonymy : new Howl({
 		urls : ['./assets/sounds/music/metonymy.mp3', './assets/sounds/music/metonymy.ogg', './assets/sounds/music/metonymy.wav'],
 		loop : true,
-		volume : 0.3
+		volume : 0.6
 	}),
 	morallyambiguousai : new Howl({
 		urls : ['./assets/sounds/music/morallyambiguousai.mp3', './assets/sounds/music/morallyambiguousai.ogg', './assets/sounds/music/morallyambiguousai.wav'],

@@ -81,7 +81,7 @@ function LevelStage(options) {
 					
 					if(play_music != undefined) {
 						play_music.stop();
-						play_music.fadeIn(0.15, music_fade_time, function() {
+						play_music.fadeIn(0.6, music_fade_time, function() {
 							play_music_is_playing = true;	
 						});
 					}
@@ -104,7 +104,7 @@ function LevelStage(options) {
 			if(play_music != undefined) {
 				if(!play_music_is_playing) {
 					play_music.stop();
-					play_music.fadeIn(0.15, music_fade_time, function() {
+					play_music.fadeIn(0.6, music_fade_time, function() {
 						play_music_is_playing = true;
 					});	
 				}
