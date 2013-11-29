@@ -4,7 +4,7 @@
   "dialogue": [
       {"Friedman" : "Master Controller, report on the status of the BITBOT program."},  
       {"Master Controller" : "BITBOT program pilot is progressing within normal parameters."},
-      {"Master Controller" : "Current bots in the pipeline: 1."},
+      {"Master Controller" : "Current bots in the pipeline: 2,000,000"},
       {"Friedman" : "We're going to need more than normal."},
       {"Friedman" : "Master Controller, begin tests for enemy subroutines."},
       {"Master Controller" : "Not possible."},
