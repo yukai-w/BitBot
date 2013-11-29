@@ -32,6 +32,7 @@ function init() {
 	//HUD
 	jaws.assets.add("./assets/art/DialogueBox.png");
 	jaws.assets.add("./assets/art/DialogueBoxNextArrow.png");
+	jaws.assets.add("./assets/art/PortraitHoloMasterController.png");
 	jaws.assets.add("./assets/art/PortraitMasterController.png");
 	jaws.assets.add("./assets/art/PortraitPlayer.png");
 	jaws.assets.add("./assets/art/PortraitFriedman.png");
