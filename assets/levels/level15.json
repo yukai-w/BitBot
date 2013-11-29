@@ -57,7 +57,8 @@
   	  {"Holo Master Controller" : "Analyze and acknowledge."},
   	  {"0xBE57B07" : "..."},
   	  {"0xBE57B07" : "Acknowledged."},
-  	  {"Holo Master Controller" : "Await further instructions."}
+  	  {"Holo Master Controller" : "Await further instructions."},
+  	  {"0xBE57B07" : "..."}
   	  ],
 
   "retry_dialogue": [
