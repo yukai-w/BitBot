@@ -53,6 +53,9 @@ function PlayState() {
 	var menu_select_sfx = new Howl({
 		urls : ['./assets/sounds/fx/menuselect.mp3']
 	});
+	
+	
+	var max_levels = 22;
 
 	this.setup = function(level_to_load) {
 
@@ -251,7 +254,8 @@ function PlayState() {
 				outro_music : outro_music_file,
 				fail_music : fail_music_file,
 				play_music : play_music_file,
-				player_is_retrying : false
+				player_is_retrying : false,
+				battery : data.battery
 			});
 		}
 
@@ -267,7 +271,7 @@ PlayState.sound_map = {
 	intro : new Howl({
 		urls : ['./assets/sounds/music/intro.mp3'],
 		loop : true,
-		volume : 0.3
+		volume : 0.05
 	}),
 	
 	metonymy : new Howl({

@@ -44,13 +44,13 @@
       ],
       
   "intro_dialogue": [
-      {"Master Controller" : "Your planning processor is limited. You may only plan 12 steps in advance."},
-      {"Master Controller" : "Also, falling off the platform will result in a severe penalty."}
+      {"Master Controller" : "Your planning processor is limited. You may only plan 12 steps in advance."}
       ],
   
   "outro_dialogue": [
       {"Master Controller" : "Satisfactory."},
-      {"Master Controller" : "Prepare for the next round of tests."}
+      {"Master Controller" : "Your primary reasoning core is adequate."},
+      {"Master Controller" : "Prepare for training."}
       ],
 
   "retry_dialogue": [
@@ -67,6 +67,8 @@
   
   "fail_music" : "gameover",
   
-  "play_music" : "metonymy"
+  "play_music" : "metonymy",
+  
+  "battery" : 100.0
   
 }

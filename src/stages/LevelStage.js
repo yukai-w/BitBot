@@ -36,7 +36,8 @@ function LevelStage(options) {
 	this.player = new Robot({
 		position : this.activeLevel.startTile.getCenterCoordinate(),
 		type : 'player_controlled',
-		world : this
+		world : this,
+		battery : options.battery
 	});
 	this.hud = new HUD(this.player);
 	this.introDialogueSequence = new DialogueSequence();
@@ -162,14 +163,15 @@ function LevelStage(options) {
 			if (!this.player.isPlanning) {
 				jaws.draw(this.robotsOutOfPlay);
 				this.activeLevel.draw();
+				jaws.draw(this.batteries);
 				jaws.draw(this.robotsInPlay);
 			} else {
 				jaws.draw(this.backgroundFreezeFrame);
 				this.activeLevel.draw();
+				jaws.draw(this.batteries);
 				jaws.draw(this.foregroundFreezeFrame);
 			}
 
-			jaws.draw(this.batteries);
 			this.hud.draw(); 
 		} else {
 			this.activeDialogueSequence.draw();
@@ -294,6 +296,7 @@ function LevelStage(options) {
 			$.each(collided_batteries, function(battery_idx, battery) {
 				goog.array.remove(that.batteries, battery);
 				that.player.batteryLevel += battery.use();
+				that.player.boundBatteryAttributes();
 			});
 		}
 
