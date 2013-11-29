@@ -675,6 +675,14 @@ function Robot(configuration_options) {
 			this.batteryLevel = 0;
 		}
 	}
+	
+	this.stopRobotSounds = function() {
+		this.fallingSfx.stop();
+		this.executingSfx.stop();
+		this.respawningSfx.stop();
+		this.errorSfx.stop();
+		this.rebootSfx.stop();
+	}
 
 }
 

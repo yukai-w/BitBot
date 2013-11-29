@@ -143,6 +143,8 @@ function LevelStage(options) {
 				this.activeDialogueSequence = this.failDialogueSequence;
 				this.failDialogueSequence.update();
 				
+				this.player.stopRobotSounds();
+				
 				if(fail_music != undefined) {
 					if(fail_music_should_play) {
 						fail_music.play();
