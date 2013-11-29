@@ -33,6 +33,7 @@ function init() {
 	jaws.assets.add("./assets/art/DialogueBox.png");
 	jaws.assets.add("./assets/art/DialogueBoxNextArrow.png");
 	jaws.assets.add("./assets/art/PortraitMasterController.png");
+	jaws.assets.add("./assets/art/PortraitPlayer.png");
 	jaws.assets.add("./assets/art/PortraitFriedman.png");
 	jaws.assets.add("./assets/art/CommandPrompt.png");
 	jaws.assets.add("./assets/art/ArrowDown.png");

@@ -116,5 +116,6 @@ function DialogueSequence() {
 DialogueSequence.speaker_portraits = {
 	'Master Controller' : "./assets/art/PortraitMasterController.png",
 	'Friedman' : "./assets/art/PortraitFriedman.png",
+	'0xBE57B07' : "./assets/art/PortraitPlayer.png",
 	'???' : undefined
 };
