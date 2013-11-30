@@ -32,19 +32,24 @@ function Robot(configuration_options) {
 
 	/* Sound attributes */
 	this.fallingSfx = new Howl({
-		urls : ['./assets/sounds/fx/fall.mp3', './assets/sounds/fx/fall.ogg', './assets/sounds/fx/fall.wav']
+		urls : ['./assets/sounds/fx/fall.mp3', './assets/sounds/fx/fall.ogg', './assets/sounds/fx/fall.wav'],
+		volume : 0.7
 	});
 	this.executingSfx = new Howl({
-		urls : ['./assets/sounds/fx/move.mp3', './assets/sounds/fx/move.ogg', './assets/sounds/fx/move.wav']
+		urls : ['./assets/sounds/fx/move.mp3', './assets/sounds/fx/move.ogg', './assets/sounds/fx/move.wav'],
+		volume : 0.7
 	});
 	this.respawningSfx = new Howl({
-		urls : ['./assets/sounds/fx/respawn.mp3', './assets/sounds/fx/respawn.ogg', './assets/sounds/fx/respawn.wav']
+		urls : ['./assets/sounds/fx/respawn.mp3', './assets/sounds/fx/respawn.ogg', './assets/sounds/fx/respawn.wav'],
+		volume : 0.7
 	});
 	this.errorSfx = new Howl({
-		urls : ['./assets/sounds/fx/error.mp3', './assets/sounds/fx/error.ogg', './assets/sounds/fx/error.wav']
+		urls : ['./assets/sounds/fx/error.mp3', './assets/sounds/fx/error.ogg', './assets/sounds/fx/error.wav'],
+		volume : 0.7
 	});
 	this.rebootSfx = new Howl({
 		urls : ['./assets/sounds/fx/reboot.mp3', './assets/sounds/fx/reboot.ogg', './assets/sounds/fx/reboot.wav'],
+		volume : 0.7
 	});
 
 	/* Sprite and Animation attributes */

@@ -222,9 +222,9 @@ function PlayState() {
 	 * 	./assets/levels/level(level_number).json
 	 */
 	function load_level(level_number) {
-		// var load_url = "http://127.0.0.1:8020/game-off-2013/assets/levels/levelXX.json".replace("XX", level_number);
+		var load_url = "http://127.0.0.1:8020/game-off-2013/assets/levels/levelXX.json".replace("XX", level_number);
 		// var load_url = "http://rogel.io/projects/assets/levels/levelXX.json".replace("XX", level_number);
-		var load_url = "http://recardona.github.io/BitBot/assets/levels/levelXX.json".replace("XX", level_number);
+		// var load_url = "http://recardona.github.io/BitBot/assets/levels/levelXX.json".replace("XX", level_number);
 		
 		var level_data = undefined;
 
@@ -314,19 +314,23 @@ PlayState.sound_map = {
 	}),
 	
 	gameover : new Howl({
-		urls : ['./assets/sounds/music/gameover.mp3', './assets/sounds/music/gameover.ogg', './assets/sounds/music/gameover.wav']
+		urls : ['./assets/sounds/music/gameover.mp3', './assets/sounds/music/gameover.ogg', './assets/sounds/music/gameover.wav'],
+		volume : 0.6
 	}),
 	
 	victory : new Howl({
-		urls : ['./assets/sounds/music/victory.mp3', './assets/sounds/music/victory.ogg', './assets/sounds/music/victory.wav']
+		urls : ['./assets/sounds/music/victory.mp3', './assets/sounds/music/victory.ogg', './assets/sounds/music/victory.wav'],
+		volume : 0.6
 	}),
 	
 	success : new Howl({
-		urls : ['./assets/sounds/fx/success.mp3', './assets/sounds/fx/success.ogg', './assets/sounds/fx/success.wav']
+		urls : ['./assets/sounds/fx/success.mp3', './assets/sounds/fx/success.ogg', './assets/sounds/fx/success.wav'],
+		volume : 0.6
 	}),
 	
 	title : new Howl({
-		urls : ['./assets/sounds/music/title.mp3', './assets/sounds/music/title.ogg', './assets/sounds/music/title.wav']
+		urls : ['./assets/sounds/music/title.mp3', './assets/sounds/music/title.ogg', './assets/sounds/music/title.wav'],
+		volume : 0.6
 	})
 	
 };

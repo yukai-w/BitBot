@@ -34,7 +34,7 @@ function MenuState() {
 	this.titleMusic = new Howl({
 		urls : ['./assets/sounds/music/title.mp3','./assets/sounds/music/title.ogg','./assets/sounds/music/title.wav'],
 		loop : true,
-		volume : 0.5
+		volume : 0.6
 	});
 	
 	this.backgroundSprite = new jaws.Sprite({x : 0, y : 0, scale : 2});

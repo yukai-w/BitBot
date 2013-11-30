@@ -22,7 +22,7 @@ function DialogueSequence() {
 	//sound that plays when the user advances the conversation
 	this.nextSfx = new Howl({
 		urls : ['./assets/sounds/fx/next.mp3', './assets/sounds/fx/next.ogg', './assets/sounds/fx/next.wav'],
-		volume : 0.15
+		volume : 0.12
 	});
 	
 	//picture of the speaker who's speaking
