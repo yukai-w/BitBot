@@ -6,6 +6,7 @@ function init() {
 	jaws.assets.add("./assets/art/BitBotTitleIntro-SpriteSheet.png");
 	jaws.assets.add("./assets/art/BitBotTitleLoop-SpriteSheet.png");
 	jaws.assets.add("./assets/art/BitBotGameLoop-SpriteSheet.png");
+	jaws.assets.add("./assets/art/Freedom.png");
 
 
 	//Tiles
@@ -68,6 +69,10 @@ function init() {
 	jaws.assets.add("./assets/sounds/music/intro.mp3");
 	jaws.assets.add("./assets/sounds/music/intro.ogg");
 	jaws.assets.add("./assets/sounds/music/intro.wav");
+	
+	jaws.assets.add("./assets/sounds/music/victory.mp3");
+	jaws.assets.add("./assets/sounds/music/victory.ogg");
+	jaws.assets.add("./assets/sounds/music/victory.wav");
 	
 	
 	//Fx

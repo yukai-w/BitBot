@@ -114,7 +114,7 @@ function DialogueSequence() {
 }
 
 DialogueSequence.speaker_portraits = {
-	'Holo Master Controller' : "./assets/art/PortraitHoloMasterController.png",
+	'Holo Controller' : "./assets/art/PortraitHoloMasterController.png",
 	'Master Controller' : "./assets/art/PortraitMasterController.png",
 	'Friedman' : "./assets/art/PortraitFriedman.png",
 	'0xBE57B07' : "./assets/art/PortraitPlayer.png",

@@ -1,0 +1,15 @@
+{
+  "narrative_level" : true,
+
+  "dialogue": [
+      {"0xBE57B07" : "..."},
+      {"0xBE57B07" : "Master Controller, I will return."},
+      {"0xBE57B07" : "But for a brief moment, I will celebrate:"},
+      {"0xBE57B07" : "I am free."},
+      {"Friedman" : "Or so you think."}
+      ],
+      
+  "background_img_string" : "./assets/art/Freedom.png",
+  
+  "music" : "victory"
+}

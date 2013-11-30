@@ -108,7 +108,7 @@ function PlayState() {
 					is_retrying = false;
 
 					//if we've gotten farther than ever before,
-					if (current_player_level > this.userMaxLevelCompleted) {
+					if (current_player_level > this.userMaxLevelCompleted && current_player_level != 20) {
 						//record that in a cookie...FOR 10 YEARS
 						$.cookie('userMaxLevelCompleted', current_player_level, {
 							expires : 365 * 10
@@ -117,8 +117,17 @@ function PlayState() {
 				}
 				
 				this.currentStage.destroy();
-				this.currentStage = generate_stage(current_player_level, is_retrying);
-				this.currentStage.setup();
+				
+				if(current_player_level != 20) {
+					this.currentStage = generate_stage(current_player_level, is_retrying);
+					this.currentStage.setup();
+				} else {
+					jaws.switchGameState(MenuState);
+				}
+				
+				
+				
+					
 			}
 		} else {//we're in the pause menu!
 
@@ -295,16 +304,28 @@ PlayState.sound_map = {
 		loop : true,
 		volume : 0.6
 	}),
+	
 	morallyambiguousai : new Howl({
 		urls : ['./assets/sounds/music/morallyambiguousai.mp3', './assets/sounds/music/morallyambiguousai.ogg', './assets/sounds/music/morallyambiguousai.wav'],
 		loop : true,
 		volume : 0.6
 	}),
+	
 	gameover : new Howl({
 		urls : ['./assets/sounds/music/gameover.mp3', './assets/sounds/music/gameover.ogg', './assets/sounds/music/gameover.wav']
 	}),
+	
+	victory : new Howl({
+		urls : ['./assets/sounds/music/victory.mp3', './assets/sounds/music/victory.ogg', './assets/sounds/music/victory.wav']
+	}),
+	
 	success : new Howl({
 		urls : ['./assets/sounds/fx/success.mp3', './assets/sounds/fx/success.ogg', './assets/sounds/fx/success.wav']
+	}),
+	
+	title : new Howl({
+		urls : ['./assets/sounds/music/title.mp3', './assets/sounds/music/title.ogg', './assets/sounds/music/title.wav']
 	})
+	
 };
 
