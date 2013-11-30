@@ -81,7 +81,8 @@ function MenuState() {
 	this.update = function() {
 		
 		/* Input Management */
-		if (jaws.pressedWithoutRepeat(["enter"])) {
+		if (jaws.pressedWithoutRepeat(["enter"]) && show_menu) {
+			//only accept input when the menu is being shown
 			
 			//sound the confirmation
 			menu_select_sfx.play();
@@ -133,7 +134,7 @@ function MenuState() {
 		
 		this.backgroundSprite.draw();
 
-		if(show_menu || this.userHasBeenHereBefore) {
+		if(show_menu) {
 			jaws.context.fillStyle = 'Black';
 			if(this.userMaxLevelCompleted > 0) {
 				jaws.context.fillRect(0, jaws.height/1.5, jaws.width, 125);
