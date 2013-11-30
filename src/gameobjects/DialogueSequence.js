@@ -59,8 +59,9 @@ function DialogueSequence() {
 		var that = this;
 		
 		if (jaws.pressedWithoutRepeat(["space"])) {
-			that.nextSfx.play();
+			
 			if (! that.dialogueSequence.isEmpty()) {
+				that.nextSfx.play();
 				var beat = that.dialogueSequence.dequeue();
 				current_text = beat.text;
 				current_speaker = beat.speaker;
