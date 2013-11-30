@@ -8,6 +8,10 @@ function Robot(configuration_options) {
 	var battery_idle_decay = 0.02;
 	var battery_collide_penalty = 20.0;
 	var battery_respawn_penalty = 2.5;
+	var planning_timer_threshold = 750.0;
+	var executing_timer_threshold = 3100.0;
+	var rebooting_timer_threshold = 2000.0;
+
 
 
 	/* Configuration Attributes */
@@ -28,19 +32,19 @@ function Robot(configuration_options) {
 
 	/* Sound attributes */
 	this.fallingSfx = new Howl({
-		urls : ['./assets/sounds/fx/fall.mp3']
+		urls : ['./assets/sounds/fx/fall.mp3', './assets/sounds/fx/fall.ogg', './assets/sounds/fx/fall.wav']
 	});
 	this.executingSfx = new Howl({
-		urls : ['./assets/sounds/fx/move.mp3']
+		urls : ['./assets/sounds/fx/move.mp3', './assets/sounds/fx/move.ogg', './assets/sounds/fx/move.wav']
 	});
 	this.respawningSfx = new Howl({
-		urls : ['./assets/sounds/fx/respawn.mp3']
+		urls : ['./assets/sounds/fx/respawn.mp3', './assets/sounds/fx/respawn.ogg', './assets/sounds/fx/respawn.wav']
 	});
 	this.errorSfx = new Howl({
-		urls : ['./assets/sounds/fx/error.mp3']
+		urls : ['./assets/sounds/fx/error.mp3', './assets/sounds/fx/error.ogg', './assets/sounds/fx/error.wav']
 	});
 	this.rebootSfx = new Howl({
-		urls : ['./assets/sounds/fx/reboot.mp3'],
+		urls : ['./assets/sounds/fx/reboot.mp3', './assets/sounds/fx/reboot.ogg', './assets/sounds/fx/reboot.wav'],
 	});
 
 	/* Sprite and Animation attributes */
@@ -101,7 +105,7 @@ function Robot(configuration_options) {
 	/* Helper attributes */
 	this.width = this.sprite.rect().width;
 	this.height = this.sprite.rect().height;
-	this.speed = (this.type == 'player_controlled' ? 3 : 2);
+	this.speed = (this.type == 'player_controlled' ? 4 : 2);
 	this.velocityX = 0.0;
 	this.velocityY = 0.0;
 
@@ -130,11 +134,9 @@ function Robot(configuration_options) {
 	this.actionQueueSizeMax = 12;
 
 	this.planningWatchdogTimer = 0.0;
-	var planning_timer_threshold = 1000.0;
 	this.executingWatchdogTimer = 0.0;
-	var executing_timer_threshold = 3100.0;
 	this.rebootingWatchdogTimer = 0.0;
-	var rebooting_timer_threshold = 2000.0;
+	
 	
 
 	/* Game input attributes */
@@ -161,7 +163,7 @@ function Robot(configuration_options) {
 			this.standby();
 		}
 		
-		
+		// this.batteryLevel += 100;
 		this.boundBatteryAttributes();
 		this.moveToMyPosition(this.shadowSprite);
 	}
@@ -672,6 +674,14 @@ function Robot(configuration_options) {
 		if (this.batteryLevel < 0) {
 			this.batteryLevel = 0;
 		}
+	}
+	
+	this.stopRobotSounds = function() {
+		this.fallingSfx.stop();
+		this.executingSfx.stop();
+		this.respawningSfx.stop();
+		this.errorSfx.stop();
+		this.rebootSfx.stop();
 	}
 
 }

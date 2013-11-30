@@ -20,7 +20,8 @@ function NarrativeStage(options) {
 		this.backgroundSprite = new jaws.Sprite({
 			x : 0,
 			y : 0,
-			image : background_img_string
+			image : background_img_string,
+			alpha : 0.0
 		})
 	} else {
 
@@ -45,7 +46,7 @@ function NarrativeStage(options) {
 
 		this.dialogueSequence.start();
 		if (music != undefined) {
-			music.stop();
+			music.pos(0);
 			music.play();
 		}
 
@@ -67,7 +68,11 @@ function NarrativeStage(options) {
 					});
 				}
 			}
+			
+			this.backgroundSprite.alpha += 0.01
 		}
+		
+		
 	}
 
 	this.draw = function() {

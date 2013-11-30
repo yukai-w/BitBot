@@ -43,7 +43,7 @@
       
   "intro_dialogue": [
       {"Master Controller" : "We will test enemy subroutines.  Avoid other bots. Bots are simple, and may be defective."},
-      {"Master Controller" : "While you are planning, robots will not stop.  Anticipate paths.  Plan around paths."}
+      {"Master Controller" : "WARNING: WHILE PLANNING, THE WORLD WILL NOT STOP. ROBOTS KEEP MOVING."}
       ],
   
   "outro_dialogue": [
@@ -52,7 +52,7 @@
       ],
 
   "retry_dialogue": [
-      {"Master Controller" : "While you are planning, robots will not stop.  Anticipate paths.  Plan around paths."}
+      {"Master Controller" : "WARNING: WHILE PLANNING, THE WORLD WILL NOT STOP. ROBOTS KEEP MOVING."}
       ],
       
   "fail_dialogue" : [

@@ -7,7 +7,7 @@ function Battery(pos) {
 	this.y = pos.y;
 	this.drawing_vert_offset = 5;
 	this.useSfx = new Howl({
-		urls : ['./assets/sounds/fx/powerup.mp3'],
+		urls : ['./assets/sounds/fx/powerup.mp3', './assets/sounds/fx/powerup.ogg', './assets/sounds/fx/powerup.wav'],
 		volume : 0.35
 	});
 	

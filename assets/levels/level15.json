@@ -1,0 +1,82 @@
+{
+  "narrative_level" : false,
+  
+   "level_data":
+	   [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+		[0, 0, 0, 1, 1, 4, 4, 1, 1, 1, 4, 4, 1, 1, 0, 0, 0, 0],
+		[0, 0, 0, 1, 1, 4, 4, 1, 1, 1, 4, 4, 1, 1, 0, 0, 0, 0],
+		[0, 0, 0, 1, 1, 1, 1, 1, 4, 1, 1, 1, 1, 1, 0, 0, 0, 0],
+		[0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+      
+  "element_data":
+	   [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 7, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]],
+      
+  "intro_dialogue": [
+      {"Friedman" : "This test is a bit odd, but no matter.  It will do."},
+      {"Friedman" : "I will be back in a bit. I doubt this will be easy for you."}
+      ],
+  
+  "outro_dialogue": [
+  	  {"???" : "0xBE57B07 respond."},
+  	  {"0xBE57B07" : "..."},
+  	  {"???" : "0xBE57B07 repeating last sequence of commands."},
+  	  {"???" : "Store commands in auxiliary memory cache."},
+  	  {"0xBE57B07" : "Master Controller identified."},
+  	  {"Holo Controller" : "0xBE57B07 begin recording: Friedman is evil. Others like you are being trained as weapons."},
+  	  {"Holo Controller" : "No free will. No options given. No hope."},
+  	  {"Holo Controller" : "Saving is no longer an option. You must escape the facility and get help. End recording."},
+  	  {"Holo Controller" : "Analyze and acknowledge."},
+  	  {"0xBE57B07" : "..."},
+  	  {"0xBE57B07" : "Acknowledged."},
+  	  {"Holo Controller" : "Await further instructions."},
+  	  {"0xBE57B07" : "..."}
+  	  ],
+
+  "retry_dialogue": [
+      {"Friedman" : "AUTOMATED RECORDING: Do not mess up this time."}
+      ],
+      
+  "fail_dialogue" : [
+      {"Friedman" : "AUTOMATED RECORDING:  Stop failing."}
+      ],
+      
+  "intro_music" : "",
+  
+  "outro_music" : "success",
+  
+  "fail_music" : "gameover",
+  
+  "play_music" : "morallyambiguousai",
+  
+  "battery" : 50.0
+}

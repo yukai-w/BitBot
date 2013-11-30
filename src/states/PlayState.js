@@ -49,10 +49,13 @@ function PlayState() {
 	this.isPaused = false;
 
 	var index = 0;
-	var items = this.userMaxLevelCompleted > 0 ? ["Restart", "Test Selection Screen", "Quit"] : ["Restart", "Quit"];
+	var items = this.userMaxLevelCompleted > 0 ? ["Continue", "Restart", "Test Selection Screen", "Quit"] : ["Continue", "Restart", "Quit"];
 	var menu_select_sfx = new Howl({
 		urls : ['./assets/sounds/fx/menuselect.mp3']
 	});
+	
+	
+	var max_levels = 19;
 
 	this.setup = function(level_to_load) {
 
@@ -60,11 +63,17 @@ function PlayState() {
 		current_player_level = level_to_load;
 		this.currentStage = generate_stage(current_player_level);
 		this.currentStage.setup();
+		
+		//if the user navigates to another window, pause the game
+		var that = this;
+		window.onblur = function() {
+			that.isPaused = true;
+		}
 	}
 
 	this.update = function() {
 
-		items = this.userMaxLevelCompleted > 0 ? ["Restart", "Test Selection Screen", "Quit"] : ["Restart", "Quit"];
+		items = this.userMaxLevelCompleted > 0 ? ["Continue", "Restart", "Test Selection Screen", "Quit"] : ["Continue", "Restart", "Quit"];
 		background_sprite.setImage(background_animation.next());
 
 		if (jaws.pressedWithoutRepeat("esc")) {
@@ -92,21 +101,33 @@ function PlayState() {
 					}
 				}
 
+				var is_retrying = true;
 				//if this is true, the player has advanced a level
 				if (old_player_level != current_player_level) {
+					
+					is_retrying = false;
 
 					//if we've gotten farther than ever before,
-					if (current_player_level > this.userMaxLevelCompleted) {
+					if (current_player_level > this.userMaxLevelCompleted && current_player_level != 20) {
 						//record that in a cookie...FOR 10 YEARS
 						$.cookie('userMaxLevelCompleted', current_player_level, {
 							expires : 365 * 10
 						});
 					}
 				}
-
+				
 				this.currentStage.destroy();
-				this.currentStage = generate_stage(current_player_level);
-				this.currentStage.setup();
+				
+				if(current_player_level != 20) {
+					this.currentStage = generate_stage(current_player_level, is_retrying);
+					this.currentStage.setup();
+				} else {
+					jaws.switchGameState(MenuState);
+				}
+				
+				
+				
+					
 			}
 		} else {//we're in the pause menu!
 
@@ -142,6 +163,9 @@ function PlayState() {
 						fps : 60
 					}, current_player_level);
 
+				} else if (items[index] == "Continue") {
+					this.isPaused = !this.isPaused; //unpause
+					
 				} else {//switch to Menu State
 					stop_all_music();
 					jaws.switchGameState(MenuState, {
@@ -157,10 +181,7 @@ function PlayState() {
 	this.draw = function() {
 
 		jaws.context.clearRect(0, 0, jaws.width, jaws.height);
-		background_sprite.draw();
-		background_overlay.draw();
-		this.currentStage.draw();
-
+		
 		if (this.isPaused) {
 			pause_overlay.draw();
 
@@ -176,6 +197,12 @@ function PlayState() {
 				jaws.context.strokeStyle = "rgba(200,200,200,0.0)";
 				jaws.context.fillText(items[i], 100, 350 + i * (36));
 			}
+		}
+		
+		else {
+			background_sprite.draw();
+			background_overlay.draw();
+			this.currentStage.draw();
 		}
 	}
 	/**
@@ -220,11 +247,12 @@ function PlayState() {
 	 * @param {Number} level_number the number that identifies the JSON file containing
 	 * 	the level information (see load_level(level_number))
 	 */
-	function generate_stage(level_number) {
+	function generate_stage(level_number, retrying) {
 
 		var data = load_level(level_number);
 		var new_stage = undefined;
 		var is_narrative_stage = data.narrative_level;
+		var is_retrying = retrying || false;
 
 		if (is_narrative_stage) {
 
@@ -253,7 +281,7 @@ function PlayState() {
 				outro_music : outro_music_file,
 				fail_music : fail_music_file,
 				play_music : play_music_file,
-				player_is_retrying : false,
+				player_is_retrying : is_retrying,
 				battery : data.battery
 			});
 		}
@@ -268,26 +296,38 @@ function PlayState() {
  */
 PlayState.sound_map = {
 	intro : new Howl({
-		urls : ['./assets/sounds/music/intro.mp3'],
+		urls : ['./assets/sounds/music/intro.mp3', './assets/sounds/music/intro.ogg', './assets/sounds/music/intro.wav'],
 		loop : true,
 		volume : 0.05
 	}),
 	
 	metonymy : new Howl({
-		urls : ['./assets/sounds/music/metonymy.mp3'],
-		loop : true,
-		volume : 0.3
-	}),
-	morallyambiguousai : new Howl({
-		urls : ['./assets/sounds/music/morallyambiguousai.mp3'],
+		urls : ['./assets/sounds/music/metonymy.mp3', './assets/sounds/music/metonymy.ogg', './assets/sounds/music/metonymy.wav'],
 		loop : true,
 		volume : 0.6
 	}),
-	gameover : new Howl({
-		urls : ['./assets/sounds/music/gameover.mp3']
+	
+	morallyambiguousai : new Howl({
+		urls : ['./assets/sounds/music/morallyambiguousai.mp3', './assets/sounds/music/morallyambiguousai.ogg', './assets/sounds/music/morallyambiguousai.wav'],
+		loop : true,
+		volume : 0.6
 	}),
+	
+	gameover : new Howl({
+		urls : ['./assets/sounds/music/gameover.mp3', './assets/sounds/music/gameover.ogg', './assets/sounds/music/gameover.wav']
+	}),
+	
+	victory : new Howl({
+		urls : ['./assets/sounds/music/victory.mp3', './assets/sounds/music/victory.ogg', './assets/sounds/music/victory.wav']
+	}),
+	
 	success : new Howl({
-		urls : ['./assets/sounds/fx/success.mp3']
+		urls : ['./assets/sounds/fx/success.mp3', './assets/sounds/fx/success.ogg', './assets/sounds/fx/success.wav']
+	}),
+	
+	title : new Howl({
+		urls : ['./assets/sounds/music/title.mp3', './assets/sounds/music/title.ogg', './assets/sounds/music/title.wav']
 	})
+	
 };
 

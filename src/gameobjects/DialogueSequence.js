@@ -21,7 +21,7 @@ function DialogueSequence() {
 	
 	//sound that plays when the user advances the conversation
 	this.nextSfx = new Howl({
-		urls : ['./assets/sounds/fx/next.mp3'],
+		urls : ['./assets/sounds/fx/next.mp3', './assets/sounds/fx/next.ogg', './assets/sounds/fx/next.wav'],
 		volume : 0.15
 	});
 	
@@ -114,7 +114,9 @@ function DialogueSequence() {
 }
 
 DialogueSequence.speaker_portraits = {
+	'Holo Controller' : "./assets/art/PortraitHoloMasterController.png",
 	'Master Controller' : "./assets/art/PortraitMasterController.png",
 	'Friedman' : "./assets/art/PortraitFriedman.png",
+	'0xBE57B07' : "./assets/art/PortraitPlayer.png",
 	'???' : undefined
 };
