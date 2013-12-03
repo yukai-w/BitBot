@@ -85,6 +85,10 @@ Referenced Open Source Projects
 
 [7]: <http://github.com/carhartl/jquery-cookie>
 
+-   [jQuery UI][8]
+
+[8]: <http://jqueryui.com/>
+
 
 
 Team
