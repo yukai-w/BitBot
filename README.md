@@ -1,11 +1,11 @@
-BITBOT
+BitBot
 ======
 
 Intercepted transmission:
 
 From: R. W. Friedman \<chiefscientist@mechanicalintelligence.com\>  
 To: L. L. Dreyfus \<ceo@mechanicalintelligence.com\>  
-Subject: Re: BOT Training Program
+Subject: Re: Bot Training Program
 
 I'm working on it. Expect to start soon. Will let you know. -- R
 
@@ -34,9 +34,8 @@ I'm working on it. Expect to start soon. Will let you know. -- R
 
 >   Lloyd
 
-About BITBOT
-------------
-![Screenshot](https://raw.github.com/recardona/BitBot/master/screenshot.png)
+About BitBot ------------
+![Screenshot](<https://raw.github.com/recardona/BitBot/master/screenshot.png>)
 
 You control a Bot-in-training Bot with a limited energy supply who is stuck in a
 loop of sensing, planning, and acting - when you sense, you can’t act.  To act
@@ -49,18 +48,12 @@ when you execute, the world might have **changed**!
 
 ### Meta
 
-![Creative Commons
-License](<http://i.creativecommons.org/l/by-nc-nd/3.0/88x31.png>)
-
-BITBOT is an HTML5/JS game built primarily using the [jaws.js][1] library.  It's
+BitBot is an HTML5/JS game built primarily using the [jaws.js][1] library.  It's
 procedurally rhetorical in that it aims to show what it's like to be a bot that
-follows the Robotic Paradigm of [Sensing-Planning-Acting][5].  BITBOT is
-provided under a [Creative Commons Attribution-NonCommercial-NoDerivs 3.0
-Unported License][6].
+follows the Robotic Paradigm of [Sensing-Planning-Acting][5].  BitBot is
+Copyright 2013 Rogelio E. Cardona-Rivera and José D. Vélez.
 
 [5]: <http://en.wikipedia.org/wiki/Robotic_paradigms#Hierarchical.2FDeliberative_Paradigm>.
-
-[6]: <http://creativecommons.org/licenses/by-nc-nd/3.0/deed.en_US>
 
 Referenced Open Source Projects
 -------------------------------
@@ -106,14 +99,5 @@ Team
 
 -   [Ian Coleman](<http://twitter.com/iancoleman>), M.S. Student and
     Professional Web Developer.
-
-
-
-Live
-----
-
-[Click here](<http://recardona.github.io/game-off-2013>) for a live version of
-the game (if not more than 10 minutes have passed since the last commit, wait
-for the latest version).
 
 
