@@ -34,7 +34,9 @@ I'm working on it. Expect to start soon. Will let you know. -- R
 
 >   Lloyd
 
-About BitBot ------------
+About BitBot 
+-------------
+
 ![Screenshot](<https://raw.github.com/recardona/BitBot/master/screenshot.png>)
 
 You control a Bot-in-training Bot with a limited energy supply who is stuck in a
