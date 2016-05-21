@@ -224,7 +224,7 @@ function PlayState() {
 	function load_level(level_number) {
 		// var load_url = "http://127.0.0.1:8020/game-off-2013/assets/levels/levelXX.json".replace("XX", level_number);
 		// var load_url = "http://rogel.io/projects/assets/levels/levelXX.json".replace("XX", level_number);
-		var load_url = "http://recardona.github.io/BitBot/assets/levels/levelXX.json".replace("XX", level_number);
+		var load_url = "http://sweetcarolinagames.github.io/BitBot/assets/levels/levelXX.json".replace("XX", level_number);
 		
 		var level_data = undefined;
 
