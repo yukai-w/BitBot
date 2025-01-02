@@ -34,10 +34,10 @@ function AboutState() {
 		ian_info = {name : 'Ian Coleman', role : 'Level Editor, Programmer', twitter : '@iancoleman', site : 'http://www.ianpcoleman.com'};
 		ian_sprite = new jaws.Sprite({x : 100, y : jaws.height*8/10, image : "./assets/art/Ian.png", scale : 3.5});
 	
-		about_string = "BitBot is an HTML5/JS game built as part of the 2013 Github Game Jam." + 
-			"For more information about this game, including licensing, please visit: http://github.com/recardona/game-off-2013";
-		team_heading = "BitBot was built by: ";
-		contributor_heading = "Special Thanks to: ";
+		about_string = "BitBot is an web game. You control a Bot-in-training Bot with a limited energy supply who is stuck in a loop of sensing, planning, and acting - when you sense, you can’t act. To act you must first plan, and by the time you act, your senses may have been outdated. You must make it from the start to the goal while balancing your energy supply, and anticipating how the world might be when you begin to act." + 
+			"";
+		team_heading = "";
+		contributor_heading = "";
 	}
 	
 	this.update = function() {
@@ -58,21 +58,21 @@ function AboutState() {
 		jaws.context.fillStyle = "White";
 		wrap_text(jaws.context, about_string, 30, jaws.height/10, jaws.width-30, 25);
 		
-		jaws.context.fillStyle = "Black";
-		wrap_text(jaws.context, team_heading, 30, jaws.height*3/10, jaws.width-30, 20);
+		// jaws.context.fillStyle = "Black";
+		// wrap_text(jaws.context, team_heading, 30, jaws.height*3/10, jaws.width-30, 20);
 		
-		jaws.context.fillStyle = "White";
-		print_person_map(255, jaws.height*3.7/10, rogelio_info);
-		rogelio_sprite.draw();
+		// jaws.context.fillStyle = "White";
+		// print_person_map(255, jaws.height*3.7/10, rogelio_info);
+		// rogelio_sprite.draw();
 		
-		print_person_map(35, jaws.height*5.7/10, jose_info);
-		jose_sprite.draw();
+		// print_person_map(35, jaws.height*5.7/10, jose_info);
+		// jose_sprite.draw();
 		
-		jaws.context.fillStyle = "Black";
-		wrap_text(jaws.context, contributor_heading, 30, jaws.height*7.8/10, jaws.width-30, 20);
+		// jaws.context.fillStyle = "Black";
+		// wrap_text(jaws.context, contributor_heading, 30, jaws.height*7.8/10, jaws.width-30, 20);
 		
-		jaws.context.fillStyle = "White";	
-		print_person_map(255, jaws.height*8.5/10, ian_info);
+		// jaws.context.fillStyle = "White";	
+		// print_person_map(255, jaws.height*8.5/10, ian_info);
 		ian_sprite.draw();
 	}
 	

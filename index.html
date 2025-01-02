@@ -35,10 +35,31 @@
 		<script src="./src/states/PlayState.js"></script>
 
 	    <title>BitBot</title>
+    <style>
+      @import url('https://fonts.cdnfonts.com/css/public-pixel');
+      #title {
+        width: 576px;
+        font-family: 'Public Pixel', sans-serif;
+        height: 50px;
+        position: relative;
+        line-height: 50px;
+      }
+      .twitter-icon {
+        width: 50px;
+        height: 50px;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        cursor: pointer;
+      }
+    </style>
 	</head>
 
 	<body>
-		
+
+      <div id="title">CA: 
+        <img class="twitter-icon" src="/icons8-twitter-64.png" />
+      </div>
 	    <canvas width=576 height=576 id="canvas"> </canvas>
 	    
 	    <!-- FPS: <span id="fps"> </span>. --> 
@@ -56,10 +77,6 @@
 			
 			<p>
 				Hit Escape to exit a menu or pause in-game. Press arrows to move around.
-			</p>
-			
-			<p>
-					&copy; Copyright by R. E. Cardona-Rivera and Jos&eacute; D. V&eacute;lez
 			</p>
 		</footer>
 		
